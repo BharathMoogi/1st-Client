@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput, Dimensions, ActivityIndicator } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -12,6 +12,8 @@ import Animated, {
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import Svg, { Path, Circle, Rect, G, Line } from 'react-native-svg';
+import { useCartQuery, useCreateOrderMutation, useRemoveFromCartMutation } from '../api/hooks';
+import { auth } from '../api/firebase';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -61,8 +63,18 @@ const CircleCheckIcon = () => (
 export default function CheckoutScreen() {
   const router = useRouter();
 
+  // Firebase hooks
+  const { data: cartItems = [] } = useCartQuery();
+  const createOrder = useCreateOrderMutation();
+  const removeFromCart = useRemoveFromCartMutation();
+
   // Checkout Step state
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3 | 4>(1);
+
+  // Confirmed order data (shown in step 4)
+  const [confirmedOrderId, setConfirmedOrderId] = useState('');
+  const [confirmedTotal, setConfirmedTotal] = useState(0);
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
   // Step 1: Address states
   const [selectedAddress, setSelectedAddress] = useState<'home' | 'office'>('home');
@@ -80,6 +92,11 @@ export default function CheckoutScreen() {
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
   const [cardCvv, setCardCvv] = useState('');
+
+  // Cart totals
+  const itemsTotal = (cartItems as any[]).reduce((sum: number, item: any) => sum + (item.price ?? 0) * (item.quantity ?? 1), 0);
+  const shippingFee = shippingMode === 'express' ? 15 : 0;
+  const grandTotal = itemsTotal + shippingFee;
 
   // Animation values
   const stepLineWidth = useSharedValue(0);
@@ -103,9 +120,7 @@ export default function CheckoutScreen() {
 
   // Next and Back controls
   const handleNext = () => {
-    if (currentStep < 4) {
-      setCurrentStep((prev) => (prev + 1) as any);
-    }
+    if (currentStep < 3) setCurrentStep((prev) => (prev + 1) as any);
   };
 
   const handleBack = () => {
@@ -114,6 +129,42 @@ export default function CheckoutScreen() {
     } else if (currentStep === 1) {
       router.back();
     }
+  };
+
+  // ── FIREBASE: PLACE ORDER ──
+  const handlePlaceOrder = async () => {
+    setIsPlacingOrder(true);
+    try {
+      const user = auth.currentUser;
+      const addressText = selectedAddress === 'home'
+        ? 'Flat 302, Golden Monogram Heights, Bandra West, Mumbai - 400050'
+        : 'Aurum Labs Inc, Corporate Hub Sector 4, BKC Bandra East - 400051';
+
+      const orderId = await createOrder.mutateAsync({
+        userId: user?.uid ?? 'guest',
+        userEmail: user?.email ?? 'guest',
+        items: cartItems,
+        address: addressText,
+        shippingMode,
+        paymentMethod,
+        itemsTotal,
+        shippingFee,
+        total: grandTotal,
+        status: 'Pending',
+      });
+
+      // Clear all cart items
+      for (const item of cartItems as any[]) {
+        await removeFromCart.mutateAsync(item.id);
+      }
+
+      setConfirmedOrderId(orderId);
+      setConfirmedTotal(grandTotal);
+      setCurrentStep(4);
+    } catch (e) {
+      console.error('Order failed:', e);
+    }
+    setIsPlacingOrder(false);
   };
 
   // Reanimated style bindings
@@ -411,9 +462,11 @@ export default function CheckoutScreen() {
               )}
             </View>
 
-            <TouchableOpacity onPress={handleNext} activeOpacity={0.85} style={styles.stepButton}>
+            <TouchableOpacity onPress={handlePlaceOrder} activeOpacity={0.85} style={[styles.stepButton, isPlacingOrder && { opacity: 0.7 }]} disabled={isPlacingOrder}>
               <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
-              <Text style={styles.stepButtonText}>PLACE ORDER & PAY</Text>
+              {isPlacingOrder
+                ? <ActivityIndicator color="#0A0A0A" />
+                : <Text style={styles.stepButtonText}>PLACE ORDER & PAY</Text>}
             </TouchableOpacity>
           </View>
         )}
@@ -437,15 +490,19 @@ export default function CheckoutScreen() {
               />
               <View style={styles.receiptRow}>
                 <Text style={styles.receiptLabel}>Order ID</Text>
-                <Text style={styles.receiptValue}>#AW-98315</Text>
+                <Text style={styles.receiptValue}>#{confirmedOrderId.slice(-8).toUpperCase()}</Text>
               </View>
               <View style={styles.receiptRow}>
                 <Text style={styles.receiptLabel}>Total Amount</Text>
-                <Text style={styles.receiptValue}>$69.00</Text>
+                <Text style={styles.receiptValue}>₹{confirmedTotal.toFixed(2)}</Text>
               </View>
               <View style={styles.receiptRow}>
-                <Text style={styles.receiptLabel}>Delivery Date</Text>
-                <Text style={styles.receiptValue}>Wednesday, July 22</Text>
+                <Text style={styles.receiptLabel}>Estimated Delivery</Text>
+                <Text style={styles.receiptValue}>{shippingMode === 'express' ? '1-2 Business Days' : '3-5 Business Days'}</Text>
+              </View>
+              <View style={styles.receiptRow}>
+                <Text style={styles.receiptLabel}>Payment</Text>
+                <Text style={styles.receiptValue}>{paymentMethod.toUpperCase()}</Text>
               </View>
             </View>
 
