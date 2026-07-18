@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, TextInput, ActivityIndicator } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -11,8 +11,14 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import Svg, { Path, G, Circle } from 'react-native-svg';
+import Svg, { Path, Circle } from 'react-native-svg';
 import FloatingInput from './FloatingInput';
+import { auth } from '../api/firebase';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from 'firebase/auth';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -66,15 +72,18 @@ interface AuthScreensProps {
 }
 
 export default function AuthScreens({ onSuccess }: AuthScreensProps) {
-  const [viewState, setViewState] = useState<'login' | 'signup' | 'forgot' | 'otp'>('login');
+  const [viewState, setViewState] = useState<'login' | 'signup' | 'forgot'>('login');
 
   // Input states
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [otpVal, setOtpVal] = useState(['', '', '', '']);
-  const [timerCount, setTimerCount] = useState(30);
+
+  // Firebase state
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState('');
+  const [resetSent, setResetSent] = useState(false);
 
   // Transition & visual shared values
   const cardOpacity = useSharedValue(1);
@@ -99,68 +108,73 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
     blobY1.value = withRepeat(withTiming(35, { duration: 6000, easing: Easing.inOut(Easing.ease) }), -1, true);
   }, []);
 
-  // OTP Countdown timer
-  useEffect(() => {
-    if (viewState !== 'otp') return;
-    if (timerCount <= 0) return;
-    const interval = setInterval(() => {
-      setTimerCount((prev) => prev - 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [viewState, timerCount]);
-
   // Transition helper with spring bounce
-  const navigateTo = (state: 'login' | 'signup' | 'forgot' | 'otp') => {
+  const navigateTo = (state: 'login' | 'signup' | 'forgot') => {
+    setAuthError('');
+    setResetSent(false);
     cardOpacity.value = withTiming(0, { duration: 200, easing: Easing.inOut(Easing.ease) }, (finished) => {
       if (finished) {
         runOnJS(setViewState)(state);
-        if (state === 'otp') runOnJS(setTimerCount)(30); // reset OTP timer
         cardOpacity.value = withTiming(1, { duration: 300 });
         cardTranslateY.value = withSequence(withTiming(15, { duration: 0 }), withSpring(0, { damping: 14 }));
       }
     });
   };
 
-  // Main handlers
-  const handleLoginSubmit = () => {
-    if (!email || !password) return;
-    // Premium login flows straight to OTP for secure MFA feel
-    navigateTo('otp');
-  };
-
-  const handleSignupSubmit = () => {
-    if (!name || !email || !password || password !== confirmPassword) return;
-    navigateTo('otp');
-  };
-
-  const handleForgotSubmit = () => {
-    if (!email) return;
-    navigateTo('login');
-  };
-
-  const handleOtpVerify = () => {
-    const code = otpVal.join('');
-    if (code.length < 4) return;
-    
-    // Auth Success! Trigger scale zoom on card and fade out screen
+  const triggerSuccess = () => {
     cardScale.value = withTiming(0.9, { duration: 300 });
     cardOpacity.value = withTiming(0, { duration: 400 }, (finished) => {
-      if (finished) {
-        runOnJS(onSuccess)();
-      }
+      if (finished) runOnJS(onSuccess)();
     });
   };
 
-  const handleOtpChange = (text: string, index: number) => {
-    const newOtp = [...otpVal];
-    newOtp[index] = text.slice(-1); // Only keep single character
-    setOtpVal(newOtp);
+  const friendlyError = (code: string) => {
+    if (code === 'auth/wrong-password' || code === 'auth/invalid-credential') return 'Incorrect password. Please try again.';
+    if (code === 'auth/user-not-found') return 'No account found with this email.';
+    if (code === 'auth/email-already-in-use') return 'An account with this email already exists.';
+    if (code === 'auth/weak-password') return 'Password must be at least 6 characters.';
+    if (code === 'auth/invalid-email') return 'Please enter a valid email address.';
+    if (code === 'auth/too-many-requests') return 'Too many attempts. Please wait and try again.';
+    return 'Something went wrong. Please try again.';
+  };
 
-    // Auto-focus next input
-    if (text && index < 3) {
-      const nextInput = refs[index + 1];
-      nextInput?.focus();
+  // ── FIREBASE HANDLERS ──
+  const handleLoginSubmit = async () => {
+    if (!email || !password) { setAuthError('Please enter your email and password.'); return; }
+    setAuthLoading(true); setAuthError('');
+    try {
+      await signInWithEmailAndPassword(auth, email.trim(), password);
+      triggerSuccess();
+    } catch (err: any) {
+      setAuthError(friendlyError(err?.code ?? ''));
     }
+    setAuthLoading(false);
+  };
+
+  const handleSignupSubmit = async () => {
+    if (!name || !email || !password) { setAuthError('Please fill in all fields.'); return; }
+    if (password !== confirmPassword) { setAuthError('Passwords do not match.'); return; }
+    if (password.length < 6) { setAuthError('Password must be at least 6 characters.'); return; }
+    setAuthLoading(true); setAuthError('');
+    try {
+      await createUserWithEmailAndPassword(auth, email.trim(), password);
+      triggerSuccess();
+    } catch (err: any) {
+      setAuthError(friendlyError(err?.code ?? ''));
+    }
+    setAuthLoading(false);
+  };
+
+  const handleForgotSubmit = async () => {
+    if (!email) { setAuthError('Please enter your email address.'); return; }
+    setAuthLoading(true); setAuthError('');
+    try {
+      await sendPasswordResetEmail(auth, email.trim());
+      setResetSent(true);
+    } catch (err: any) {
+      setAuthError(friendlyError(err?.code ?? ''));
+    }
+    setAuthLoading(false);
   };
 
   const refs: (TextInput | null)[] = [];
@@ -235,10 +249,15 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
               <Text style={styles.forgotText}>Forgot Password?</Text>
             </TouchableOpacity>
 
+            {!!authError && viewState === 'login' && (
+              <Text style={styles.errorText}>{authError}</Text>
+            )}
+
             <TouchableOpacity
               onPress={handleLoginSubmit}
               activeOpacity={0.85}
               style={styles.submitButton}
+              disabled={authLoading}
             >
               <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
               <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
@@ -249,7 +268,7 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
                   style={StyleSheet.absoluteFill}
                 />
               </Animated.View>
-              <Text style={styles.submitButtonText}>SIGN IN</Text>
+              {authLoading ? <ActivityIndicator color="#0A0A0A" /> : <Text style={styles.submitButtonText}>SIGN IN</Text>}
             </TouchableOpacity>
 
             {/* Separator */}
@@ -320,10 +339,15 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
               autoCapitalize="none"
             />
 
+            {!!authError && viewState === 'signup' && (
+              <Text style={styles.errorText}>{authError}</Text>
+            )}
+
             <TouchableOpacity
               onPress={handleSignupSubmit}
               activeOpacity={0.85}
               style={[styles.submitButton, { marginTop: 12 }]}
+              disabled={authLoading}
             >
               <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
               <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
@@ -334,7 +358,7 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
                   style={StyleSheet.absoluteFill}
                 />
               </Animated.View>
-              <Text style={styles.submitButtonText}>CREATE ACCOUNT</Text>
+              {authLoading ? <ActivityIndicator color="#0A0A0A" /> : <Text style={styles.submitButtonText}>CREATE ACCOUNT</Text>}
             </TouchableOpacity>
 
             {/* Switch view link */}
@@ -362,10 +386,18 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
               autoCapitalize="none"
             />
 
+            {!!authError && viewState === 'forgot' && (
+              <Text style={styles.errorText}>{authError}</Text>
+            )}
+            {resetSent && (
+              <Text style={styles.successText}>✓ Reset link sent to {email}</Text>
+            )}
+
             <TouchableOpacity
               onPress={handleForgotSubmit}
               activeOpacity={0.85}
               style={[styles.submitButton, { marginTop: 24 }]}
+              disabled={authLoading || resetSent}
             >
               <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
               <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
@@ -376,7 +408,7 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
                   style={StyleSheet.absoluteFill}
                 />
               </Animated.View>
-              <Text style={styles.submitButtonText}>SEND RESET LINK</Text>
+              {authLoading ? <ActivityIndicator color="#0A0A0A" /> : <Text style={styles.submitButtonText}>SEND RESET LINK</Text>}
             </TouchableOpacity>
 
             {/* Switch view link */}
@@ -388,67 +420,6 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
           </View>
         )}
 
-        {/* 4. OTP VERIFICATION VIEW */}
-        {viewState === 'otp' && (
-          <View style={styles.cardContent}>
-            <View style={styles.otpHeaderWrapper}>
-              <ShieldCheckIcon color="#FFE082" />
-              <Text style={styles.cardTitle}>Verify Account</Text>
-            </View>
-            <Text style={styles.cardSubtitle}>
-              We sent a 4-digit code to {email || 'your email'}
-            </Text>
-
-            {/* Digits row */}
-            <View style={styles.otpInputRow}>
-              {otpVal.map((digit, i) => (
-                <View key={i} style={[styles.otpCellBox, digit ? styles.otpCellActive : null]}>
-                  <TextInput
-                    ref={(r) => {
-                      refs[i] = r;
-                    }}
-                    value={digit}
-                    onChangeText={(text) => handleOtpChange(text, i)}
-                    keyboardType="number-pad"
-                    maxLength={1}
-                    style={styles.otpCellText}
-                    textAlign="center"
-                    placeholder="•"
-                    placeholderTextColor="rgba(255,255,255,0.15)"
-                  />
-                </View>
-              ))}
-            </View>
-
-            {/* Timer countdown */}
-            <View style={styles.timerRow}>
-              {timerCount > 0 ? (
-                <Text style={styles.timerText}>Resend code in <Text style={styles.goldText}>{timerCount}s</Text></Text>
-              ) : (
-                <TouchableOpacity onPress={() => setTimerCount(30)} activeOpacity={0.7}>
-                  <Text style={styles.resendLinkText}>Resend Verification Code</Text>
-                </TouchableOpacity>
-              )}
-            </View>
-
-            <TouchableOpacity
-              onPress={handleOtpVerify}
-              activeOpacity={0.85}
-              style={[styles.submitButton, { marginTop: 16 }]}
-            >
-              <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
-              <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
-                <LinearGradient
-                  colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0)']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={StyleSheet.absoluteFill}
-                />
-              </Animated.View>
-              <Text style={styles.submitButtonText}>VERIFY & SIGN IN</Text>
-            </TouchableOpacity>
-          </View>
-        )}
       </Animated.View>
     </View>
   );
@@ -616,58 +587,26 @@ const styles = StyleSheet.create({
   backToLoginWrapper: {
     marginVertical: 4,
   },
-  otpHeaderWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 4,
+  errorText: {
+    fontSize: 11,
+    color: '#FF6B6B',
+    backgroundColor: 'rgba(255,107,107,0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,107,107,0.2)',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 8,
+    textAlign: 'center',
   },
-  otpInputRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 20,
-    gap: 10,
-  },
-  otpCellBox: {
-    flex: 1,
-    height: 60,
-    borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    backgroundColor: 'rgba(255, 255, 255, 0.03)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#FFE082',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-  },
-  otpCellActive: {
-    borderColor: '#FFE082',
-    backgroundColor: 'rgba(224, 176, 52, 0.05)',
-  },
-  otpCellText: {
-    fontSize: 22,
-    color: '#FFFFFF',
-    fontWeight: '600',
-    width: '100%',
-    height: '100%',
-  },
-  timerRow: {
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  timerText: {
-    fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.45)',
-  },
-  goldText: {
-    color: '#FFE082',
-    fontWeight: '500',
-  },
-  resendLinkText: {
-    fontSize: 12,
-    color: '#FFE082',
-    fontWeight: '500',
-    textDecorationLine: 'underline',
+  successText: {
+    fontSize: 11,
+    color: '#4CAF50',
+    backgroundColor: 'rgba(76,175,80,0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(76,175,80,0.2)',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 8,
+    textAlign: 'center',
   },
 });
