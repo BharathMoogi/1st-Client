@@ -1,97 +1,90 @@
 import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from './supabase';
-
-
+import {
+  collection, doc, getDocs, getDoc, addDoc, deleteDoc, updateDoc,
+  query, where, orderBy, onSnapshot, serverTimestamp, DocumentData
+} from 'firebase/firestore';
+import {
+  signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  signOut, onAuthStateChanged
+} from 'firebase/auth';
+import { db, auth } from './firebase';
 
 // ==========================================
-// 1. AUTHENTICATION API HOOKS
+// 1. AUTHENTICATION HOOKS
 // ==========================================
+
+/** Returns the current auth session/user */
 export function useSession() {
   return useQuery({
     queryKey: ['session'],
-    queryFn: async () => {
-      const { data, error } = await supabase.auth.getSession();
-      if (error) throw error;
-      return data.session;
-    }
+    queryFn: () =>
+      new Promise((resolve) => {
+        const unsub = onAuthStateChanged(auth, (user) => {
+          unsub();
+          resolve(user);
+        });
+      }),
+    staleTime: Infinity,
   });
 }
 
 export function useSignUp() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ email, password }: { email: string; password?: string }) => {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password: password || 'default-password-123',
-      });
-      if (error) throw error;
-      return data;
+    mutationFn: async ({ email, password }: { email: string; password: string }) => {
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      return result.user;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['session'] });
-    }
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['session'] }),
   });
 }
 
 export function useSignIn() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ email, password }: { email: string; password?: string }) => {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password: password || 'default-password-123',
-      });
-      if (error) throw error;
-      return data;
+    mutationFn: async ({ email, password }: { email: string; password: string }) => {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      return result.user;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['session'] });
-    }
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['session'] }),
   });
 }
 
 export function useSignOut() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.setQueryData(['session'], null);
-    }
+    mutationFn: () => signOut(auth),
+    onSuccess: () => queryClient.setQueryData(['session'], null),
   });
 }
 
 // ==========================================
 // 2. PRODUCTS & CATEGORIES HOOKS
 // ==========================================
+
 export function useProductsQuery(category?: string) {
   return useQuery({
     queryKey: ['products', category],
     queryFn: async () => {
-      let query = supabase.from('products').select('*');
-      if (category && category !== 'All') {
-        query = query.eq('category', category);
-      }
-      
-      const { data, error } = await query;
-      if (error) throw error;
-      return data || [];
-    }
+      let q = category && category !== 'All'
+        ? query(collection(db, 'products'), where('category', '==', category), orderBy('name'))
+        : query(collection(db, 'products'), orderBy('name'));
+      const snap = await getDocs(q);
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    },
   });
 }
 
 export function useProductDetailsQuery(id: string) {
   return useQuery({
     queryKey: ['product-detail', id],
+    enabled: !!id,
     queryFn: async () => {
-      const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
-      if (error) throw error;
-      return data;
-    }
+      const snap = await getDoc(doc(db, 'products', id));
+      if (!snap.exists()) throw new Error('Product not found');
+      return { id: snap.id, ...snap.data() };
+    },
   });
 }
 
@@ -99,84 +92,67 @@ export function useCategoriesQuery() {
   return useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('categories').select('*');
-      if (error) throw error;
-      return data || [];
-    }
+      const snap = await getDocs(collection(db, 'categories'));
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    },
   });
 }
 
 // ==========================================
-// 3. WISHLIST HOOKS (REALTIME SYNC)
+// 3. WISHLIST HOOKS (REALTIME)
 // ==========================================
+
 export function useWishlistQuery() {
   return useQuery({
     queryKey: ['wishlist'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('wishlist').select('*');
-      if (error) return [];
-      return data;
-    }
+      const snap = await getDocs(collection(db, 'wishlist'));
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    },
   });
 }
 
 export function useAddToWishlistMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (product: any) => {
-      const { data, error } = await supabase.from('wishlist').insert([product]).select();
-      if (error) throw error;
-      return data;
+    mutationFn: async (product: DocumentData) => {
+      const ref = await addDoc(collection(db, 'wishlist'), { ...product, addedAt: serverTimestamp() });
+      return ref.id;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishlist'] });
-    }
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['wishlist'] }),
   });
 }
 
 export function useRemoveFromWishlistMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('wishlist').delete().eq('id', id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishlist'] });
-    }
+    mutationFn: (id: string) => deleteDoc(doc(db, 'wishlist', id)),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['wishlist'] }),
   });
 }
 
-// Real-time Wishlist subscription hook
+/** Real-time wishlist listener — call inside a component */
 export function useWishlistRealtime() {
   const queryClient = useQueryClient();
-
   useEffect(() => {
-    const channel = supabase
-      .channel('wishlist-db-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'wishlist' }, () => {
-        // Invalidate wishlist query to trigger fresh react-query refetch
-        queryClient.invalidateQueries({ queryKey: ['wishlist'] });
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    const unsub = onSnapshot(collection(db, 'wishlist'), () => {
+      queryClient.invalidateQueries({ queryKey: ['wishlist'] });
+    });
+    return () => unsub();
   }, [queryClient]);
 }
 
 // ==========================================
 // 4. CART HOOKS
 // ==========================================
+
 export function useCartQuery() {
   return useQuery({
     queryKey: ['cart'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('cart').select('*');
-      if (error) return [];
-      return data;
-    }
+      const snap = await getDocs(collection(db, 'cart'));
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    },
   });
 }
 
@@ -184,187 +160,162 @@ export function useUpdateCartMutation() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, quantity }: { id: string; quantity: number }) => {
-      const { data, error } = await supabase.from('cart').update({ quantity }).eq('id', id).select();
-      if (error) throw error;
-      return data;
+      await updateDoc(doc(db, 'cart', id), { quantity });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
-    }
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cart'] }),
   });
 }
 
 export function useRemoveFromCartMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('cart').delete().eq('id', id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
-    }
+    mutationFn: (id: string) => deleteDoc(doc(db, 'cart', id)),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cart'] }),
   });
 }
 
 // ==========================================
-// 5. ORDERS HOOKS (REALTIME STATUS TIMELINE)
+// 5. ORDERS HOOKS (REALTIME STATUS)
 // ==========================================
+
 export function useOrdersQuery() {
   return useQuery({
     queryKey: ['orders'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('orders').select('*');
-      if (error) return [];
-      return data;
-    }
+      const snap = await getDocs(query(collection(db, 'orders'), orderBy('createdAt', 'desc')));
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    },
   });
 }
 
 export function useCreateOrderMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (orderData: any) => {
-      const { data, error } = await supabase.from('orders').insert([orderData]).select();
-      if (error) throw error;
-      return data;
+    mutationFn: async (orderData: DocumentData) => {
+      const ref = await addDoc(collection(db, 'orders'), { ...orderData, createdAt: serverTimestamp(), status: 'Pending' });
+      return ref.id;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
-    }
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['orders'] }),
   });
 }
 
-// Real-time tracker for individual order status (Pending -> Shipped -> Delivered)
-export function useOrderRealtime(orderId: string, onStatusChange?: (newStatus: string) => void) {
+/** Real-time listener for a single order's status (Pending → Shipped → Delivered) */
+export function useOrderRealtime(orderId: string, onStatusChange?: (status: string) => void) {
   const queryClient = useQueryClient();
-
   useEffect(() => {
     if (!orderId) return;
-
-    const channel = supabase
-      .channel(`order-status-${orderId}`)
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'orders', filter: `id=eq.${orderId}` },
-        (payload: any) => {
-          queryClient.invalidateQueries({ queryKey: ['orders'] });
-          if (onStatusChange && payload.new && payload.new.status) {
-            onStatusChange(payload.new.status);
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    const unsub = onSnapshot(doc(db, 'orders', orderId), (snap) => {
+      queryClient.invalidateQueries({ queryKey: ['orders'] });
+      const data = snap.data();
+      if (onStatusChange && data?.status) onStatusChange(data.status);
+    });
+    return () => unsub();
   }, [orderId, queryClient, onStatusChange]);
 }
 
 // ==========================================
 // 6. REVIEWS HOOKS
 // ==========================================
+
 export function useReviewsQuery(productId: string) {
   return useQuery({
     queryKey: ['reviews', productId],
+    enabled: !!productId,
     queryFn: async () => {
-      const { data, error } = await supabase.from('reviews').select('*').eq('product_id', productId);
-      if (error) return [];
-      return data;
-    }
+      const q = query(collection(db, 'reviews'), where('product_id', '==', productId), orderBy('createdAt', 'desc'));
+      const snap = await getDocs(q);
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    },
   });
 }
 
 export function useSubmitReviewMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (reviewData: { product_id: string; rating: number; comment: string; name?: string }) => {
-      const { data, error } = await supabase.from('reviews').insert([reviewData]).select();
-      if (error) throw error;
-      return data;
+    mutationFn: async (review: { product_id: string; rating: number; comment: string; name?: string }) => {
+      const ref = await addDoc(collection(db, 'reviews'), { ...review, createdAt: serverTimestamp(), verified: false });
+      return ref.id;
     },
-    onSuccess: (data: any) => {
-      if (data && data[0]) {
-        queryClient.invalidateQueries({ queryKey: ['reviews', data[0].product_id] });
-      }
-    }
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['reviews', variables.product_id] });
+    },
   });
 }
 
 // ==========================================
-// 7. NOTIFICATIONS HOOKS (REALTIME INCOMING)
+// 7. NOTIFICATIONS HOOKS (REALTIME)
 // ==========================================
+
 export function useNotificationsQuery() {
   return useQuery({
     queryKey: ['notifications'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('notifications').select('*');
-      if (error) return [];
-      return data;
-    }
+      const snap = await getDocs(query(collection(db, 'notifications'), orderBy('createdAt', 'desc')));
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    },
   });
 }
 
 export function useDismissNotificationMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('notifications').delete().eq('id', id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notifications'] });
-    }
+    mutationFn: (id: string) => deleteDoc(doc(db, 'notifications', id)),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications'] }),
   });
 }
 
-export function useNotificationsRealtime(onNewAlert?: (payload: any) => void) {
+/** Real-time listener — pushes new notifications live */
+export function useNotificationsRealtime(onNewAlert?: (data: DocumentData) => void) {
   const queryClient = useQueryClient();
-
   useEffect(() => {
-    const channel = supabase
-      .channel('notifications-realtime-feed')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'notifications' },
-        (payload: any) => {
-          queryClient.invalidateQueries({ queryKey: ['notifications'] });
-          if (onNewAlert) {
-            onNewAlert(payload.new);
-          }
+    const unsub = onSnapshot(collection(db, 'notifications'), (snap) => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      snap.docChanges().forEach((change) => {
+        if (change.type === 'added' && onNewAlert) {
+          onNewAlert({ id: change.doc.id, ...change.doc.data() });
         }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+      });
+    });
+    return () => unsub();
   }, [queryClient, onNewAlert]);
 }
 
 // ==========================================
-// 8. ADDRESSES & COUPONS HOOKS
+// 8. ADDRESSES HOOKS
 // ==========================================
+
 export function useAddressesQuery() {
   return useQuery({
     queryKey: ['addresses'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('addresses').select('*');
-      if (error) return [];
-      return data;
-    }
+      const snap = await getDocs(collection(db, 'addresses'));
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    },
   });
 }
+
+export function useAddAddressMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (address: DocumentData) => {
+      const ref = await addDoc(collection(db, 'addresses'), address);
+      return ref.id;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['addresses'] }),
+  });
+}
+
+// ==========================================
+// 9. COUPONS HOOKS
+// ==========================================
 
 export function useCouponsQuery() {
   return useQuery({
     queryKey: ['coupons'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('coupons').select('*');
-      if (error) return [];
-      return data;
-    }
+      const snap = await getDocs(collection(db, 'coupons'));
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    },
   });
 }
 
@@ -373,11 +324,12 @@ export function useValidateCouponQuery(code: string) {
     queryKey: ['validate-coupon', code],
     enabled: !!code,
     queryFn: async () => {
-      const { data, error } = await supabase.from('coupons').select('*').eq('code', code.toUpperCase()).single();
-      if (error || !data) {
-        throw new Error('Invalid coupon promo code');
-      }
-      return { ...data, valid: true };
-    }
+      const q = query(collection(db, 'coupons'), where('code', '==', code.toUpperCase()));
+      const snap = await getDocs(q);
+      if (snap.empty) throw new Error('Invalid coupon code');
+      const data = snap.docs[0].data();
+      if (data.status !== 'Active') throw new Error('Coupon has expired');
+      return { id: snap.docs[0].id, ...data, valid: true };
+    },
   });
 }
