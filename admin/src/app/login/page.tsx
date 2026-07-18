@@ -2,17 +2,24 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 import { auth } from "../../lib/firebase";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  onAuthStateChanged,
+} from "firebase/auth";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("admin@aurumwellness.com");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
 
-  // If already logged in, redirect immediately
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) router.replace("/");
@@ -42,6 +49,22 @@ export default function LoginPage() {
     setLoading(false);
   }
 
+  async function handleForgotPassword() {
+    if (!email) {
+      setError("Enter your email address first, then click Forgot password.");
+      return;
+    }
+    setResetLoading(true);
+    setError("");
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setResetSent(true);
+    } catch (err: any) {
+      setError(err?.message ?? "Failed to send reset email.");
+    }
+    setResetLoading(false);
+  }
+
   return (
     <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4">
       {/* Background glow */}
@@ -66,6 +89,7 @@ export default function LoginPage() {
 
         {/* Form */}
         <form onSubmit={handleLogin} className="border border-white/8 rounded-2xl bg-white/[0.02] p-7 space-y-5 backdrop-blur-sm">
+          {/* Email */}
           <div>
             <label className="text-[10px] text-white/40 tracking-widest block mb-2 uppercase font-semibold">Email</label>
             <input
@@ -78,21 +102,50 @@ export default function LoginPage() {
             />
           </div>
 
+          {/* Password with show/hide toggle */}
           <div>
-            <label className="text-[10px] text-white/40 tracking-widest block mb-2 uppercase font-semibold">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full bg-white/4 border border-white/8 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-[#E0B034]/50 focus:bg-white/6 transition-all"
-              placeholder="Enter your password"
-            />
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-[10px] text-white/40 tracking-widest uppercase font-semibold">Password</label>
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                disabled={resetLoading}
+                className="text-[10px] text-[#E0B034]/70 hover:text-[#E0B034] tracking-wide transition-colors disabled:opacity-50"
+              >
+                {resetLoading ? "Sending…" : "Forgot password?"}
+              </button>
+            </div>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full bg-white/4 border border-white/8 rounded-xl px-4 py-3 pr-12 text-sm text-white placeholder-white/20 focus:outline-none focus:border-[#E0B034]/50 focus:bg-white/6 transition-all"
+                placeholder="Enter your password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-[#E0B034] transition-colors"
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
           </div>
 
+          {/* Error message */}
           {error && (
             <div className="rounded-lg border border-red-500/20 bg-red-500/5 px-4 py-3 text-xs text-red-400">
               {error}
+            </div>
+          )}
+
+          {/* Reset email sent confirmation */}
+          {resetSent && (
+            <div className="rounded-lg border border-green-500/20 bg-green-500/5 px-4 py-3 text-xs text-green-400">
+              ✓ Password reset email sent to <strong>{email}</strong>
             </div>
           )}
 
