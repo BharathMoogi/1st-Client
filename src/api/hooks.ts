@@ -2,12 +2,7 @@ import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from './supabase';
 
-// --- MOCK DATABASE SCHEMAS FOR COMPILE SAFETY & OFFLINE RESILIENCY ---
-const MOCK_PRODUCTS = [
-  { id: '1', name: 'Gold Standard Whey Isolate (1kg)', category: 'Protein', price: 69.00 },
-  { id: '2', name: 'Micronized Creatine Powder (300g)', category: 'Creatine', price: 32.00 },
-  { id: '3', name: 'Active BCAAs Recover Matrix (250g)', category: 'Amino Acids', price: 29.00 }
-];
+
 
 // ==========================================
 // 1. AUTHENTICATION API HOOKS
@@ -83,11 +78,8 @@ export function useProductsQuery(category?: string) {
       }
       
       const { data, error } = await query;
-      // Resilient fallback to mock data if supabase table does not exist offline
-      if (error || !data) {
-        return MOCK_PRODUCTS.filter(p => !category || category === 'All' || p.category === category);
-      }
-      return data;
+      if (error) throw error;
+      return data || [];
     }
   });
 }
@@ -97,9 +89,7 @@ export function useProductDetailsQuery(id: string) {
     queryKey: ['product-detail', id],
     queryFn: async () => {
       const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
-      if (error || !data) {
-        return MOCK_PRODUCTS.find(p => p.id === id) || MOCK_PRODUCTS[0];
-      }
+      if (error) throw error;
       return data;
     }
   });
@@ -110,10 +100,8 @@ export function useCategoriesQuery() {
     queryKey: ['categories'],
     queryFn: async () => {
       const { data, error } = await supabase.from('categories').select('*');
-      if (error || !data) {
-        return ['All', 'Protein', 'Creatine', 'Amino Acids', 'Vitamins'];
-      }
-      return data;
+      if (error) throw error;
+      return data || [];
     }
   });
 }
@@ -387,10 +375,6 @@ export function useValidateCouponQuery(code: string) {
     queryFn: async () => {
       const { data, error } = await supabase.from('coupons').select('*').eq('code', code.toUpperCase()).single();
       if (error || !data) {
-        // Fallback checks for core VIP codes
-        if (code.toUpperCase() === 'AURUM20') {
-          return { code: 'AURUM20', rate: 0.2, valid: true };
-        }
         throw new Error('Invalid coupon promo code');
       }
       return { ...data, valid: true };
