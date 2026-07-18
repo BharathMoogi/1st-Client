@@ -1,98 +1,971 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, ScrollView, TextInput, TouchableOpacity, Dimensions } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withSpring,
+  Easing,
+  withRepeat,
+  runOnJS,
+} from 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
+import Svg, { Path, Circle, G, Rect } from 'react-native-svg';
+import { useRouter } from 'expo-router';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
+// --- VECTOR ICONS FOR HOME SCREEN ---
+const SearchIcon = () => (
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <Circle cx="11" cy="11" r="8" />
+    <Path d="m21 21-4.3-4.3" />
+  </Svg>
+);
+
+const BellIcon = () => (
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <Path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+    <Path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+  </Svg>
+);
+
+const CartIcon = () => (
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <Circle cx="8" cy="21" r="1" />
+    <Circle cx="19" cy="21" r="1" />
+    <Path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+  </Svg>
+);
+
+const PackageIcon = () => (
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <Path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+    <Path d="M3.27 6.96 12 12.01l8.73-5.05" />
+    <Path d="M12 22.08V12" />
+  </Svg>
+);
+
+const HeartIcon = () => (
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <Path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+  </Svg>
+);
+
+const ProfileIcon = () => (
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <Path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <Circle cx="12" cy="7" r="4" />
+  </Svg>
+);
+
+const LocationIcon = () => (
+  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <Path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+    <Circle cx="12" cy="10" r="3" />
+  </Svg>
+);
+
+const StarIcon = () => (
+  <Svg width="10" height="10" viewBox="0 0 24 24" fill="#FFE082">
+    <Path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+  </Svg>
+);
+
+// --- DATASETS ---
+const BANNERS = [
+  {
+    id: 1,
+    title: 'GOLD STANDARD WHEY',
+    tagline: 'ULTIMATE PERFORMANCE',
+    description: 'Fuel muscle growth and repair with premium quality micro-filtered whey isolate.',
+    promo: '20% OFF TODAY',
+    color: '#1A1813',
+  },
+  {
+    id: 2,
+    title: 'MICRONIZED CREATINE',
+    tagline: 'MAXIMUM RAW POWER',
+    description: 'Boost endurance, strength, and cellular ATP production with high-purity powder.',
+    promo: 'BUY 1 GET 1',
+    color: '#141416',
+  },
+  {
+    id: 3,
+    title: 'AURUM MULTIVITAMINS',
+    tagline: 'DAILY VITALITY MATRIX',
+    description: 'Essential chelated minerals and active vitamins supporting immunity & energy.',
+    promo: 'SPECIAL PRICE',
+    color: '#1E1B15',
+  },
+];
+
+const CATEGORIES = [
+  { id: 1, name: 'Whey Protein', iconText: 'WHEY' },
+  { id: 2, name: 'Creatine', iconText: 'CRT' },
+  { id: 3, name: 'Pre-Workout', iconText: 'P-WK' },
+  { id: 4, name: 'Vitamins', iconText: 'VIT' },
+  { id: 5, name: 'Fish Oil', iconText: 'OIL' },
+  { id: 6, name: 'Amino Acids', iconText: 'BCAA' },
+];
+
+const FLASH_SALE_PRODUCTS = [
+  {
+    id: 10,
+    name: 'Whey Isolate (1kg) - Dark Gold Series',
+    rating: '4.9',
+    originalPrice: '$89.00',
+    salePrice: '$69.00',
+    save: 'SAVE 22%',
+    imageText: 'WHEY'
+  },
+  {
+    id: 11,
+    name: 'Pre-Workout Rush (30 Servings)',
+    rating: '4.8',
+    originalPrice: '$45.00',
+    salePrice: '$32.00',
+    save: 'SAVE 28%',
+    imageText: 'RUSH'
+  },
+  {
+    id: 12,
+    name: 'Liquid Carnitine 3000 (450ml)',
+    rating: '4.7',
+    originalPrice: '$35.00',
+    salePrice: '$24.99',
+    save: 'SAVE 29%',
+    imageText: 'LCAR'
   }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
+];
+
+const BEST_SELLERS = [
+  {
+    id: 20,
+    name: 'Advanced Whey Gold Blend (2kg)',
+    rating: '4.9',
+    price: '$110.00',
+    imageText: 'WHEY'
+  },
+  {
+    id: 21,
+    name: 'Pure Micronized Glutamine (250g)',
+    rating: '4.8',
+    price: '$28.00',
+    imageText: 'GLUT'
+  },
+  {
+    id: 22,
+    name: 'Premium Fish Oil (90 Softgels)',
+    rating: '4.9',
+    price: '$22.00',
+    imageText: 'FISH'
   }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+];
+
+const BRANDS = [
+  'AURUM LABS', 'OPTIMUM GOLD', 'MUSCLE LABS', 'NUTRITION LABS', 'WHEY CO.'
+];
 
 export default function HomeScreen() {
+  const router = useRouter();
+
+  const handleProductPress = (name: string, priceStr: string) => {
+    const price = Number(priceStr.replace('$', '')) || 69.00;
+    router.push({
+      pathname: '/details',
+      params: { name, price }
+    });
+  };
+
+  const [activeBanner, setActiveBanner] = useState(0);
+  const [countdown, setCountdown] = useState({ hours: 4, minutes: 12, seconds: 59 });
+
+  // Reanimated shared values
+  const proteinProgressWidth = useSharedValue(0);
+  const bannerOpacity = useSharedValue(1);
+
+  // Auto-slide banners
+  useEffect(() => {
+    const timer = setInterval(() => {
+      bannerOpacity.value = withTiming(0, { duration: 300 }, (finished) => {
+        if (finished) {
+          runOnJS(setActiveBanner)((activeBanner + 1) % BANNERS.length);
+          bannerOpacity.value = withTiming(1, { duration: 400 });
+        }
+      });
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [activeBanner]);
+
+  // Flash sale countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev.seconds > 0) {
+          return { ...prev, seconds: prev.seconds - 1 };
+        } else if (prev.minutes > 0) {
+          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
+        } else if (prev.hours > 0) {
+          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
+        } else {
+          return { hours: 4, minutes: 0, seconds: 0 }; // reset
+        }
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Animate Protein Goal Tracker on mount
+  useEffect(() => {
+    proteinProgressWidth.value = withTiming(0.68, {
+      duration: 1800,
+      easing: Easing.out(Easing.quad),
+    });
+  }, []);
+
+  const animatedBannerStyle = useAnimatedStyle(() => ({
+    opacity: bannerOpacity.value,
+  }));
+
+  const animatedProteinStyle = useAnimatedStyle(() => ({
+    width: `${proteinProgressWidth.value * 100}%`,
+  }));
+
+  const formatTime = (num: number) => (num < 10 ? `0${num}` : num);
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <ScrollView style={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
+      {/* Background Linear Gradients */}
+      <LinearGradient
+        colors={['#070707', '#141311', '#070707']}
+        locations={[0, 0.4, 1]}
+        style={StyleSheet.absoluteFill}
+      />
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      {/* --- TOP APP BAR --- */}
+      <View style={styles.topBar}>
+        <View style={styles.locationContainer}>
+          <LocationIcon />
+          <View style={styles.locationTextContainer}>
+            <Text style={styles.locationHeader}>Deliver to</Text>
+            <Text style={styles.locationValue}>Bandra West, Mumbai 400050</Text>
+          </View>
+        </View>
+        <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => router.push('/orders')} style={styles.notificationButton} activeOpacity={0.7}>
+            <PackageIcon />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push('/wishlist')} style={styles.notificationButton} activeOpacity={0.7}>
+            <HeartIcon />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push('/cart')} style={styles.notificationButton} activeOpacity={0.7}>
+            <CartIcon />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push('/profile')} style={styles.notificationButton} activeOpacity={0.7}>
+            <ProfileIcon />
+          </TouchableOpacity>
+        </View>
+      </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
+      {/* --- SEARCH BAR --- */}
+      <View style={styles.searchSection}>
+        <TouchableOpacity onPress={() => router.push('/search')} style={styles.searchContainer} activeOpacity={0.9}>
+          <SearchIcon />
+          <Text style={styles.searchPlaceholderText}>
+            Search premium supplements, vitamins...
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* --- PREMIUM BANNER CAROUSEL --- */}
+      <View style={styles.carouselContainer}>
+        <Animated.View style={[styles.bannerCard, animatedBannerStyle, { backgroundColor: BANNERS[activeBanner].color }]}>
+          <LinearGradient
+            colors={['rgba(224, 176, 52, 0.08)', 'rgba(0, 0, 0, 0.6)']}
+            style={StyleSheet.absoluteFill}
           />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+          <View style={styles.bannerContent}>
+            <Text style={styles.bannerTagline}>{BANNERS[activeBanner].tagline}</Text>
+            <Text style={styles.bannerTitle}>{BANNERS[activeBanner].title}</Text>
+            <Text style={styles.bannerDesc}>{BANNERS[activeBanner].description}</Text>
+            <View style={styles.bannerBottomRow}>
+              <View style={styles.bannerBadge}>
+                <Text style={styles.bannerBadgeText}>{BANNERS[activeBanner].promo}</Text>
+              </View>
+              <TouchableOpacity activeOpacity={0.8} style={styles.bannerButton}>
+                <Text style={styles.bannerButtonText}>BUY NOW</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Animated.View>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        {/* Carousel indicators */}
+        <View style={styles.carouselIndicators}>
+          {BANNERS.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.indicatorDot,
+                index === activeBanner ? styles.indicatorDotActive : null,
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+
+      {/* --- PROTEIN GOALS TRACKER --- */}
+      <View style={styles.sectionContainer}>
+        <View style={styles.proteinGoalBox}>
+          <LinearGradient
+            colors={['rgba(255, 255, 255, 0.04)', 'rgba(255, 255, 255, 0.01)']}
+            style={StyleSheet.absoluteFill}
+          />
+          <View style={styles.proteinHeader}>
+            <View>
+              <Text style={styles.proteinTitle}>Daily Protein Intake</Text>
+              <Text style={styles.proteinSubtitle}>Keep building muscle mass</Text>
+            </View>
+            <Text style={styles.proteinIntakeText}>
+              <Text style={styles.goldTextBold}>82g</Text> / 120g Goal
+            </Text>
+          </View>
+
+          {/* Progress track */}
+          <View style={styles.progressTrack}>
+            <Animated.View style={[styles.progressFill, animatedProteinStyle]}>
+              <LinearGradient
+                colors={['#E0B034', '#FFECA6']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={StyleSheet.absoluteFill}
+              />
+            </Animated.View>
+          </View>
+          <View style={styles.proteinFooter}>
+            <Text style={styles.proteinRemaining}>38g remaining to meet goal today</Text>
+            <Text style={styles.proteinPercent}>68%</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* --- CATEGORIES --- */}
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Shop by Category</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryScroll}>
+          {CATEGORIES.map((cat) => (
+            <TouchableOpacity key={cat.id} activeOpacity={0.8} style={styles.categoryItem}>
+              <View style={styles.categoryCircle}>
+                <LinearGradient
+                  colors={['rgba(224, 176, 52, 0.15)', 'rgba(224, 176, 52, 0.02)']}
+                  style={StyleSheet.absoluteFill}
+                />
+                <Text style={styles.categoryCircleText}>{cat.iconText}</Text>
+              </View>
+              <Text style={styles.categoryName}>{cat.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+
+      {/* --- FLASH SALE SECTION --- */}
+      <View style={[styles.sectionContainer, styles.flashSaleBg]}>
+        <View style={styles.sectionHeaderRow}>
+          <View style={styles.flashHeaderLeft}>
+            <Text style={styles.flashSaleTitle}>Flash Sale</Text>
+            <View style={styles.countdownBadge}>
+              <Text style={styles.countdownText}>
+                {formatTime(countdown.hours)}:{formatTime(countdown.minutes)}:{formatTime(countdown.seconds)}
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity activeOpacity={0.7}>
+            <Text style={styles.seeAllText}>SEE ALL</Text>
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.productCardScroll}>
+          {FLASH_SALE_PRODUCTS.map((prod) => (
+            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={prod.id} style={styles.floatingProductCard} activeOpacity={0.95}>
+              <LinearGradient
+                colors={['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.01)']}
+                style={StyleSheet.absoluteFill}
+              />
+              <View style={styles.productImagePlaceholder}>
+                <LinearGradient colors={['#1F1D1A', '#0D0D0E']} style={StyleSheet.absoluteFill} />
+                <Text style={styles.productImageText}>{prod.imageText}</Text>
+                <View style={styles.saveBadge}>
+                  <Text style={styles.saveBadgeText}>{prod.save}</Text>
+                </View>
+              </View>
+
+              <View style={styles.productDetails}>
+                <View style={styles.ratingRow}>
+                  <StarIcon />
+                  <Text style={styles.ratingText}>{prod.rating}</Text>
+                </View>
+                <Text style={styles.productName} numberOfLines={2}>{prod.name}</Text>
+                <View style={styles.priceRow}>
+                  <Text style={styles.originalPrice}>{prod.originalPrice}</Text>
+                  <Text style={styles.salePrice}>{prod.salePrice}</Text>
+                </View>
+              </View>
+
+              <TouchableOpacity activeOpacity={0.85} style={styles.quickAddButton}>
+                <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+                <Text style={styles.quickAddButtonText}>QUICK ADD</Text>
+              </TouchableOpacity>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+
+      {/* --- BEST SELLERS --- */}
+      <View style={styles.sectionContainer}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>Best Sellers</Text>
+          <TouchableOpacity activeOpacity={0.7}>
+            <Text style={styles.seeAllText}>VIEW ALL</Text>
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.productCardScroll}>
+          {BEST_SELLERS.map((prod) => (
+            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.price)} key={prod.id} style={styles.floatingProductCard} activeOpacity={0.95}>
+              <LinearGradient
+                colors={['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.01)']}
+                style={StyleSheet.absoluteFill}
+              />
+              <View style={styles.productImagePlaceholder}>
+                <LinearGradient colors={['#1A1B1D', '#090A0A']} style={StyleSheet.absoluteFill} />
+                <Text style={styles.productImageText}>{prod.imageText}</Text>
+              </View>
+
+              <View style={styles.productDetails}>
+                <View style={styles.ratingRow}>
+                  <StarIcon />
+                  <Text style={styles.ratingText}>{prod.rating}</Text>
+                </View>
+                <Text style={styles.productName} numberOfLines={2}>{prod.name}</Text>
+                <Text style={styles.originalPriceText}>{prod.price}</Text>
+              </View>
+
+              <TouchableOpacity activeOpacity={0.85} style={styles.quickAddButton}>
+                <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+                <Text style={styles.quickAddButtonText}>ADD TO CART</Text>
+              </TouchableOpacity>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+
+      {/* --- SHOP BY BRAND --- */}
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Shop by Brand</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.brandScroll}>
+          {BRANDS.map((brand, i) => (
+            <TouchableOpacity key={i} activeOpacity={0.8} style={styles.brandCard}>
+              <LinearGradient
+                colors={['rgba(224, 176, 52, 0.12)', 'rgba(224, 176, 52, 0.02)']}
+                style={StyleSheet.absoluteFill}
+              />
+              <Text style={styles.brandCardText}>{brand}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+
+      {/* --- RECOMMENDED FOR YOU --- */}
+      <View style={[styles.sectionContainer, { marginBottom: 100 }]}>
+        <Text style={styles.sectionTitle}>Recommended For You</Text>
+        <View style={styles.gridContainer}>
+          {FLASH_SALE_PRODUCTS.map((prod) => (
+            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={`rec-${prod.id}`} style={styles.gridProductCard} activeOpacity={0.95}>
+              <LinearGradient
+                colors={['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.01)']}
+                style={StyleSheet.absoluteFill}
+              />
+              <View style={styles.gridImagePlaceholder}>
+                <LinearGradient colors={['#1B1B1C', '#0C0C0D']} style={StyleSheet.absoluteFill} />
+                <Text style={styles.gridImageText}>{prod.imageText}</Text>
+              </View>
+
+              <View style={styles.productDetails}>
+                <View style={styles.ratingRow}>
+                  <StarIcon />
+                  <Text style={styles.ratingText}>{prod.rating}</Text>
+                </View>
+                <Text style={styles.gridProductName} numberOfLines={2}>{prod.name}</Text>
+                <Text style={styles.gridPriceText}>{prod.salePrice}</Text>
+              </View>
+
+              <TouchableOpacity activeOpacity={0.85} style={styles.gridAddButton}>
+                <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+                <Text style={styles.quickAddButtonText}>QUICK ADD</Text>
+              </TouchableOpacity>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#050505',
+  },
+  topBar: {
     flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+    paddingHorizontal: 20,
+    marginTop: 60,
+    height: 48,
   },
-  heroSection: {
+  locationContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
+  },
+  locationTextContainer: {
+    gap: 2,
+  },
+  locationHeader: {
+    fontSize: 9,
+    fontWeight: '400',
+    color: 'rgba(255,255,255,0.4)',
+    textTransform: 'uppercase',
+    letterSpacing: 1.2,
+  },
+  locationValue: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#FFFFFF',
+  },
+  notificationButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.04)',
     justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.06)',
+    position: 'relative',
   },
-  title: {
+  unreadDot: {
+    position: 'absolute',
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#EA4335',
+    top: 10,
+    right: 12,
+  },
+  searchSection: {
+    paddingHorizontal: 20,
+    marginVertical: 16,
+  },
+  searchContainer: {
+    height: 48,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  searchInput: {
+    flex: 1,
+    color: '#FFFFFF',
+    fontSize: 13,
+  },
+  searchPlaceholderText: {
+    flex: 1,
+    color: 'rgba(255, 255, 255, 0.35)',
+    fontSize: 13,
+  },
+  carouselContainer: {
+    width: SCREEN_WIDTH,
+    alignItems: 'center',
+    marginVertical: 12,
+  },
+  bannerCard: {
+    width: SCREEN_WIDTH - 40,
+    height: 170,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(224, 176, 52, 0.15)',
+    overflow: 'hidden',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  bannerContent: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'space-between',
+  },
+  bannerTagline: {
+    fontSize: 9,
+    fontWeight: '700',
+    color: '#FFE082',
+    letterSpacing: 2,
+  },
+  bannerTitle: {
+    fontSize: 20,
+    fontWeight: '300',
+    color: '#FFFFFF',
+    letterSpacing: 1.5,
+    marginTop: 4,
+  },
+  bannerDesc: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.5)',
+    lineHeight: 16,
+    fontWeight: '300',
+    marginVertical: 6,
+  },
+  bannerBottomRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  bannerBadge: {
+    backgroundColor: 'rgba(224, 176, 52, 0.12)',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    borderWidth: 0.5,
+    borderColor: 'rgba(224,176,52,0.3)',
+  },
+  bannerBadgeText: {
+    fontSize: 9,
+    fontWeight: '600',
+    color: '#FFE082',
+    letterSpacing: 1,
+  },
+  bannerButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+  },
+  bannerButtonText: {
+    color: '#000000',
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1,
+  },
+  carouselIndicators: {
+    flexDirection: 'row',
+    gap: 6,
+    marginTop: 10,
+  },
+  indicatorDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+  },
+  indicatorDotActive: {
+    backgroundColor: '#FFE082',
+    width: 16,
+  },
+  sectionContainer: {
+    marginVertical: 18,
+    paddingHorizontal: 20,
+  },
+  flashSaleBg: {
+    backgroundColor: 'rgba(255, 255, 255, 0.005)',
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '300',
+    color: '#FFFFFF',
+    letterSpacing: 1.2,
+    marginBottom: 14,
+  },
+  categoryScroll: {
+    gap: 16,
+  },
+  categoryItem: {
+    alignItems: 'center',
+    gap: 8,
+    width: 72,
+  },
+  categoryCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    borderWidth: 1,
+    borderColor: 'rgba(224, 176, 52, 0.25)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  categoryCircleText: {
+    fontSize: 11,
+    color: '#FFE082',
+    fontWeight: '600',
+    letterSpacing: 1,
+  },
+  categoryName: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.6)',
+    fontWeight: '400',
     textAlign: 'center',
   },
-  code: {
-    textTransform: 'uppercase',
+  proteinGoalBox: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+    overflow: 'hidden',
+    padding: 16,
+    gap: 12,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  proteinHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  proteinTitle: {
+    fontSize: 14,
+    color: '#FFFFFF',
+    fontWeight: '400',
+  },
+  proteinSubtitle: {
+    fontSize: 10,
+    color: 'rgba(255,255,255,0.4)',
+  },
+  proteinIntakeText: {
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.6)',
+  },
+  goldTextBold: {
+    color: '#FFE082',
+    fontWeight: '600',
+  },
+  progressTrack: {
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 4,
+  },
+  proteinFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  proteinRemaining: {
+    fontSize: 10,
+    color: 'rgba(255, 255, 255, 0.45)',
+  },
+  proteinPercent: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#FFE082',
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+  flashHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  flashSaleTitle: {
+    fontSize: 18,
+    fontWeight: '300',
+    color: '#FFFFFF',
+    letterSpacing: 1.2,
+  },
+  countdownBadge: {
+    backgroundColor: '#FFE082',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+  },
+  countdownText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#000000',
+    letterSpacing: 1,
+  },
+  seeAllText: {
+    fontSize: 11,
+    color: '#FFE082',
+    fontWeight: '500',
+    letterSpacing: 1,
+  },
+  productCardScroll: {
+    gap: 16,
+    paddingBottom: 8,
+  },
+  floatingProductCard: {
+    width: 160,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'rgba(255,255,255,0.01)',
+    overflow: 'hidden',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  productImagePlaceholder: {
+    height: 120,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  productImageText: {
+    fontSize: 20,
+    fontWeight: '200',
+    color: 'rgba(255,255,255,0.2)',
+    letterSpacing: 2,
+  },
+  saveBadge: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    backgroundColor: '#EA4335',
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 4,
+  },
+  saveBadgeText: {
+    fontSize: 8,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  productDetails: {
+    padding: 12,
+    gap: 6,
+  },
+  ratingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  ratingText: {
+    fontSize: 9,
+    fontWeight: '600',
+    color: '#FFE082',
+  },
+  productName: {
+    fontSize: 12,
+    color: '#FFFFFF',
+    lineHeight: 16,
+    fontWeight: '400',
+    height: 32,
+  },
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  originalPrice: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.4)',
+    textDecorationLine: 'underline',
+  },
+  salePrice: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#FFE082',
+  },
+  originalPriceText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#FFFFFF',
+  },
+  quickAddButton: {
+    height: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  quickAddButtonText: {
+    color: '#0A0A0A',
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1,
+  },
+  brandScroll: {
+    gap: 12,
+  },
+  brandCard: {
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(224, 176, 52, 0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  brandCardText: {
+    fontSize: 11,
+    color: '#FFE082',
+    fontWeight: '600',
+    letterSpacing: 1.5,
+  },
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 16,
+  },
+  gridProductCard: {
+    width: (SCREEN_WIDTH - 56) / 2,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+    overflow: 'hidden',
+  },
+  gridImagePlaceholder: {
+    height: 110,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gridImageText: {
+    fontSize: 16,
+    fontWeight: '200',
+    color: 'rgba(255,255,255,0.15)',
+    letterSpacing: 2,
+  },
+  gridProductName: {
+    fontSize: 12,
+    color: '#FFFFFF',
+    lineHeight: 16,
+    height: 32,
+  },
+  gridPriceText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#FFE082',
+  },
+  gridAddButton: {
+    height: 34,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    overflow: 'hidden',
   },
 });

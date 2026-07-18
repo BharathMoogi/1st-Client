@@ -1,0 +1,418 @@
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, FlatList } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  Easing,
+  withRepeat,
+  runOnJS,
+} from 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
+import Svg, { Path } from 'react-native-svg';
+import { Header, GoldButton, StarRating } from '../components/LuxuryUI';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+// --- WISHLIST-SPECIFIC ICONS ---
+const TrashIcon = () => (
+  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EA4335" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <Path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+  </Svg>
+);
+
+const HeartOutlineIcon = () => (
+  <Svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="1.5">
+    <Path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" fill="rgba(224,176,52,0.06)" />
+  </Svg>
+);
+
+// --- INITIAL WISHLIST STATE ---
+const INITIAL_WISHLIST = [
+  {
+    id: 'wish-1',
+    brand: 'AURUM WELLNESS',
+    name: 'Gold Standard Whey Isolate (1kg)',
+    price: 69.00,
+    originalPrice: 89.00,
+    discount: 'SAVE 22%',
+    rating: '4.9',
+    imageText: 'WHEY',
+  },
+  {
+    id: 'wish-2',
+    brand: 'OPTIMUM NUTRITION',
+    name: 'Micronized Creatine Powder (300g)',
+    price: 32.00,
+    originalPrice: 42.00,
+    discount: 'SAVE 24%',
+    rating: '4.8',
+    imageText: 'CREATINE',
+  },
+  {
+    id: 'wish-3',
+    brand: 'MY PROTEIN',
+    name: 'Active BCAAs Recover Matrix (250g)',
+    price: 29.00,
+    originalPrice: 39.00,
+    discount: 'SAVE 25%',
+    rating: '4.8',
+    imageText: 'BCAA',
+  }
+];
+
+export default function WishlistScreen() {
+  const router = useRouter();
+
+  // Wishlist state
+  const [wishlistItems, setWishlistItems] = useState(INITIAL_WISHLIST);
+
+  // Animations
+  const emptyOpacity = useSharedValue(0);
+  const heartPulseScale = useSharedValue(1);
+  
+  // Floating particle values for luxury empty state
+  const p1Y = useSharedValue(0);
+  const p2Y = useSharedValue(0);
+  const p3Y = useSharedValue(0);
+  const p1Opacity = useSharedValue(1);
+  const p2Opacity = useSharedValue(1);
+  const p3Opacity = useSharedValue(1);
+
+  useEffect(() => {
+    if (wishlistItems.length === 0) {
+      emptyOpacity.value = withTiming(1, { duration: 500 });
+      
+      // Breathing pulse for heart
+      heartPulseScale.value = withRepeat(
+        withTiming(1.12, { duration: 1500, easing: Easing.inOut(Easing.quad) }),
+        -1,
+        true
+      );
+
+      // Loop floating particles upward
+      p1Y.value = withRepeat(withTiming(-60, { duration: 2500, easing: Easing.linear }), -1, false);
+      p1Opacity.value = withRepeat(withTiming(0, { duration: 2500, easing: Easing.linear }), -1, false);
+      
+      p2Y.value = withRepeat(withTiming(-80, { duration: 3200, easing: Easing.linear }), -1, false);
+      p2Opacity.value = withRepeat(withTiming(0, { duration: 3200, easing: Easing.linear }), -1, false);
+
+      p3Y.value = withRepeat(withTiming(-50, { duration: 2800, easing: Easing.linear }), -1, false);
+      p3Opacity.value = withRepeat(withTiming(0, { duration: 2800, easing: Easing.linear }), -1, false);
+    }
+  }, [wishlistItems]);
+
+  const handleDeleteItem = (id: string) => {
+    setWishlistItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleMoveToCart = (id: string) => {
+    setWishlistItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleClearAll = () => {
+    setWishlistItems([]);
+  };
+
+  // Animated styles
+  const animatedEmptyStyle = useAnimatedStyle(() => ({
+    opacity: emptyOpacity.value,
+  }));
+
+  const animatedHeartStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: heartPulseScale.value }],
+  }));
+
+  const animatedP1Style = useAnimatedStyle(() => ({
+    transform: [{ translateY: p1Y.value }],
+    opacity: p1Opacity.value,
+  }));
+
+  const animatedP2Style = useAnimatedStyle(() => ({
+    transform: [{ translateY: p2Y.value }],
+    opacity: p2Opacity.value,
+  }));
+
+  const animatedP3Style = useAnimatedStyle(() => ({
+    transform: [{ translateY: p3Y.value }],
+    opacity: p3Opacity.value,
+  }));
+
+  return (
+    <View style={styles.container}>
+      {/* Background Gradients */}
+      <LinearGradient
+        colors={['#070707', '#131110', '#070707']}
+        locations={[0, 0.5, 1]}
+        style={StyleSheet.absoluteFill}
+      />
+
+      {/* --- TOP HEADER APP BAR --- */}
+      <Header
+        title="Wishlist"
+        rightAction={
+          wishlistItems.length > 0 ? (
+            <TouchableOpacity onPress={handleClearAll} activeOpacity={0.7} style={styles.clearAllBtn}>
+              <Text style={styles.clearAllText}>Clear All</Text>
+            </TouchableOpacity>
+          ) : undefined
+        }
+      />
+
+      {/* --- CONDITIONAL VIEW --- */}
+      {wishlistItems.length > 0 ? (
+        <FlatList
+          data={wishlistItems}
+          numColumns={2}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.gridContainer}
+          columnWrapperStyle={styles.gridRow}
+          renderItem={({ item }) => (
+            <View style={styles.gridCard}>
+              <LinearGradient
+                colors={['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.01)']}
+                style={StyleSheet.absoluteFill}
+              />
+              
+              {/* Product image block */}
+              <View style={styles.imageBlock}>
+                <LinearGradient colors={['#17181A', '#090A0A']} style={StyleSheet.absoluteFill} />
+                <Text style={styles.imageText}>{item.imageText}</Text>
+                
+                {/* Trash Button */}
+                <TouchableOpacity onPress={() => handleDeleteItem(item.id)} activeOpacity={0.7} style={styles.deleteBtn}>
+                  <TrashIcon />
+                </TouchableOpacity>
+
+                <View style={styles.discountBadge}>
+                  <Text style={styles.discountText}>{item.discount}</Text>
+                </View>
+              </View>
+
+              {/* Details details */}
+              <View style={styles.detailsBlock}>
+                <Text style={styles.brandText}>{item.brand}</Text>
+                <Text style={styles.nameText} numberOfLines={2}>{item.name}</Text>
+
+                <View style={styles.ratingRow}>
+                  <StarRating rating={Math.floor(parseFloat(item.rating))} size={10} />
+                  <Text style={styles.ratingText}>{item.rating}</Text>
+                </View>
+
+                <View style={styles.priceRow}>
+                  <Text style={styles.slashedPrice}>${item.originalPrice.toFixed(2)}</Text>
+                  <Text style={styles.price}>${item.price.toFixed(2)}</Text>
+                </View>
+              </View>
+
+              {/* Action Move to Cart */}
+              <GoldButton
+                text="MOVE TO CART"
+                onPress={() => handleMoveToCart(item.id)}
+                style={{ height: 38 }}
+              />
+            </View>
+          )}
+        />
+      ) : (
+        // Empty State with Floating Particles Animations
+        <Animated.View style={[styles.emptyContainer, animatedEmptyStyle]}>
+          
+          <View style={styles.heartWrapper}>
+            {/* Pulsing heart outline */}
+            <Animated.View style={animatedHeartStyle}>
+              <HeartOutlineIcon />
+            </Animated.View>
+
+            {/* Rising particle dots */}
+            <Animated.View style={[styles.particle, styles.p1, animatedP1Style]} />
+            <Animated.View style={[styles.particle, styles.p2, animatedP2Style]} />
+            <Animated.View style={[styles.particle, styles.p3, animatedP3Style]} />
+          </View>
+
+          <Text style={styles.emptyTitle}>Your Wishlist is Empty</Text>
+          <Text style={styles.emptySubtitle}>Save premium items to track price drops and reviews</Text>
+
+          <GoldButton
+            text="EXPLORE RANGE"
+            onPress={() => router.replace('/')}
+            style={{ width: '70%', marginTop: 16 }}
+          />
+        </Animated.View>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#050505',
+  },
+  clearAllBtn: {
+    paddingHorizontal: 12,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+  },
+  clearAllText: {
+    fontSize: 11,
+    color: '#FFE082',
+    fontWeight: '600',
+    letterSpacing: 0.5,
+  },
+  gridContainer: {
+    padding: 16,
+  },
+  gridRow: {
+    justifyContent: 'space-between',
+  },
+  gridCard: {
+    width: (SCREEN_WIDTH - 44) / 2, // 2 column math
+    borderRadius: 16,
+    borderWidth: 1.2,
+    borderColor: 'rgba(255,255,255,0.08)',
+    overflow: 'hidden',
+    marginBottom: 16,
+    height: 290,
+    justifyContent: 'space-between',
+  },
+  imageBlock: {
+    height: 120,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    borderBottomWidth: 0.5,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  imageText: {
+    fontSize: 16,
+    fontWeight: '200',
+    color: 'rgba(255,255,255,0.2)',
+    letterSpacing: 2,
+  },
+  deleteBtn: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 0.5,
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  discountBadge: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    backgroundColor: '#EA4335',
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 4,
+  },
+  discountText: {
+    fontSize: 8,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  detailsBlock: {
+    padding: 12,
+    flex: 1,
+    gap: 4,
+    justifyContent: 'center',
+  },
+  brandText: {
+    fontSize: 8,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.4)',
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+  },
+  nameText: {
+    fontSize: 12,
+    color: '#FFFFFF',
+    fontWeight: '400',
+    lineHeight: 16,
+    height: 32,
+  },
+  ratingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  ratingText: {
+    fontSize: 9,
+    fontWeight: '600',
+    color: '#FFE082',
+  },
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  slashedPrice: {
+    fontSize: 10,
+    color: 'rgba(255,255,255,0.3)',
+    textDecorationLine: 'line-through',
+  },
+  price: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#FFE082',
+  },
+
+  // --- EMPTY STATE ---
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 40,
+    gap: 12,
+  },
+  heartWrapper: {
+    position: 'relative',
+    width: 80,
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  particle: {
+    position: 'absolute',
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#FFE082',
+  },
+  p1: {
+    bottom: 20,
+    left: 20,
+  },
+  p2: {
+    bottom: 15,
+    right: 15,
+  },
+  p3: {
+    bottom: 30,
+    left: 40,
+  },
+  emptyTitle: {
+    fontSize: 20,
+    fontWeight: '300',
+    color: '#FFFFFF',
+    letterSpacing: 2,
+  },
+  emptySubtitle: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.45)',
+    textAlign: 'center',
+    lineHeight: 18,
+    fontWeight: '300',
+  },
+});
