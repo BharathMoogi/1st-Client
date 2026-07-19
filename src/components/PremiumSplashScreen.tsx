@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFE4EC',
+    backgroundColor: '#FFFFFF',
     zIndex: 9999, // Ensure it overlays everything
   },
   ambientOverlay: {

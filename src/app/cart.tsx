@@ -20,7 +20,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 // Luxury Design Tokens
 const TEAL = '#009688';
 const TEAL_DARK = '#00796B';
-const BG = '#FFE4EC';
+const BG = '#FFFFFF';
 
 // --- VECTOR ICONS FOR CART ---
 const ChevronLeftIcon = () => (
