@@ -18,13 +18,13 @@ import Svg, { Path, Circle, Rect, G, Line } from 'react-native-svg';
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // Luxury Design Tokens
-const TEAL = '#009688';
-const TEAL_DARK = '#00796B';
-const BG = '#FFFFFF';
+const TEAL = '#8B1E3F';
+const TEAL_DARK = '#6D1832';
+const BG = '#FFF7F8';
 
 // --- VECTOR ICONS FOR CART ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
@@ -36,7 +36,7 @@ const TrashIcon = () => (
 );
 
 const ShoppingBagIcon = () => (
-  <Svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" fill="rgba(224,176,52,0.1)" />
     <Path d="M3 6h18M16 10a4 4 0 0 1-8 0" />
   </Svg>
@@ -62,7 +62,7 @@ const CheckIcon = () => (
 );
 
 const PromoIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2">
     <Path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
     <Line x1="7" y1="7" x2="7.01" y2="7" strokeWidth="3" />
   </Svg>
@@ -185,12 +185,12 @@ export default function CartScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
+        colors={['#FFF7F8', '#FFFFFF', '#FFF7F8']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
       {/* Ambient gold glow */}
-      <View style={{ position: 'absolute', top: -60, right: -60, width: 200, height: 200, borderRadius: 100, backgroundColor: 'rgba(212,175,55,0.04)' }} />
+      <View style={{ position: 'absolute', top: -60, right: -60, width: 200, height: 200, borderRadius: 100, backgroundColor: 'rgba(212, 163, 115,0.04)' }} />
 
       {/* --- TOP HEADER APP BAR --- */}
       <Animated.View style={[styles.header, animatedMountStyle]}>
@@ -221,7 +221,7 @@ export default function CartScreen() {
                 
                 {/* Image block */}
               <View style={styles.cardImage}>
-                <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.cardImageText}>{item.imageText}</Text>
               </View>
 
@@ -259,7 +259,7 @@ export default function CartScreen() {
           {/* Estimated Delivery Card */}
           <View style={styles.deliveryCard}>
             <LinearGradient
-              colors={['rgba(224, 176, 52, 0.12)', 'rgba(224, 176, 52, 0.02)']}
+              colors={['rgba(212, 163, 115, 0.12)', 'rgba(212, 163, 115, 0.02)']}
               style={StyleSheet.absoluteFill}
             />
             <Text style={styles.deliveryTitle}>ESTIMATED DELIVERY</Text>
@@ -293,7 +293,7 @@ export default function CartScreen() {
                   />
                 </View>
                 <TouchableOpacity onPress={handleApplyCoupon} activeOpacity={0.8} style={styles.promoApplyBtn}>
-                  <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.promoApplyText}>APPLY</Text>
                 </TouchableOpacity>
               </View>
@@ -308,7 +308,7 @@ export default function CartScreen() {
             <Text style={styles.sectionTitle}>Price Details</Text>
             <View style={styles.breakdownBox}>
               <LinearGradient
-                colors={['rgba(0,150,136,0.05)', 'rgba(255,255,255,0.01)']}
+                colors={['rgba(139, 30, 63,0.05)', 'rgba(255,255,255,0.01)']}
                 style={StyleSheet.absoluteFill}
               />
               
@@ -354,7 +354,7 @@ export default function CartScreen() {
           <Text style={styles.emptyTitle}>Your Cart is Empty</Text>
           <Text style={styles.emptySubtitle}>Start adding luxury wellness essentials to your catalog</Text>
           <TouchableOpacity onPress={() => router.replace('/')} activeOpacity={0.8} style={styles.emptyExploreBtn}>
-            <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
             <Text style={styles.emptyExploreText}>START SHOPPING</Text>
           </TouchableOpacity>
         </Animated.View>
@@ -364,7 +364,7 @@ export default function CartScreen() {
       {cartItems.length > 0 && (
         <View style={styles.stickyFooter}>
           <LinearGradient
-            colors={['#FFFFFF', '#F5F5F5']}
+            colors={['#FFFFFF', '#FFF7F8']}
             style={StyleSheet.absoluteFill}
           />
           <View style={styles.footerPriceCol}>
@@ -373,7 +373,7 @@ export default function CartScreen() {
           </View>
 
           <TouchableOpacity onPress={() => router.push('/checkout')} activeOpacity={0.85} style={styles.checkoutBtn}>
-            <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
             {/* Animated Shine sweep */}
             <Animated.View style={[styles.checkoutShine, animatedCheckoutStyle]}>
               <LinearGradient
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(0,150,136,0.08)',
+    borderColor: 'rgba(139, 30, 63,0.08)',
     paddingBottom: 10,
   },
   headerBtn: {
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 15,
     fontWeight: '300',
-    color: '#1A1A1A',
+    color: '#1F2937',
     letterSpacing: 3,
   },
   clearAllBtn: {
@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
   },
   clearAllText: {
     fontSize: 11,
-    color: '#009688',
+    color: '#8B1E3F',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(212, 175, 55, 0.1)',
+    borderColor: 'rgba(212, 163, 115, 0.1)',
     backgroundColor: 'rgba(23, 23, 23, 0.8)',
     overflow: 'hidden',
     flexDirection: 'row',
@@ -483,13 +483,13 @@ const styles = StyleSheet.create({
   cardBrand: {
     fontSize: 8,
     fontWeight: '600',
-    color: 'rgba(0,0,0,0.35)',
+    color: '#6B7280',
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
   cardName: {
     fontSize: 13,
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontWeight: '400',
   },
   trashBtn: {
@@ -506,7 +506,7 @@ const styles = StyleSheet.create({
   cardPrice: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#80CBC4',
+    color: '#D4A373',
   },
   qtyBox: {
     flexDirection: 'row',
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: 'rgba(0,150,136,0.12)',
+    borderColor: 'rgba(139, 30, 63,0.12)',
     backgroundColor: 'rgba(255,255,255,0.02)',
   },
   qtyBtn: {
@@ -522,11 +522,11 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#80CBC4',
+    backgroundColor: '#D4A373',
     borderRadius: 6,
   },
   qtyText: {
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontSize: 12,
     fontWeight: '600',
     width: 28,
@@ -535,21 +535,21 @@ const styles = StyleSheet.create({
   deliveryCard: {
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: 'rgba(212, 175, 55, 0.25)',
+    borderColor: 'rgba(212, 163, 115, 0.25)',
     padding: 16,
     overflow: 'hidden',
     gap: 4,
-    backgroundColor: 'rgba(0, 150, 136, 0.02)',
+    backgroundColor: 'rgba(139, 30, 63, 0.02)',
   },
   deliveryTitle: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#80CBC4',
+    color: '#D4A373',
     letterSpacing: 1.5,
   },
   deliveryValue: {
     fontSize: 13,
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontWeight: '300',
   },
   promoSection: {
@@ -558,7 +558,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 13,
     fontWeight: '400',
-    color: '#1A1A1A',
+    color: '#1F2937',
     letterSpacing: 1.5,
   },
   promoInputRow: {
@@ -570,13 +570,13 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: 'rgba(0,150,136,0.10)',
-    backgroundColor: 'rgba(0,150,136,0.05)',
+    borderColor: 'rgba(139, 30, 63,0.10)',
+    backgroundColor: 'rgba(139, 30, 63,0.05)',
     justifyContent: 'center',
     paddingHorizontal: 16,
   },
   promoInput: {
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontSize: 13,
   },
   promoApplyBtn: {
@@ -587,7 +587,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   promoApplyText: {
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,
@@ -609,7 +609,7 @@ const styles = StyleSheet.create({
   },
   promoSuccessSubtitle: {
     fontSize: 10,
-    color: 'rgba(0,0,0,0.35)',
+    color: '#6B7280',
     fontWeight: '300',
     marginTop: 2,
   },
@@ -634,7 +634,7 @@ const styles = StyleSheet.create({
   breakdownBox: {
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(0,150,136,0.08)',
+    borderColor: 'rgba(139, 30, 63,0.08)',
     padding: 18,
     gap: 14,
     overflow: 'hidden',
@@ -652,7 +652,7 @@ const styles = StyleSheet.create({
   },
   breakdownValue: {
     fontSize: 12,
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontWeight: '400',
   },
   freeShippingText: {
@@ -679,18 +679,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderTopWidth: 0.5,
-    borderColor: 'rgba(0,150,136,0.10)',
+    borderColor: 'rgba(139, 30, 63,0.10)',
     paddingTop: 12,
     marginTop: 4,
   },
   breakdownTotalLabel: {
     fontSize: 14,
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontWeight: '400',
   },
   breakdownTotalValue: {
     fontSize: 20,
-    color: '#009688',
+    color: '#8B1E3F',
     fontWeight: '600',
   },
 
@@ -705,7 +705,7 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 20,
     fontWeight: '300',
-    color: '#1A1A1A',
+    color: '#1F2937',
     letterSpacing: 2,
     marginTop: 10,
   },
@@ -726,7 +726,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   emptyExploreText: {
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1.5,
@@ -739,7 +739,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 95,
     borderTopWidth: 0.5,
-    borderColor: 'rgba(212, 175, 55, 0.12)',
+    borderColor: '#ECECEC',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
@@ -757,7 +757,7 @@ const styles = StyleSheet.create({
   footerPriceValue: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#009688',
+    color: '#8B1E3F',
   },
   checkoutBtn: {
     flex: 1,
@@ -773,7 +773,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   checkoutBtnText: {
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,

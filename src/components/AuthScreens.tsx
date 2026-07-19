@@ -259,7 +259,7 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
               style={styles.submitButton}
               disabled={authLoading}
             >
-              <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
               <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
                 <LinearGradient
                   colors={['rgba(255,255,255,0)', 'rgba(0,0,0,0.35)', 'rgba(255,255,255,0)']}
@@ -349,7 +349,7 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
               style={[styles.submitButton, { marginTop: 12 }]}
               disabled={authLoading}
             >
-              <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
               <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
                 <LinearGradient
                   colors={['rgba(255,255,255,0)', 'rgba(0,0,0,0.35)', 'rgba(255,255,255,0)']}
@@ -399,7 +399,7 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
               style={[styles.submitButton, { marginTop: 24 }]}
               disabled={authLoading || resetSent}
             >
-              <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
               <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
                 <LinearGradient
                   colors={['rgba(255,255,255,0)', 'rgba(0,0,0,0.35)', 'rgba(255,255,255,0)']}
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 22,
     fontWeight: '300',
-    color: '#80CBC4',
+    color: '#D4A373',
     letterSpacing: 6,
   },
   glowBlob: {
@@ -458,12 +458,12 @@ const styles = StyleSheet.create({
   blobGold: {
     top: '25%',
     left: '10%',
-    backgroundColor: '#009688',
+    backgroundColor: '#8B1E3F',
   },
   blobDarkGold: {
     bottom: '25%',
     right: '10%',
-    backgroundColor: '#00796B',
+    backgroundColor: '#6D1832',
   },
   glassCard: {
     width: '100%',
@@ -485,7 +485,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 26,
     fontWeight: '300',
-    color: '#1A1A1A',
+    color: '#1F2937',
     letterSpacing: 1.5,
     marginBottom: 4,
     fontFamily: 'System',
@@ -503,7 +503,7 @@ const styles = StyleSheet.create({
   },
   forgotText: {
     fontSize: 12,
-    color: '#80CBC4',
+    color: '#D4A373',
     fontWeight: '400',
   },
   submitButton: {
@@ -513,7 +513,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
     marginTop: 10,
-    shadowColor: '#00796B',
+    shadowColor: '#6D1832',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
@@ -565,7 +565,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   socialButtonText: {
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontSize: 12,
     fontWeight: '400',
   },
@@ -581,7 +581,7 @@ const styles = StyleSheet.create({
   },
   switchViewLink: {
     fontSize: 12,
-    color: '#80CBC4',
+    color: '#D4A373',
     fontWeight: '500',
   },
   backToLoginWrapper: {

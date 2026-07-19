@@ -16,7 +16,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR NOTIFICATIONS ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
@@ -28,7 +28,7 @@ const TrashIcon = () => (
 );
 
 const BellIcon = () => (
-  <Svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="1.5">
+  <Svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="1.5">
     <Path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" fill="rgba(224,176,52,0.06)" />
     <Path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
   </Svg>
@@ -183,7 +183,7 @@ export default function NotificationCenterScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
+        colors={['#FFF7F8', '#FFFFFF', '#FFF7F8']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -244,7 +244,7 @@ export default function NotificationCenterScreen() {
           <Text style={styles.emptySubtitle}>No new notifications found in this category.</Text>
           
           <TouchableOpacity onPress={() => router.replace('/')} activeOpacity={0.8} style={styles.exploreBtn}>
-            <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
             <Text style={styles.exploreText}>RETURN TO HOME</Text>
           </TouchableOpacity>
         </View>
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(0,150,136,0.08)',
+    borderColor: 'rgba(139, 30, 63,0.08)',
     paddingBottom: 10,
   },
   headerBtn: {
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#1A1A1A',
+    color: '#1F2937',
     letterSpacing: 2,
   },
   clearAllBtn: {
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   },
   clearAllText: {
     fontSize: 11,
-    color: '#009688',
+    color: '#8B1E3F',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 42,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(0,150,136,0.08)',
+    borderColor: 'rgba(139, 30, 63,0.08)',
     backgroundColor: 'rgba(0,0,0,0.15)',
   },
   tabItem: {
@@ -312,16 +312,16 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   tabItemActive: {
-    borderColor: '#009688',
+    borderColor: '#8B1E3F',
   },
   tabText: {
     fontSize: 10,
     fontWeight: '600',
-    color: 'rgba(0,0,0,0.35)',
+    color: '#6B7280',
     letterSpacing: 1,
   },
   tabTextActive: {
-    color: '#009688',
+    color: '#8B1E3F',
   },
   listContent: {
     padding: 20,
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 16,
     borderWidth: 1.2,
-    borderColor: 'rgba(0,150,136,0.10)',
+    borderColor: 'rgba(139, 30, 63,0.10)',
     backgroundColor: 'rgba(255,255,255,0.01)',
     overflow: 'hidden',
     padding: 16,
@@ -344,12 +344,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   badgeOrders: {
-    backgroundColor: 'rgba(224, 176, 52, 0.12)',
+    backgroundColor: 'rgba(212, 163, 115, 0.12)',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
     borderWidth: 0.5,
-    borderColor: 'rgba(224, 176, 52, 0.3)',
+    borderColor: 'rgba(212, 163, 115, 0.3)',
   },
   badgeOffers: {
     backgroundColor: 'rgba(52, 168, 83, 0.12)',
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#009688',
+    color: '#8B1E3F',
     letterSpacing: 0.5,
   },
   cardTimeText: {
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 13,
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontWeight: '500',
   },
   cardMessage: {
@@ -407,11 +407,11 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: 'rgba(0,150,136,0.05)',
+    backgroundColor: 'rgba(139, 30, 63,0.05)',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0.5,
-    borderColor: 'rgba(0,150,136,0.10)',
+    borderColor: 'rgba(139, 30, 63,0.10)',
   },
 
   // Empty state
@@ -425,7 +425,7 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 20,
     fontWeight: '300',
-    color: '#1A1A1A',
+    color: '#1F2937',
     letterSpacing: 2,
   },
   emptySubtitle: {
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   exploreText: {
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1.5,

@@ -14,14 +14,14 @@ import Svg, { Path } from 'react-native-svg';
 
 // --- CHEVRON LEFT ICON ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
 
 // --- STAR ICON ---
 const StarIcon = ({ filled = true, size = 12 }: { filled?: boolean; size?: number }) => (
-  <Svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? '#80CBC4' : 'none'} stroke="#80CBC4" strokeWidth="1.5">
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? '#D4A373' : 'none'} stroke="#D4A373" strokeWidth="1.5">
     <Path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
   </Svg>
 );
@@ -84,7 +84,7 @@ export function GoldButton({ text, onPress, style }: GoldButtonProps) {
       style={[style]}
     >
       <Animated.View style={[styles.goldBtn, animatedStyle]}>
-        <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
+        <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
         <Text style={styles.goldBtnText}>{text}</Text>
       </Animated.View>
     </TouchableOpacity>
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#1A1A1A',
+    color: '#1F2937',
     letterSpacing: 2,
   },
   goldBtn: {
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   errorSubtext: {
-    color: 'rgba(0,0,0,0.35)',
+    color: '#6B7280',
     fontSize: 12,
     textAlign: 'center',
     lineHeight: 18,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   retryText: {
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,

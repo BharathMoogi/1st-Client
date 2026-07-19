@@ -18,19 +18,19 @@ export default function GoldLogo({ width = 120, height = 120, glow = false }: Go
       <Defs>
         {/* Primary Gold Gradient */}
         <LinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <Stop offset="0%" stopColor="#80CBC4" />
-          <Stop offset="20%" stopColor="#009688" />
-          <Stop offset="45%" stopColor="#00796B" />
+          <Stop offset="0%" stopColor="#D4A373" />
+          <Stop offset="20%" stopColor="#8B1E3F" />
+          <Stop offset="45%" stopColor="#6D1832" />
           <Stop offset="60%" stopColor="#F5D061" />
           <Stop offset="80%" stopColor="#9B6B0E" />
-          <Stop offset="100%" stopColor="#80CBC4" />
+          <Stop offset="100%" stopColor="#D4A373" />
         </LinearGradient>
 
         {/* Secondary Light Gold Gradient for 3D/Cresting effect */}
         <LinearGradient id="goldGradLight" x1="100%" y1="0%" x2="0%" y2="100%">
           <Stop offset="0%" stopColor="#1A1A1A" stopOpacity={0.8} />
-          <Stop offset="30%" stopColor="#80CBC4" />
-          <Stop offset="70%" stopColor="#00796B" />
+          <Stop offset="30%" stopColor="#D4A373" />
+          <Stop offset="70%" stopColor="#6D1832" />
           <Stop offset="100%" stopColor="#5E3E04" />
         </LinearGradient>
 
@@ -43,8 +43,8 @@ export default function GoldLogo({ width = 120, height = 120, glow = false }: Go
 
         {/* Glow Filter / Gradient */}
         <LinearGradient id="radialGlow" x1="50%" y1="50%" x2="100%" y2="50%">
-          <Stop offset="0%" stopColor="#009688" stopOpacity={0.4} />
-          <Stop offset="60%" stopColor="#00796B" stopOpacity={0.1} />
+          <Stop offset="0%" stopColor="#8B1E3F" stopOpacity={0.4} />
+          <Stop offset="60%" stopColor="#6D1832" stopOpacity={0.1} />
           <Stop offset="100%" stopColor="#000000" stopOpacity={0} />
         </LinearGradient>
       </Defs>

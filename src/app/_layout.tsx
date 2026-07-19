@@ -111,7 +111,7 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFF7F8',
   },
   webOuterContainer: {
     flex: 1,

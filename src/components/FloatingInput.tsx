@@ -47,7 +47,7 @@ export default function FloatingInput({
     const color = interpolateColor(
       floatProgress.value,
       [0, 1],
-      ['rgba(255, 255, 255, 0.35)', '#80CBC4']
+      ['rgba(255, 255, 255, 0.35)', '#D4A373']
     );
 
     return {
@@ -61,7 +61,7 @@ export default function FloatingInput({
     const borderColor = interpolateColor(
       floatProgress.value,
       [0, 1],
-      ['rgba(255, 255, 255, 0.1)', 'rgba(224, 176, 52, 0.7)']
+      ['rgba(255, 255, 255, 0.1)', 'rgba(212, 163, 115, 0.7)']
     );
     const shadowOpacity = interpolate(floatProgress.value, [0, 1], [0, 0.15]);
 
@@ -76,7 +76,7 @@ export default function FloatingInput({
       {/* Icon support */}
       {Icon && (
         <View style={styles.iconWrapper}>
-          <Icon size={18} color={isFocused ? '#80CBC4' : 'rgba(0,0,0,0.35)'} />
+          <Icon size={18} color={isFocused ? '#D4A373' : 'rgba(0,0,0,0.35)'} />
         </View>
       )}
 
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginVertical: 8,
     // iOS shadow glow on focus
-    shadowColor: '#80CBC4',
+    shadowColor: '#D4A373',
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
   },
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     fontSize: 14,
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontWeight: '400',
     marginTop: 10, // Push down to accommodate floating label
     textAlignVertical: 'center',
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   eyeText: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#80CBC4',
+    color: '#D4A373',
     letterSpacing: 1.2,
   },
 });

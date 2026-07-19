@@ -25,7 +25,7 @@ const TrashIcon = () => (
 );
 
 const HeartOutlineIcon = () => (
-  <Svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="1.5">
+  <Svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="1.5">
     <Path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" fill="rgba(224,176,52,0.06)" />
   </Svg>
 );
@@ -169,7 +169,7 @@ export default function WishlistScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
+        colors={['#FFF7F8', '#FFFFFF', '#FFF7F8']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -200,13 +200,13 @@ export default function WishlistScreen() {
           renderItem={({ item }) => (
             <View style={styles.gridCard}>
               <LinearGradient
-                colors={['rgba(0,150,136,0.05)', 'rgba(255,255,255,0.01)']}
+                colors={['rgba(139, 30, 63,0.05)', 'rgba(255,255,255,0.01)']}
                 style={StyleSheet.absoluteFill}
               />
               
               {/* Product image block */}
               <View style={styles.imageBlock}>
-                <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.imageText}>{item.imageText}</Text>
                 
                 {/* Trash Button */}
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
   },
   clearAllText: {
     fontSize: 11,
-    color: '#009688',
+    color: '#8B1E3F',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
     width: (SCREEN_WIDTH - 44) / 2, // 2 column math
     borderRadius: 16,
     borderWidth: 1.2,
-    borderColor: 'rgba(0,150,136,0.10)',
+    borderColor: 'rgba(139, 30, 63,0.10)',
     overflow: 'hidden',
     marginBottom: 16,
     height: 290,
@@ -331,11 +331,11 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
     borderRadius: 13,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundcolor: '#6B7280',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0.5,
-    borderColor: 'rgba(0,150,136,0.12)',
+    borderColor: 'rgba(139, 30, 63,0.12)',
   },
   discountBadge: {
     position: 'absolute',
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
   discountText: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#1A1A1A',
+    color: '#1F2937',
   },
   detailsBlock: {
     padding: 12,
@@ -360,13 +360,13 @@ const styles = StyleSheet.create({
   brandText: {
     fontSize: 8,
     fontWeight: '600',
-    color: 'rgba(0,0,0,0.35)',
+    color: '#6B7280',
     letterSpacing: 1.2,
     textTransform: 'uppercase',
   },
   nameText: {
     fontSize: 12,
-    color: '#1A1A1A',
+    color: '#1F2937',
     fontWeight: '400',
     lineHeight: 16,
     height: 32,
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
   ratingText: {
     fontSize: 9,
     fontWeight: '600',
-    color: '#009688',
+    color: '#8B1E3F',
   },
   priceRow: {
     flexDirection: 'row',
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#009688',
+    color: '#8B1E3F',
   },
 
   // --- EMPTY STATE ---
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#009688',
+    backgroundColor: '#8B1E3F',
   },
   p1: {
     bottom: 20,
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 20,
     fontWeight: '300',
-    color: '#1A1A1A',
+    color: '#1F2937',
     letterSpacing: 2,
   },
   emptySubtitle: {

@@ -191,10 +191,10 @@ const styles = StyleSheet.create({
   brandTitle: {
     fontSize: 28,
     fontWeight: '300',
-    color: '#80CBC4',
+    color: '#D4A373',
     letterSpacing: 10,
     fontFamily: 'System', // Use default elegant sans/serif
-    textShadowColor: 'rgba(224, 176, 52, 0.35)',
+    textShadowColor: 'rgba(212, 163, 115, 0.35)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 6,
   },
