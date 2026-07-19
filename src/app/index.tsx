@@ -122,7 +122,7 @@ const WebGLShader = ({ activeProductIndex }: { activeProductIndex: number }) => 
           finalColor = mix(finalColor, u_color3, smoothstep(0.5, 1.0, t));
           
           // Subtle luxury shimmer
-          float shimmer = pow(sin(uv.x * 20.0 + u_time * 0.5) * cos(uv.y * 20.0 - u_time * 0.5), 15.0);
+          float shimmer = pow(abs(sin(uv.x * 20.0 + u_time * 0.5) * cos(uv.y * 20.0 - u_time * 0.5)), 15.0);
           finalColor += shimmer * 0.02;
           
           gl_FragColor = vec4(finalColor, 1.0);
