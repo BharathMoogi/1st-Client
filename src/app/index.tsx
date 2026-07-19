@@ -442,12 +442,8 @@ export default function HomeScreen() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.productCardScroll}>
           {FLASH_SALE_PRODUCTS.map((prod) => (
             <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={prod.id} style={styles.floatingProductCard} activeOpacity={0.95}>
-              <LinearGradient
-                colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
-                style={StyleSheet.absoluteFill}
-              />
               <View style={styles.productImagePlaceholder}>
-                <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FCEEEF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.productImageText}>{prod.imageText}</Text>
                 <View style={styles.saveBadge}>
                   <Text style={styles.saveBadgeText}>{prod.save}</Text>
@@ -467,7 +463,6 @@ export default function HomeScreen() {
               </View>
 
               <TouchableOpacity activeOpacity={0.85} style={styles.quickAddButton}>
-                <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.quickAddButtonText}>QUICK ADD</Text>
               </TouchableOpacity>
             </TouchableOpacity>
@@ -487,12 +482,8 @@ export default function HomeScreen() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.productCardScroll}>
           {BEST_SELLERS.map((prod) => (
             <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.price)} key={prod.id} style={styles.floatingProductCard} activeOpacity={0.95}>
-              <LinearGradient
-                colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
-                style={StyleSheet.absoluteFill}
-              />
               <View style={styles.productImagePlaceholder}>
-                <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FCEEEF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.productImageText}>{prod.imageText}</Text>
               </View>
 
@@ -506,7 +497,6 @@ export default function HomeScreen() {
               </View>
 
               <TouchableOpacity activeOpacity={0.85} style={styles.quickAddButton}>
-                <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.quickAddButtonText}>ADD TO CART</Text>
               </TouchableOpacity>
             </TouchableOpacity>
@@ -520,10 +510,6 @@ export default function HomeScreen() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.brandScroll}>
           {BRANDS.map((brand, i) => (
             <TouchableOpacity key={i} activeOpacity={0.8} style={styles.brandCard}>
-              <LinearGradient
-                colors={['rgba(216, 154, 124, 0.12)', 'rgba(216, 154, 124, 0.02)']}
-                style={StyleSheet.absoluteFill}
-              />
               <Text style={styles.brandCardText}>{brand}</Text>
             </TouchableOpacity>
           ))}
@@ -536,12 +522,8 @@ export default function HomeScreen() {
         <View style={styles.gridContainer}>
           {FLASH_SALE_PRODUCTS.map((prod) => (
             <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={`rec-${prod.id}`} style={styles.gridProductCard} activeOpacity={0.95}>
-              <LinearGradient
-                colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
-                style={StyleSheet.absoluteFill}
-              />
               <View style={styles.gridImagePlaceholder}>
-                <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FCEEEF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.gridImageText}>{prod.imageText}</Text>
               </View>
 
@@ -555,7 +537,6 @@ export default function HomeScreen() {
               </View>
 
               <TouchableOpacity activeOpacity={0.85} style={styles.gridAddButton}>
-                <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.quickAddButtonText}>QUICK ADD</Text>
               </TouchableOpacity>
             </TouchableOpacity>
@@ -897,39 +878,40 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     borderColor: '#F0E5E5',
-    backgroundColor: 'rgba(23, 23, 23, 0.8)',
+    backgroundColor: '#FFFFFF',
     overflow: 'hidden',
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    elevation: 5,
+    shadowColor: '#A85D63',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 3,
   },
   productImagePlaceholder: {
     height: 120,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+    backgroundColor: '#FCEEEF',
   },
   productImageText: {
     fontSize: 20,
     fontWeight: '200',
-    color: 'rgba(255,255,255,0.2)',
+    color: 'rgba(168, 93, 99, 0.2)',
     letterSpacing: 2,
   },
   saveBadge: {
     position: 'absolute',
     top: 8,
     left: 8,
-    backgroundColor: '#A85D63',
+    backgroundColor: '#C87A5A',
     paddingHorizontal: 7,
     paddingVertical: 3,
-    borderRadius: 6,
+    borderRadius: 50,
   },
   saveBadgeText: {
     fontSize: 8,
-    fontWeight: '800',
-    color: '#2B2B2B',
+    fontWeight: '700',
+    color: '#FFFFFF',
     letterSpacing: 0.5,
   },
   productDetails: {
@@ -974,16 +956,17 @@ const styles = StyleSheet.create({
     color: '#2B2B2B',
   },
   quickAddButton: {
-    height: 38,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',
+    backgroundColor: '#C87A5A',
   },
   quickAddButtonText: {
-    color: '#2B2B2B',
+    color: '#FFFFFF',
     fontSize: 10,
-    fontWeight: '800',
+    fontWeight: '700',
     letterSpacing: 1.2,
   },
   brandScroll: {
@@ -994,11 +977,11 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: 'rgba(216, 154, 124, 0.25)',
+    borderColor: '#F0E5E5',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    backgroundColor: 'rgba(168, 93, 99, 0.02)',
+    backgroundColor: '#FFFFFF',
   },
   brandCardText: {
     fontSize: 11,
@@ -1042,10 +1025,11 @@ const styles = StyleSheet.create({
     color: '#A85D63',
   },
   gridAddButton: {
-    height: 36,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',
+    backgroundColor: '#C87A5A',
   },
 });
