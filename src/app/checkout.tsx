@@ -20,26 +20,26 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR CHECKOUT FLOW ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
 
-const CheckIcon = ({ color = '#FFE082' }: { color?: string }) => (
+const CheckIcon = ({ color = '#80CBC4' }: { color?: string }) => (
   <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M20 6 9 17l-5-5" />
   </Svg>
 );
 
 const PinIcon = () => (
-  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2">
+  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2">
     <Path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
     <Circle cx="12" cy="10" r="3" />
   </Svg>
 );
 
 const TruckIcon = () => (
-  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2">
+  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2">
     <Rect x="1" y="3" width="15" height="13" />
     <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
     <Circle cx="5.5" cy="18.5" r="2.5" />
@@ -48,14 +48,14 @@ const TruckIcon = () => (
 );
 
 const CardIcon = () => (
-  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2">
+  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2">
     <Rect x="2" y="5" width="20" height="14" rx="2" />
     <Line x1="2" y1="10" x2="22" y2="10" />
   </Svg>
 );
 
 const CircleCheckIcon = () => (
-  <Svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2">
+  <Svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2">
     <Path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
     <polyline points="22 4 12 14.01 9 11.01" />
   </Svg>
@@ -203,7 +203,7 @@ export default function CheckoutScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#0F0D0A', '#070707']}
+        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -242,7 +242,7 @@ export default function CheckoutScreen() {
                 ]}
               >
                 {isCompleted ? (
-                  <CheckIcon color="#0A0A0A" />
+                  <CheckIcon color="#1A1A1A" />
                 ) : (
                   <Text style={[styles.stepCircleText, isActive ? styles.stepCircleTextActive : null]}>
                     {step === 1 ? <PinIcon /> : step === 2 ? <TruckIcon /> : step === 3 ? <CardIcon /> : '✔'}
@@ -332,7 +332,7 @@ export default function CheckoutScreen() {
             )}
 
             <TouchableOpacity onPress={handleNext} activeOpacity={0.85} style={styles.stepButton}>
-              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
               <Text style={styles.stepButtonText}>CONTINUE TO SHIPPING</Text>
             </TouchableOpacity>
           </View>
@@ -372,7 +372,7 @@ export default function CheckoutScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={handleNext} activeOpacity={0.85} style={styles.stepButton}>
-              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
               <Text style={styles.stepButtonText}>CONTINUE TO PAYMENT</Text>
             </TouchableOpacity>
           </View>
@@ -480,9 +480,9 @@ export default function CheckoutScreen() {
             </View>
 
             <TouchableOpacity onPress={handlePlaceOrder} activeOpacity={0.85} style={[styles.stepButton, isPlacingOrder && { opacity: 0.7 }]} disabled={isPlacingOrder}>
-              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
               {isPlacingOrder
-                ? <ActivityIndicator color="#0A0A0A" />
+                ? <ActivityIndicator color="#1A1A1A" />
                 : <Text style={styles.stepButtonText}>PLACE ORDER & PAY</Text>}
             </TouchableOpacity>
           </View>
@@ -502,7 +502,7 @@ export default function CheckoutScreen() {
             {/* Receipt details */}
             <View style={styles.receiptBox}>
               <LinearGradient
-                colors={['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.01)']}
+                colors={['rgba(0,150,136,0.05)', 'rgba(255,255,255,0.01)']}
                 style={StyleSheet.absoluteFill}
               />
               <View style={styles.receiptRow}>
@@ -524,7 +524,7 @@ export default function CheckoutScreen() {
             </View>
 
             <TouchableOpacity onPress={() => router.replace('/')} activeOpacity={0.85} style={styles.stepButton}>
-              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
               <Text style={styles.stepButtonText}>RETURN TO HOME</Text>
             </TouchableOpacity>
           </View>
@@ -538,7 +538,7 @@ export default function CheckoutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#070707',
+    backgroundColor: '#1A1A1A',
   },
   header: {
     flexDirection: 'row',
@@ -548,7 +548,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     paddingBottom: 10,
   },
   backButton: {
@@ -562,12 +562,12 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 2,
   },
   stepIndicatorText: {
     fontSize: 9,
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -584,13 +584,13 @@ const styles = StyleSheet.create({
   stepperLineBackground: {
     position: 'absolute',
     height: 2,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(0,150,136,0.12)',
     width: '100%',
   },
   stepperLineActive: {
     position: 'absolute',
     height: 2,
-    backgroundColor: '#D4AF37',
+    backgroundColor: '#009688',
   },
   stepperStepsRow: {
     flexDirection: 'row',
@@ -609,24 +609,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   stepCircleActive: {
-    borderColor: '#D4AF37',
-    shadowColor: '#D4AF37',
+    borderColor: '#009688',
+    shadowColor: '#009688',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.6,
     shadowRadius: 6,
     elevation: 4,
   },
   stepCircleCompleted: {
-    backgroundColor: '#FFE082',
-    borderColor: '#FFE082',
+    backgroundColor: '#80CBC4',
+    borderColor: '#80CBC4',
   },
   stepCircleText: {
     fontSize: 9,
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(0,0,0,0.35)',
     fontWeight: '700',
   },
   stepCircleTextActive: {
-    color: '#FFE082',
+    color: '#80CBC4',
   },
 
   scrollContainer: {
@@ -651,14 +651,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 14,
     borderWidth: 1.2,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
     padding: 16,
     backgroundColor: 'rgba(255,255,255,0.01)',
     gap: 14,
     alignItems: 'center',
   },
   addressCardActive: {
-    borderColor: '#D4AF37',
+    borderColor: '#009688',
     backgroundColor: 'rgba(224, 176, 52, 0.04)',
   },
   radioChecked: {
@@ -666,7 +666,7 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 9,
     borderWidth: 1.5,
-    borderColor: '#D4AF37',
+    borderColor: '#009688',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -681,7 +681,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#FFE082',
+    backgroundColor: '#80CBC4',
   },
   addressInfo: {
     flex: 1,
@@ -689,7 +689,7 @@ const styles = StyleSheet.create({
   },
   addressName: {
     fontSize: 13,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontWeight: '500',
   },
   addressText: {
@@ -703,7 +703,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   addAddressToggleText: {
-    color: '#FFE082',
+    color: '#80CBC4',
     fontSize: 12,
     fontWeight: '600',
     letterSpacing: 0.5,
@@ -715,10 +715,10 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
     backgroundColor: 'rgba(255,255,255,0.02)',
     paddingHorizontal: 16,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontSize: 13,
   },
 
@@ -727,14 +727,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 14,
     borderWidth: 1.2,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
     padding: 16,
     backgroundColor: 'rgba(255,255,255,0.01)',
     gap: 14,
     alignItems: 'center',
   },
   shippingCardActive: {
-    borderColor: '#D4AF37',
+    borderColor: '#009688',
     backgroundColor: 'rgba(224, 176, 52, 0.04)',
   },
   shippingInfo: {
@@ -743,12 +743,12 @@ const styles = StyleSheet.create({
   },
   shippingName: {
     fontSize: 13,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontWeight: '500',
   },
   shippingPriceText: {
     fontSize: 12,
-    color: '#FFE082',
+    color: '#80CBC4',
     fontWeight: '600',
   },
   
@@ -756,7 +756,7 @@ const styles = StyleSheet.create({
   paymentMethodWrapper: {
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
     backgroundColor: 'rgba(255,255,255,0.01)',
     overflow: 'hidden',
   },
@@ -773,7 +773,7 @@ const styles = StyleSheet.create({
   },
   paymentHeaderTitle: {
     fontSize: 13,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontWeight: '400',
   },
   paymentBody: {
@@ -786,12 +786,12 @@ const styles = StyleSheet.create({
   },
   netBankingText: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(0,0,0,0.35)',
     fontWeight: '300',
   },
   codText: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(0,0,0,0.35)',
     fontWeight: '300',
   },
 
@@ -805,7 +805,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   stepButtonText: {
-    color: '#070707',
+    color: '#1A1A1A',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1.5,
@@ -818,7 +818,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     backgroundColor: 'rgba(224, 176, 52, 0.08)',
     borderWidth: 2,
-    borderColor: '#FFE082',
+    borderColor: '#80CBC4',
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 24,
@@ -826,7 +826,7 @@ const styles = StyleSheet.create({
   successTitle: {
     fontSize: 20,
     fontWeight: '300',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 1.5,
     textAlign: 'center',
   },
@@ -841,7 +841,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 16,
     borderWidth: 1.2,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
     padding: 16,
     gap: 12,
     overflow: 'hidden',
@@ -859,7 +859,7 @@ const styles = StyleSheet.create({
   },
   receiptValue: {
     fontSize: 12,
-    color: '#FFE082',
+    color: '#80CBC4',
     fontWeight: '600',
   },
 });

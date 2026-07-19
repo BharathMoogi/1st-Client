@@ -19,33 +19,33 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR SEARCH SCREEN ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#009688" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
 
 const SearchIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.35)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Circle cx="11" cy="11" r="8" />
     <Path d="m21 21-4.3-4.3" />
   </Svg>
 );
 
-const MicIcon = ({ color = '#D4AF37' }: { color?: string }) => (
+const MicIcon = ({ color = '#009688' }: { color?: string }) => (
   <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
     <Path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" />
   </Svg>
 );
 
-const CloseIcon = ({ size = 12, color = 'rgba(255,255,255,0.5)' }: { size?: number, color?: string }) => (
+const CloseIcon = ({ size = 12, color = 'rgba(0,0,0,0.5)' }: { size?: number, color?: string }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M18 6 6 18M6 6l12 12" />
   </Svg>
 );
 
 const FilterIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#009688" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
   </Svg>
 );
@@ -231,7 +231,7 @@ export default function SearchScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#121110', '#070707']}
+        colors={['#1A1A1A', '#121110', '#1A1A1A']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -260,7 +260,7 @@ export default function SearchScreen() {
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity onPress={() => handleQueryChange('')} activeOpacity={0.7} style={styles.clearTextButton}>
-              <CloseIcon size={10} color="#FFFFFF" />
+              <CloseIcon size={10} color="#1A1A1A" />
             </TouchableOpacity>
           )}
         </Animated.View>
@@ -303,14 +303,14 @@ export default function SearchScreen() {
           {/* Quick Filters Toggle */}
           <TouchableOpacity onPress={() => setFiltersOpen(true)} activeOpacity={0.8} style={styles.filtersToggleBtn}>
             <LinearGradient
-              colors={['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.01)']}
+              colors={['rgba(0,150,136,0.05)', 'rgba(255,255,255,0.01)']}
               style={StyleSheet.absoluteFill}
             />
             <View style={styles.filtersToggleLeft}>
               <FilterIcon />
               <Text style={styles.filtersToggleText}>Advanced Supplement Filters</Text>
             </View>
-            <Svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2.5">
+            <Svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#009688" strokeWidth="2.5">
               <Path d="m9 18 6-6-6-6" />
             </Svg>
           </TouchableOpacity>
@@ -396,7 +396,7 @@ export default function SearchScreen() {
           
           <View style={styles.filtersDrawer}>
             <LinearGradient
-              colors={['#0F0E0D', '#070707']}
+              colors={['#0F0E0D', '#1A1A1A']}
               style={StyleSheet.absoluteFill}
             />
 
@@ -471,7 +471,7 @@ export default function SearchScreen() {
 
             {/* Apply Button */}
             <TouchableOpacity onPress={applyFilters} activeOpacity={0.85} style={styles.applyBtn}>
-              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
               <Text style={styles.applyBtnText}>APPLY FILTERS</Text>
             </TouchableOpacity>
           </View>
@@ -484,7 +484,7 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#070707',
+    backgroundColor: '#1A1A1A',
   },
   header: {
     flexDirection: 'row',
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
     height: 48,
     gap: 10,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     paddingBottom: 10,
   },
   backButton: {
@@ -510,7 +510,7 @@ const styles = StyleSheet.create({
     height: 38,
     borderRadius: 12,
     borderWidth: 1,
-    backgroundColor: 'rgba(255,255,255,0.03)',
+    backgroundColor: 'rgba(0,150,136,0.05)',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
@@ -519,7 +519,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontSize: 13,
   },
   clearTextButton: {
@@ -565,7 +565,7 @@ const styles = StyleSheet.create({
   },
   filtersToggleText: {
     fontSize: 12,
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -580,12 +580,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 1.5,
   },
   clearAllText: {
     fontSize: 11,
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '500',
     letterSpacing: 0.5,
   },
@@ -629,7 +629,7 @@ const styles = StyleSheet.create({
   },
   popularTagText: {
     fontSize: 11,
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -653,7 +653,7 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
   suggestionMatch: {
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '500',
   },
   emptySuggestions: {
@@ -662,7 +662,7 @@ const styles = StyleSheet.create({
   },
   emptySuggestionsText: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(0,0,0,0.35)',
     textAlign: 'center',
   },
 
@@ -680,7 +680,7 @@ const styles = StyleSheet.create({
   voiceHeader: {
     fontSize: 22,
     fontWeight: '300',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 3,
   },
   voiceInstruction: {
@@ -702,17 +702,17 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     borderWidth: 1.5,
-    borderColor: '#D4AF37',
+    borderColor: '#009688',
     backgroundColor: 'rgba(224, 176, 52, 0.1)',
   },
   voiceMicActiveCircle: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#D4AF37',
+    backgroundColor: '#009688',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#D4AF37',
+    shadowColor: '#009688',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 10,
@@ -728,7 +728,7 @@ const styles = StyleSheet.create({
   closeVoiceText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 1.5,
   },
 
@@ -764,7 +764,7 @@ const styles = StyleSheet.create({
   filtersTitle: {
     fontSize: 16,
     fontWeight: '400',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 0.5,
   },
   filtersScroll: {
@@ -794,7 +794,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   filterBadgeActive: {
-    borderColor: '#D4AF37',
+    borderColor: '#009688',
     backgroundColor: 'rgba(224, 176, 52, 0.08)',
   },
   filterBadgeText: {
@@ -803,7 +803,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   filterBadgeTextActive: {
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '600',
   },
   applyBtn: {
@@ -815,7 +815,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   applyBtnText: {
-    color: '#070707',
+    color: '#1A1A1A',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1.5,

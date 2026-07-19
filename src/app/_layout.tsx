@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DarkTheme, DefaultTheme, ThemeProvider, Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme, View, StyleSheet, Platform } from 'react-native';
+import { useColorScheme, View, StyleSheet, Platform, StatusBar } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, runOnJS } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -73,7 +73,7 @@ export default function TabLayout() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <View style={styles.webOuterContainer}>
           <LinearGradient
-            colors={['#070707', '#111111', '#070707']}
+            colors={['#E0F7F4', '#F5FFFE', '#E0F7F4']}
             style={StyleSheet.absoluteFill}
           />
           <View style={styles.glowBlob} />
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   webOuterContainer: {
     flex: 1,
-    backgroundColor: '#070707',
+    backgroundColor: '#E8F5E9',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     width: 600,
     height: 600,
     borderRadius: 300,
-    backgroundColor: 'rgba(212, 175, 55, 0.02)',
+    backgroundColor: 'rgba(0, 150, 136, 0.06)',
   },
   phoneFrame: {
     width: 390,
@@ -144,14 +144,14 @@ const styles = StyleSheet.create({
     maxHeight: '94%',
     borderRadius: 40,
     borderWidth: 10,
-    borderColor: '#1a1a1a',
-    backgroundColor: '#000000',
+    borderColor: '#CCCCCC',
+    backgroundColor: '#FFFFFF',
     overflow: 'hidden',
     position: 'relative',
-    shadowColor: '#000000',
+    shadowColor: '#009688',
     shadowOffset: { width: 0, height: 20 },
-    shadowOpacity: 0.6,
-    shadowRadius: 30,
+    shadowOpacity: 0.15,
+    shadowRadius: 40,
     elevation: 10,
   },
   phoneSpeaker: {
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     marginLeft: -50,
     width: 100,
     height: 25,
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#E0E0E0',
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
     zIndex: 999999,

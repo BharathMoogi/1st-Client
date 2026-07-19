@@ -122,7 +122,7 @@ export default function PremiumSplashScreen({ onFinish }: PremiumSplashScreenPro
     <Animated.View style={[styles.container, animatedScreenStyle]}>
       {/* Premium Dark Gradient Background */}
       <LinearGradient
-        colors={['#070707', '#141210', '#070707']}
+        colors={['#1A1A1A', '#141210', '#1A1A1A']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   brandTitle: {
     fontSize: 28,
     fontWeight: '300',
-    color: '#FFE082',
+    color: '#80CBC4',
     letterSpacing: 10,
     fontFamily: 'System', // Use default elegant sans/serif
     textShadowColor: 'rgba(224, 176, 52, 0.35)',

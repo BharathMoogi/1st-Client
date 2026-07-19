@@ -15,7 +15,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR SETTINGS ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
@@ -27,13 +27,13 @@ const ChevronRightIcon = () => (
 );
 
 const ChevronDownIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m6 9 6 6 6-6" />
   </Svg>
 );
 
 const ChevronUpIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m18 15-6-6-6 6" />
   </Svg>
 );
@@ -88,7 +88,7 @@ export default function SettingsScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#0F0D0A', '#070707']}
+        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -120,8 +120,8 @@ export default function SettingsScreen() {
             <Switch
               value={darkMode}
               onValueChange={setDarkMode}
-              trackColor={{ false: 'rgba(255,255,255,0.1)', true: '#D4AF37' }}
-              thumbColor={darkMode ? '#FFFFFF' : '#777777'}
+              trackColor={{ false: 'rgba(0,150,136,0.12)', true: '#009688' }}
+              thumbColor={darkMode ? '#1A1A1A' : '#777777'}
             />
           </View>
 
@@ -148,8 +148,8 @@ export default function SettingsScreen() {
             <Switch
               value={pushNotifications}
               onValueChange={setPushNotifications}
-              trackColor={{ false: 'rgba(255,255,255,0.1)', true: '#D4AF37' }}
-              thumbColor={pushNotifications ? '#FFFFFF' : '#777777'}
+              trackColor={{ false: 'rgba(0,150,136,0.12)', true: '#009688' }}
+              thumbColor={pushNotifications ? '#1A1A1A' : '#777777'}
             />
           </View>
 
@@ -158,8 +158,8 @@ export default function SettingsScreen() {
             <Switch
               value={emailAlerts}
               onValueChange={setEmailAlerts}
-              trackColor={{ false: 'rgba(255,255,255,0.1)', true: '#D4AF37' }}
-              thumbColor={emailAlerts ? '#FFFFFF' : '#777777'}
+              trackColor={{ false: 'rgba(0,150,136,0.12)', true: '#009688' }}
+              thumbColor={emailAlerts ? '#1A1A1A' : '#777777'}
             />
           </View>
         </View>
@@ -225,7 +225,7 @@ export default function SettingsScreen() {
           <TouchableOpacity onPress={() => setLanguageModalOpen(false)} activeOpacity={1} style={styles.modalBacking} />
           
           <View style={styles.modalBox}>
-            <LinearGradient colors={['#0F0E0D', '#070707']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#0F0E0D', '#1A1A1A']} style={StyleSheet.absoluteFill} />
             <Text style={styles.modalTitle}>Select App Language</Text>
 
             <View style={styles.languageOptionsList}>
@@ -257,7 +257,7 @@ export default function SettingsScreen() {
           <TouchableOpacity onPress={() => setDeleteConfirmOpen(false)} activeOpacity={1} style={styles.deleteBacking} />
           
           <View style={styles.deleteDrawer}>
-            <LinearGradient colors={['#0F0E0D', '#070707']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#0F0E0D', '#1A1A1A']} style={StyleSheet.absoluteFill} />
             <Text style={styles.deleteTitle}>Delete Account Permanently?</Text>
             <Text style={styles.deleteSubtitle}>
               Warning: This action is irreversible. All VIP club progress, rewards points (2,450 points), and order logs will be wiped from our database permanently.
@@ -282,7 +282,7 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#070707',
+    backgroundColor: '#1A1A1A',
   },
   header: {
     flexDirection: 'row',
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     paddingBottom: 10,
   },
   headerBtn: {
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 15,
     fontWeight: '400',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 2,
   },
   scrollContainer: {
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
   settingsGroup: {
     borderRadius: 18,
     borderWidth: 1.2,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
     padding: 8,
     backgroundColor: 'rgba(255,255,255,0.01)',
     overflow: 'hidden',
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 52,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     paddingHorizontal: 12,
   },
   settingRowRight: {
@@ -348,12 +348,12 @@ const styles = StyleSheet.create({
   },
   settingLabelText: {
     fontSize: 13,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontWeight: '300',
   },
   settingValueText: {
     fontSize: 12,
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '400',
   },
   
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 52,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     paddingHorizontal: 12,
   },
   collapsibleBody: {
@@ -416,7 +416,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#D4AF37',
+    color: '#009688',
     letterSpacing: 0.5,
     textAlign: 'center',
     marginBottom: 8,
@@ -431,12 +431,12 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
-    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderColor: 'rgba(0,150,136,0.10)',
+    backgroundColor: 'rgba(0,150,136,0.05)',
     paddingHorizontal: 16,
   },
   languageItemActive: {
-    borderColor: '#D4AF37',
+    borderColor: '#009688',
     backgroundColor: 'rgba(224,176,52,0.06)',
   },
   languageItemText: {
@@ -445,12 +445,12 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
   languageItemTextActive: {
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '600',
   },
   checkIcon: {
     fontSize: 12,
-    color: '#D4AF37',
+    color: '#009688',
   },
 
   // Delete drawer
@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
   deleteTitle: {
     fontSize: 18,
     fontWeight: '500',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
   },
   deleteSubtitle: {
     fontSize: 12,
@@ -501,7 +501,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cancelBtnText: {
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,
@@ -515,7 +515,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   confirmBtnText: {
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,

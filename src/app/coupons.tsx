@@ -16,15 +16,15 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR COUPONS ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
 
 const TagIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2">
     <Path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" fill="rgba(224,176,52,0.06)" />
-    <line x1="7" y1="7" x2="7.01" y2="7" stroke="#FFE082" strokeWidth="3" />
+    <line x1="7" y1="7" x2="7.01" y2="7" stroke="#80CBC4" strokeWidth="3" />
   </Svg>
 );
 
@@ -133,7 +133,7 @@ function CouponCard({
         {/* Copy trigger stub button */}
         <TouchableOpacity onPress={handleCopyPress} activeOpacity={0.85}>
           <Animated.View style={[styles.copyBtn, animatedButtonStyle]}>
-            <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
             {copied ? <Text style={styles.copyBtnText}>COPIED!</Text> : (
               <View style={styles.copyBtnInner}>
                 <CopyIcon />
@@ -190,7 +190,7 @@ export default function CouponsScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#0F0D0A', '#070707']}
+        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -254,7 +254,7 @@ export default function CouponsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#070707',
+    backgroundColor: '#1A1A1A',
   },
   header: {
     flexDirection: 'row',
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     paddingBottom: 10,
   },
   headerBtn: {
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 2,
   },
   scrollContainer: {
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     height: 110,
     borderRadius: 16,
     borderWidth: 1.2,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
     backgroundColor: 'rgba(255,255,255,0.01)',
     overflow: 'hidden',
     flexDirection: 'row',
@@ -366,13 +366,13 @@ const styles = StyleSheet.create({
   discountValueText: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#D4AF37',
+    color: '#009688',
     letterSpacing: 0.5,
   },
   codeTextBadge: {
     backgroundColor: 'rgba(255,255,255,0.05)',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: 'rgba(0,150,136,0.12)',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   codeText: {
     fontSize: 9,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 0.5,
   },
   rightStub: {
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
   },
   couponTitle: {
     fontSize: 13,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontWeight: '500',
   },
   couponDescription: {
@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   copyBtnText: {
-    color: '#070707',
+    color: '#1A1A1A',
     fontSize: 9,
     fontWeight: '700',
     letterSpacing: 0.5,
@@ -434,9 +434,9 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: '#070707',
+    backgroundColor: '#1A1A1A',
     borderWidth: 1.2,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
   },
   cutoutRight: {
     position: 'absolute',
@@ -445,8 +445,8 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: '#070707',
+    backgroundColor: '#1A1A1A',
     borderWidth: 1.2,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
   },
 });

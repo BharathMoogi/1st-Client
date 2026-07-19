@@ -20,13 +20,13 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR PRODUCT LISTING ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
 
 const GridViewIcon = ({ active }: { active: boolean }) => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFE082' : 'rgba(255,255,255,0.4)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#80CBC4' : 'rgba(0,0,0,0.35)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Rect x="3" y="3" width="7" height="7" />
     <Rect x="14" y="3" width="7" height="7" />
     <Rect x="14" y="14" width="7" height="7" />
@@ -35,31 +35,31 @@ const GridViewIcon = ({ active }: { active: boolean }) => (
 );
 
 const ListViewIcon = ({ active }: { active: boolean }) => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFE082' : 'rgba(255,255,255,0.4)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#80CBC4' : 'rgba(0,0,0,0.35)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M3 12h18M3 6h18M3 18h18" />
   </Svg>
 );
 
 const SortIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 4 5 5m-5-5-5 5m5-5v16M9 20 4 15m5 5 5-5m-5 5V4" />
   </Svg>
 );
 
 const FilterIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
   </Svg>
 );
 
 const StarIcon = () => (
-  <Svg width="10" height="10" viewBox="0 0 24 24" fill="#FFE082">
+  <Svg width="10" height="10" viewBox="0 0 24 24" fill="#80CBC4">
     <Path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
   </Svg>
 );
 
 const HeartIcon = ({ filled }: { filled: boolean }) => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill={filled ? '#EA4335' : 'none'} stroke={filled ? '#EA4335' : 'rgba(255,255,255,0.6)'} strokeWidth="2">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill={filled ? '#EA4335' : 'none'} stroke={filled ? '#EA4335' : 'rgba(0,0,0,0.6)'} strokeWidth="2">
     <Path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
   </Svg>
 );
@@ -231,10 +231,10 @@ function ProductCard({
             </View>
 
             <TouchableOpacity activeOpacity={0.85} style={styles.listAddButton}>
-              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
               <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
                 <LinearGradient
-                  colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0)']}
+                  colors={['rgba(255,255,255,0)', 'rgba(0,0,0,0.35)', 'rgba(255,255,255,0)']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
                   style={StyleSheet.absoluteFill}
@@ -296,10 +296,10 @@ function ProductCard({
 
       {/* Add Button */}
       <TouchableOpacity activeOpacity={0.85} style={styles.gridAddButton}>
-        <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+        <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
         <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
           <LinearGradient
-            colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0)']}
+            colors={['rgba(255,255,255,0)', 'rgba(0,0,0,0.35)', 'rgba(255,255,255,0)']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={StyleSheet.absoluteFill}
@@ -415,7 +415,7 @@ export default function ProductListingScreen() {
     <View style={styles.container}>
       {/* Background Linear Gradients */}
       <LinearGradient
-        colors={['#070707', '#0F0D0A', '#070707']}
+        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -497,7 +497,7 @@ export default function ProductListingScreen() {
             ListFooterComponent={() =>
               isEndLoading ? (
                 <View style={styles.footerLoaderContainer}>
-                  <ActivityIndicator size="small" color="#D4AF37" />
+                  <ActivityIndicator size="small" color="#009688" />
                   <Text style={styles.footerLoaderText}>LAZY LOADING MORE...</Text>
                 </View>
               ) : <View style={{ height: 60 }} />
@@ -512,7 +512,7 @@ export default function ProductListingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#070707',
+    backgroundColor: '#1A1A1A',
   },
   header: {
     flexDirection: 'row',
@@ -522,7 +522,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     paddingBottom: 10,
   },
   backButton: {
@@ -536,7 +536,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 16,
     fontWeight: '300',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 2,
   },
   toggleButton: {
@@ -551,7 +551,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 44,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     backgroundColor: 'rgba(0,0,0,0.15)',
   },
   actionItem: {
@@ -563,14 +563,14 @@ const styles = StyleSheet.create({
   },
   actionText: {
     fontSize: 11,
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '600',
     letterSpacing: 1.2,
   },
   actionDivider: {
     width: 1,
     height: '60%',
-    backgroundColor: 'rgba(255,255,255,0.06)',
+    backgroundColor: 'rgba(0,150,136,0.08)',
     alignSelf: 'center',
   },
   loadingContainer: {
@@ -634,7 +634,7 @@ const styles = StyleSheet.create({
   discountText: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 0.5,
   },
   gridHeartBtn: {
@@ -663,7 +663,7 @@ const styles = StyleSheet.create({
   },
   productName: {
     fontSize: 12,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontWeight: '400',
     lineHeight: 16,
     height: 32,
@@ -682,7 +682,7 @@ const styles = StyleSheet.create({
   ratingText: {
     fontSize: 9,
     fontWeight: '600',
-    color: '#D4AF37',
+    color: '#009688',
   },
   proteinTag: {
     backgroundColor: 'rgba(224, 176, 52, 0.12)',
@@ -693,7 +693,7 @@ const styles = StyleSheet.create({
   proteinTagText: {
     fontSize: 8,
     fontWeight: '600',
-    color: '#D4AF37',
+    color: '#009688',
   },
   priceRow: {
     flexDirection: 'row',
@@ -708,7 +708,7 @@ const styles = StyleSheet.create({
   currentPrice: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#D4AF37',
+    color: '#009688',
   },
   gridAddButton: {
     height: 40,
@@ -722,7 +722,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   addButtonText: {
-    color: '#070707',
+    color: '#1A1A1A',
     fontSize: 10,
     fontWeight: '700',
     letterSpacing: 1,
@@ -801,7 +801,7 @@ const styles = StyleSheet.create({
   footerLoaderText: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#D4AF37',
+    color: '#009688',
     letterSpacing: 1.5,
   },
 });

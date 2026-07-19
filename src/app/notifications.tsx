@@ -16,26 +16,26 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR NOTIFICATIONS ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
 
 const TrashIcon = () => (
-  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.35)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
   </Svg>
 );
 
 const BellIcon = () => (
-  <Svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="1.5">
+  <Svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="1.5">
     <Path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" fill="rgba(224,176,52,0.06)" />
     <Path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
   </Svg>
 );
 
 const CloseIcon = () => (
-  <Svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.35)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M18 6 6 18M6 6l12 12" />
   </Svg>
 );
@@ -183,7 +183,7 @@ export default function NotificationCenterScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#0F0D0A', '#070707']}
+        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -244,7 +244,7 @@ export default function NotificationCenterScreen() {
           <Text style={styles.emptySubtitle}>No new notifications found in this category.</Text>
           
           <TouchableOpacity onPress={() => router.replace('/')} activeOpacity={0.8} style={styles.exploreBtn}>
-            <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
             <Text style={styles.exploreText}>RETURN TO HOME</Text>
           </TouchableOpacity>
         </View>
@@ -256,7 +256,7 @@ export default function NotificationCenterScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#070707',
+    backgroundColor: '#1A1A1A',
   },
   header: {
     flexDirection: 'row',
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     paddingBottom: 10,
   },
   headerBtn: {
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 2,
   },
   clearAllBtn: {
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   },
   clearAllText: {
     fontSize: 11,
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 42,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     backgroundColor: 'rgba(0,0,0,0.15)',
   },
   tabItem: {
@@ -312,16 +312,16 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   tabItemActive: {
-    borderColor: '#D4AF37',
+    borderColor: '#009688',
   },
   tabText: {
     fontSize: 10,
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(0,0,0,0.35)',
     letterSpacing: 1,
   },
   tabTextActive: {
-    color: '#D4AF37',
+    color: '#009688',
   },
   listContent: {
     padding: 20,
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 16,
     borderWidth: 1.2,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
     backgroundColor: 'rgba(255,255,255,0.01)',
     overflow: 'hidden',
     padding: 16,
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#D4AF37',
+    color: '#009688',
     letterSpacing: 0.5,
   },
   cardTimeText: {
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 13,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontWeight: '500',
   },
   cardMessage: {
@@ -407,11 +407,11 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: 'rgba(255,255,255,0.03)',
+    backgroundColor: 'rgba(0,150,136,0.05)',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
   },
 
   // Empty state
@@ -425,7 +425,7 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 20,
     fontWeight: '300',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 2,
   },
   emptySubtitle: {
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   exploreText: {
-    color: '#070707',
+    color: '#1A1A1A',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1.5,

@@ -17,29 +17,29 @@ import { useRouter } from 'expo-router';
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // Luxury Design Tokens
-const GOLD = '#D4AF37';
-const GOLD_LIGHT = '#FFE082';
-const GOLD_DARK = '#B8962D';
-const BG = '#070707';
-const CARD_BG = '#171717';
+const TEAL = '#009688';
+const TEAL_LIGHT = '#80CBC4';
+const TEAL_DARK = '#00796B';
+const BG = '#1A1A1A';
+const CARD_BG = '#FFFFFF';
 
 // --- VECTOR ICONS FOR HOME SCREEN ---
 const SearchIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.35)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Circle cx="11" cy="11" r="8" />
     <Path d="m21 21-4.3-4.3" />
   </Svg>
 );
 
 const BellIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
     <Path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
   </Svg>
 );
 
 const CartIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Circle cx="8" cy="21" r="1" />
     <Circle cx="19" cy="21" r="1" />
     <Path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
@@ -47,7 +47,7 @@ const CartIcon = () => (
 );
 
 const PackageIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
     <Path d="M3.27 6.96 12 12.01l8.73-5.05" />
     <Path d="M12 22.08V12" />
@@ -55,27 +55,27 @@ const PackageIcon = () => (
 );
 
 const HeartIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
   </Svg>
 );
 
 const ProfileIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
     <Circle cx="12" cy="7" r="4" />
   </Svg>
 );
 
 const LocationIcon = () => (
-  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#80CBC4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
     <Circle cx="12" cy="10" r="3" />
   </Svg>
 );
 
 const StarIcon = () => (
-  <Svg width="10" height="10" viewBox="0 0 24 24" fill="#FFE082">
+  <Svg width="10" height="10" viewBox="0 0 24 24" fill="#80CBC4">
     <Path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
   </Svg>
 );
@@ -88,7 +88,7 @@ const BANNERS = [
     tagline: 'ULTIMATE PERFORMANCE',
     description: 'Fuel muscle growth and repair with premium quality micro-filtered whey isolate.',
     promo: '20% OFF TODAY',
-    color: '#1A1813',
+    color: '#E0F7F4',
   },
   {
     id: 2,
@@ -96,7 +96,7 @@ const BANNERS = [
     tagline: 'MAXIMUM RAW POWER',
     description: 'Boost endurance, strength, and cellular ATP production with high-purity powder.',
     promo: 'BUY 1 GET 1',
-    color: '#141416',
+    color: '#E8F5F4',
   },
   {
     id: 3,
@@ -279,7 +279,7 @@ export default function HomeScreen() {
     <ScrollView style={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
       {/* Background Linear Gradients */}
       <LinearGradient
-        colors={['#070707', '#0F0D0A', '#070707']}
+        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -341,7 +341,7 @@ export default function HomeScreen() {
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.bannerButton}>
                 <LinearGradient
-                  colors={['#D4AF37', '#B8962D']}
+                  colors={['#009688', '#00796B']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
                   style={StyleSheet.absoluteFill}
@@ -387,7 +387,7 @@ export default function HomeScreen() {
           <View style={styles.progressTrack}>
             <Animated.View style={[styles.progressFill, animatedProteinStyle]}>
               <LinearGradient
-                colors={['#D4AF37', '#FFE082']}
+                colors={['#009688', '#80CBC4']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={StyleSheet.absoluteFill}
@@ -440,7 +440,7 @@ export default function HomeScreen() {
           {FLASH_SALE_PRODUCTS.map((prod) => (
             <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={prod.id} style={styles.floatingProductCard} activeOpacity={0.95}>
               <LinearGradient
-                colors={['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.01)']}
+                colors={['rgba(0,150,136,0.05)', 'rgba(255,255,255,0.01)']}
                 style={StyleSheet.absoluteFill}
               />
               <View style={styles.productImagePlaceholder}>
@@ -464,7 +464,7 @@ export default function HomeScreen() {
               </View>
 
               <TouchableOpacity activeOpacity={0.85} style={styles.quickAddButton}>
-                <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.quickAddButtonText}>QUICK ADD</Text>
               </TouchableOpacity>
             </TouchableOpacity>
@@ -485,7 +485,7 @@ export default function HomeScreen() {
           {BEST_SELLERS.map((prod) => (
             <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.price)} key={prod.id} style={styles.floatingProductCard} activeOpacity={0.95}>
               <LinearGradient
-                colors={['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.01)']}
+                colors={['rgba(0,150,136,0.05)', 'rgba(255,255,255,0.01)']}
                 style={StyleSheet.absoluteFill}
               />
               <View style={styles.productImagePlaceholder}>
@@ -503,7 +503,7 @@ export default function HomeScreen() {
               </View>
 
               <TouchableOpacity activeOpacity={0.85} style={styles.quickAddButton}>
-                <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.quickAddButtonText}>ADD TO CART</Text>
               </TouchableOpacity>
             </TouchableOpacity>
@@ -534,7 +534,7 @@ export default function HomeScreen() {
           {FLASH_SALE_PRODUCTS.map((prod) => (
             <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={`rec-${prod.id}`} style={styles.gridProductCard} activeOpacity={0.95}>
               <LinearGradient
-                colors={['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.01)']}
+                colors={['rgba(0,150,136,0.05)', 'rgba(255,255,255,0.01)']}
                 style={StyleSheet.absoluteFill}
               />
               <View style={styles.gridImagePlaceholder}>
@@ -552,7 +552,7 @@ export default function HomeScreen() {
               </View>
 
               <TouchableOpacity activeOpacity={0.85} style={styles.gridAddButton}>
-                <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.quickAddButtonText}>QUICK ADD</Text>
               </TouchableOpacity>
             </TouchableOpacity>
@@ -566,7 +566,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#070707',
+    backgroundColor: '#1A1A1A',
   },
   ambientGlow: {
     position: 'absolute',
@@ -596,14 +596,14 @@ const styles = StyleSheet.create({
   locationHeader: {
     fontSize: 9,
     fontWeight: '400',
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(0,0,0,0.35)',
     textTransform: 'uppercase',
     letterSpacing: 1.2,
   },
   locationValue: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
   },
   notificationButton: {
     width: 40,
@@ -634,7 +634,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: 'rgba(212, 175, 55, 0.15)',
-    backgroundColor: 'rgba(255,255,255,0.03)',
+    backgroundColor: 'rgba(0,150,136,0.05)',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
@@ -642,7 +642,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontSize: 13,
   },
   searchPlaceholderText: {
@@ -662,7 +662,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(212, 175, 55, 0.2)',
     overflow: 'hidden',
-    shadowColor: '#D4AF37',
+    shadowColor: '#009688',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.12,
     shadowRadius: 16,
@@ -684,19 +684,19 @@ const styles = StyleSheet.create({
   bannerTagline: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#D4AF37',
+    color: '#009688',
     letterSpacing: 2.5,
   },
   bannerTitle: {
     fontSize: 20,
     fontWeight: '300',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 1.5,
     marginTop: 4,
   },
   bannerDesc: {
     fontSize: 11,
-    color: 'rgba(255,255,255,0.5)',
+    color: 'rgba(0,0,0,0.5)',
     lineHeight: 16,
     fontWeight: '300',
     marginVertical: 6,
@@ -717,7 +717,7 @@ const styles = StyleSheet.create({
   bannerBadgeText: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#D4AF37',
+    color: '#009688',
     letterSpacing: 1.2,
   },
   bannerButton: {
@@ -728,7 +728,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   bannerButtonText: {
-    color: '#070707',
+    color: '#1A1A1A',
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 1.2,
@@ -745,7 +745,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.15)',
   },
   indicatorDotActive: {
-    backgroundColor: '#D4AF37',
+    backgroundColor: '#009688',
     width: 20,
     borderRadius: 3,
   },
@@ -759,7 +759,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '300',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 1.2,
     marginBottom: 14,
   },
@@ -784,7 +784,7 @@ const styles = StyleSheet.create({
   },
   categoryCircleText: {
     fontSize: 11,
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '700',
     letterSpacing: 1.2,
   },
@@ -809,19 +809,19 @@ const styles = StyleSheet.create({
   },
   proteinTitle: {
     fontSize: 14,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontWeight: '400',
   },
   proteinSubtitle: {
     fontSize: 10,
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(0,0,0,0.35)',
   },
   proteinIntakeText: {
     fontSize: 13,
-    color: 'rgba(255,255,255,0.6)',
+    color: 'rgba(0,0,0,0.6)',
   },
   goldTextBold: {
-    color: '#FFE082',
+    color: '#80CBC4',
     fontWeight: '600',
   },
   progressTrack: {
@@ -846,7 +846,7 @@ const styles = StyleSheet.create({
   proteinPercent: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#FFE082',
+    color: '#80CBC4',
   },
   sectionHeaderRow: {
     flexDirection: 'row',
@@ -862,11 +862,11 @@ const styles = StyleSheet.create({
   flashSaleTitle: {
     fontSize: 18,
     fontWeight: '300',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 1.2,
   },
   countdownBadge: {
-    backgroundColor: '#D4AF37',
+    backgroundColor: '#009688',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
@@ -879,7 +879,7 @@ const styles = StyleSheet.create({
   },
   seeAllText: {
     fontSize: 10,
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '700',
     letterSpacing: 1.5,
   },
@@ -916,7 +916,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     left: 8,
-    backgroundColor: '#D4AF37',
+    backgroundColor: '#009688',
     paddingHorizontal: 7,
     paddingVertical: 3,
     borderRadius: 6,
@@ -924,7 +924,7 @@ const styles = StyleSheet.create({
   saveBadgeText: {
     fontSize: 8,
     fontWeight: '800',
-    color: '#070707',
+    color: '#1A1A1A',
     letterSpacing: 0.5,
   },
   productDetails: {
@@ -939,11 +939,11 @@ const styles = StyleSheet.create({
   ratingText: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#D4AF37',
+    color: '#009688',
   },
   productName: {
     fontSize: 12,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     lineHeight: 16,
     fontWeight: '400',
     height: 32,
@@ -955,18 +955,18 @@ const styles = StyleSheet.create({
   },
   originalPrice: {
     fontSize: 11,
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(0,0,0,0.35)',
     textDecorationLine: 'underline',
   },
   salePrice: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#D4AF37',
+    color: '#009688',
   },
   originalPriceText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
   },
   quickAddButton: {
     height: 38,
@@ -976,7 +976,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   quickAddButtonText: {
-    color: '#070707',
+    color: '#1A1A1A',
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 1.2,
@@ -997,7 +997,7 @@ const styles = StyleSheet.create({
   },
   brandCardText: {
     fontSize: 11,
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '700',
     letterSpacing: 2,
   },
@@ -1027,14 +1027,14 @@ const styles = StyleSheet.create({
   },
   gridProductName: {
     fontSize: 12,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     lineHeight: 16,
     height: 32,
   },
   gridPriceText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#D4AF37',
+    color: '#009688',
   },
   gridAddButton: {
     height: 36,

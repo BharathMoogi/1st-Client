@@ -18,20 +18,20 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR ORDERS ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#009688" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
 
 const PackageIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#009688" strokeWidth="2">
     <Path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
     <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
     <Line x1="12" y1="22.08" x2="12" y2="12" />
   </Svg>
 );
 
-const CheckIcon = ({ color = '#D4AF37' }: { color?: string }) => (
+const CheckIcon = ({ color = '#009688' }: { color?: string }) => (
   <Svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M20 6 9 17l-5-5" />
   </Svg>
@@ -165,7 +165,7 @@ export default function OrdersScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#0F0D0A', '#070707']}
+        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -390,7 +390,7 @@ export default function OrdersScreen() {
           <TouchableOpacity onPress={() => setReturnModalOpen(false)} activeOpacity={1} style={styles.returnBacking} />
           <View style={styles.returnDrawer}>
             <LinearGradient
-              colors={['#0F0E0D', '#070707']}
+              colors={['#0F0E0D', '#1A1A1A']}
               style={StyleSheet.absoluteFill}
             />
 
@@ -434,7 +434,7 @@ export default function OrdersScreen() {
 
                 {/* Submit button */}
                 <TouchableOpacity onPress={handleReturnSubmit} activeOpacity={0.85} style={styles.returnSubmitBtn}>
-                  <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#009688', '#00796B']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.returnSubmitBtnText}>CONFIRM RETURN REQUEST</Text>
                 </TouchableOpacity>
               </View>
@@ -449,7 +449,7 @@ export default function OrdersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#070707',
+    backgroundColor: '#1A1A1A',
   },
   header: {
     flexDirection: 'row',
@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     paddingBottom: 10,
   },
   backButton: {
@@ -473,14 +473,14 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 2,
   },
   tabSelectorRow: {
     flexDirection: 'row',
     height: 42,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     backgroundColor: 'rgba(0,0,0,0.15)',
   },
   tabItem: {
@@ -491,16 +491,16 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   tabItemActive: {
-    borderColor: '#D4AF37',
+    borderColor: '#009688',
   },
   tabText: {
     fontSize: 10,
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(0,0,0,0.35)',
     letterSpacing: 1,
   },
   tabTextActive: {
-    color: '#D4AF37',
+    color: '#009688',
   },
   feedScroll: {
     flex: 1,
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
   orderCard: {
     borderRadius: 16,
     borderWidth: 1.2,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
     backgroundColor: 'rgba(255,255,255,0.01)',
     overflow: 'hidden',
     padding: 16,
@@ -525,7 +525,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(0,150,136,0.08)',
     paddingBottom: 12,
   },
   cardHeaderLeft: {
@@ -535,12 +535,12 @@ const styles = StyleSheet.create({
   },
   cardOrderId: {
     fontSize: 12,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontWeight: '500',
   },
   cardOrderDate: {
     fontSize: 10,
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(0,0,0,0.35)',
     fontWeight: '300',
     marginTop: 2,
   },
@@ -555,7 +555,7 @@ const styles = StyleSheet.create({
   statusBadgeText: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#D4AF37',
+    color: '#009688',
     letterSpacing: 0.5,
   },
   cardBody: {
@@ -563,24 +563,24 @@ const styles = StyleSheet.create({
   },
   cardItemName: {
     fontSize: 14,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontWeight: '400',
   },
   cardPriceText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#D4AF37',
+    color: '#009688',
   },
   actionBtn: {
     height: 38,
     borderRadius: 10,
     borderWidth: 1.2,
-    borderColor: '#D4AF37',
+    borderColor: '#009688',
     justifyContent: 'center',
     alignItems: 'center',
   },
   actionBtnText: {
-    color: '#D4AF37',
+    color: '#009688',
     fontSize: 10,
     fontWeight: '700',
     letterSpacing: 1,
@@ -603,16 +603,16 @@ const styles = StyleSheet.create({
   returnInitiatedBox: {
     height: 38,
     borderRadius: 10,
-    backgroundColor: 'rgba(255,255,255,0.03)',
+    backgroundColor: 'rgba(0,150,136,0.05)',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
   },
   returnInitiatedText: {
     fontSize: 10,
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.5)',
+    color: 'rgba(0,0,0,0.5)',
     letterSpacing: 0.5,
   },
 
@@ -629,14 +629,14 @@ const styles = StyleSheet.create({
     top: 15,
     bottom: 15,
     width: 2,
-    backgroundColor: 'rgba(255,255,255,0.08)',
+    backgroundColor: 'rgba(0,150,136,0.10)',
   },
   timelineLineActive: {
     position: 'absolute',
     left: 7,
     top: 15,
     width: 2,
-    backgroundColor: '#D4AF37',
+    backgroundColor: '#009688',
   },
   timelineStagesColumn: {
     gap: 24,
@@ -654,7 +654,7 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     borderRadius: 8,
-    backgroundColor: '#D4AF37',
+    backgroundColor: '#009688',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -673,14 +673,14 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 14,
     borderWidth: 1.5,
-    borderColor: '#D4AF37',
+    borderColor: '#009688',
     backgroundColor: 'rgba(224, 176, 52, 0.15)',
   },
   activeDotInner: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#D4AF37',
+    backgroundColor: '#009688',
     zIndex: 2,
   },
   stagePointPending: {
@@ -699,12 +699,12 @@ const styles = StyleSheet.create({
   },
   stageTitleCompleted: {
     fontSize: 12,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontWeight: '400',
   },
   stageTitleActive: {
     fontSize: 12,
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '600',
   },
   stageTitlePending: {
@@ -714,7 +714,7 @@ const styles = StyleSheet.create({
   },
   stageDate: {
     fontSize: 9,
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(0,0,0,0.35)',
   },
 
   // --- RETURN PRODUCT DRAWER ---
@@ -744,7 +744,7 @@ const styles = StyleSheet.create({
   returnDrawerTitle: {
     fontSize: 16,
     fontWeight: '400',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     letterSpacing: 0.5,
   },
   returnDrawerSubtitle: {
@@ -764,10 +764,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: 'rgba(255,255,255,0.04)',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
   },
   reasonBadgeActive: {
-    borderColor: '#D4AF37',
+    borderColor: '#009688',
     backgroundColor: 'rgba(224, 176, 52, 0.08)',
   },
   reasonBadgeText: {
@@ -776,17 +776,17 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   reasonBadgeTextActive: {
-    color: '#D4AF37',
+    color: '#009688',
     fontWeight: '600',
   },
   returnCommentsInput: {
     height: 80,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(0,150,136,0.10)',
     backgroundColor: 'rgba(255,255,255,0.02)',
     padding: 12,
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     fontSize: 12,
     textAlignVertical: 'top',
   },
@@ -798,7 +798,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   returnSubmitBtnText: {
-    color: '#070707',
+    color: '#1A1A1A',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,
@@ -811,12 +811,12 @@ const styles = StyleSheet.create({
   },
   successEmoji: {
     fontSize: 32,
-    color: '#D4AF37',
+    color: '#009688',
   },
   returnSuccessTitle: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
   },
   returnSuccessSubtitle: {
     fontSize: 11,
