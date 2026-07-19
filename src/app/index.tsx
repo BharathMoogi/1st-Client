@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Dimensions, Platform, Image } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Dimensions, Platform, Image, TextInput, ActivityIndicator } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -13,6 +13,15 @@ import Animated, {
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import Svg, { Path, Circle, Rect, G, Line } from 'react-native-svg';
+
+import { auth, db } from '../api/firebase';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -229,6 +238,260 @@ export default function HomeScreen() {
   const productOpacity = useSharedValue(1);
   const productRotation = useSharedValue(0);
 
+  // Authentication & Verification state
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authStep, setAuthStep] = useState<'login' | 'signup' | 'otp' | 'success'>('login');
+  
+  // Auth Form Fields
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('+91');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
+
+  // Verification & Feedback States
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState('');
+  const [generatedOtp, setGeneratedOtp] = useState('');
+  const [otpArray, setOtpArray] = useState(['', '', '', '', '', '']);
+  const [countdown, setCountdown] = useState(60);
+  const [smsBanner, setSmsBanner] = useState<string | null>(null);
+
+  const otpRefs = useRef<any[]>([]);
+
+  // Monitor auth state changes
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return unsub;
+  }, []);
+
+  // Countdown timer for resend OTP
+  useEffect(() => {
+    let interval: any;
+    if (authStep === 'otp' && countdown > 0) {
+      interval = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [authStep, countdown]);
+
+  // Prefill remembered email if checked
+  useEffect(() => {
+    if (Platform.OS === 'web') {
+      const savedEmail = localStorage.getItem('elixir_remembered_email');
+      if (savedEmail) {
+        setEmail(savedEmail);
+      }
+    }
+  }, []);
+
+  // Validation function for check phone verified
+  const checkPhoneVerified = async (user: any) => {
+    if (!user) return false;
+    if (Platform.OS === 'web') {
+      const cached = localStorage.getItem(`phone_verified_${user.uid}`);
+      if (cached === 'true') return true;
+    }
+    try {
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if (userDoc.exists() && userDoc.data().phoneVerified) {
+        if (Platform.OS === 'web') {
+          localStorage.setItem(`phone_verified_${user.uid}`, 'true');
+        }
+        return true;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return false;
+  };
+
+  const handleGetStarted = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      const verified = await checkPhoneVerified(user);
+      if (verified) {
+        router.push('/shop');
+        return;
+      }
+    }
+    setAuthStep(user ? 'otp' : 'signup');
+    setAuthError('');
+    setShowAuthModal(true);
+    if (user) {
+      sendVerificationOtp();
+    }
+  };
+
+  // Switch transitions
+  const triggerSuccessState = () => {
+    setAuthStep('success');
+    setTimeout(() => {
+      setShowAuthModal(false);
+      router.push('/shop');
+    }, 1600);
+  };
+
+  // Mock SMS Sender
+  const sendVerificationOtp = () => {
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(code);
+    setCountdown(60);
+    setOtpArray(['', '', '', '', '', '']);
+    setSmsBanner(`SMS Gateway: Your Elixir verification code is ${code}`);
+    setTimeout(() => setSmsBanner(null), 10000);
+  };
+
+  const friendlyError = (code: string) => {
+    if (code === 'auth/wrong-password' || code === 'auth/invalid-credential') return 'Incorrect password. Please try again.';
+    if (code === 'auth/user-not-found') return 'No account found with this email.';
+    if (code === 'auth/email-already-in-use') return 'An account with this email already exists.';
+    if (code === 'auth/weak-password') return 'Password must be at least 6 characters.';
+    if (code === 'auth/invalid-email') return 'Please enter a valid email address.';
+    if (code === 'auth/too-many-requests') return 'Too many attempts. Please wait and try again.';
+    return 'Something went wrong. Please try again.';
+  };
+
+  // Sign In submit
+  const handleSignIn = async () => {
+    if (!email || !password) {
+      setAuthError('Please fill in all fields.');
+      return;
+    }
+    setAuthLoading(true);
+    setAuthError('');
+    try {
+      const result = await signInWithEmailAndPassword(auth, email.trim(), password);
+      const user = result.user;
+      
+      const isVerified = await checkPhoneVerified(user);
+      if (isVerified) {
+        if (rememberMe && Platform.OS === 'web') {
+          localStorage.setItem('elixir_remembered_email', email.trim());
+        } else if (Platform.OS === 'web') {
+          localStorage.removeItem('elixir_remembered_email');
+        }
+        triggerSuccessState();
+      } else {
+        // If not verified yet, load phone number and send OTP
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        const userPhone = userDoc.exists() ? userDoc.data().phoneNumber : '+91';
+        setPhone(userPhone);
+        setAuthStep('otp');
+        sendVerificationOtp();
+      }
+    } catch (err: any) {
+      setAuthError(friendlyError(err?.code ?? ''));
+    }
+    setAuthLoading(false);
+  };
+
+  // Sign Up Submit
+  const handleSignUp = async () => {
+    if (!fullName || !email || !phone || !password) {
+      setAuthError('Please fill in all fields.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setAuthError('Passwords do not match.');
+      return;
+    }
+    if (password.length < 6) {
+      setAuthError('Password must be at least 6 characters.');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setAuthError('Please enter a valid email address.');
+      return;
+    }
+    if (!acceptTerms) {
+      setAuthError('You must accept the Terms and Privacy Policy.');
+      return;
+    }
+    
+    setAuthLoading(true);
+    setAuthError('');
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email.trim(), password);
+      const user = result.user;
+
+      // Save user profile details to firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        fullName,
+        email: email.trim(),
+        phoneNumber: phone.trim(),
+        phoneVerified: false,
+        createdAt: new Date().toISOString()
+      });
+
+      // Navigate to OTP Verification screen
+      setAuthStep('otp');
+      sendVerificationOtp();
+    } catch (err: any) {
+      setAuthError(friendlyError(err?.code ?? ''));
+    }
+    setAuthLoading(false);
+  };
+
+  // Verify OTP Code
+  const handleVerifyOtp = async (fullOtp: string) => {
+    setAuthLoading(true);
+    setAuthError('');
+    // Artificially wait for spinner animation
+    await new Promise((res) => setTimeout(res, 1200));
+
+    if (fullOtp === generatedOtp) {
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          await setDoc(doc(db, 'users', user.uid), {
+            phoneVerified: true
+          }, { merge: true });
+          
+          if (Platform.OS === 'web') {
+            localStorage.setItem(`phone_verified_${user.uid}`, 'true');
+          }
+        }
+        triggerSuccessState();
+      } catch (err) {
+        setAuthError('Failed to save verification. Please try again.');
+      }
+    } else {
+      setAuthError('Invalid verification code. Please check and try again.');
+    }
+    setAuthLoading(false);
+  };
+
+  const handleOtpBoxChange = (val: string, index: number) => {
+    const updated = [...otpArray];
+    updated[index] = val.slice(-1); // Take single digit
+    setOtpArray(updated);
+
+    // Focus next box automatically
+    if (val && index < 5) {
+      otpRefs.current[index + 1]?.focus();
+    }
+
+    const fullOtp = updated.join('');
+    if (fullOtp.length === 6) {
+      handleVerifyOtp(fullOtp);
+    }
+  };
+
+  const handleOtpKeyPress = (e: any, index: number) => {
+    if (e.nativeEvent.key === 'Backspace' && !otpArray[index] && index > 0) {
+      otpRefs.current[index - 1]?.focus();
+    }
+  };
+
   useEffect(() => {
     if (Platform.OS !== 'web') return;
 
@@ -289,6 +552,20 @@ export default function HomeScreen() {
           10% { opacity: 0.6; }
           90% { opacity: 0.6; }
           100% { transform: translateY(-100px) translateX(30px) rotate(360deg); opacity: 0; }
+      }
+      .modal-animate-fade {
+          animation: modalFadeIn 0.3s ease-out forwards;
+      }
+      @keyframes modalFadeIn {
+          from { opacity: 0; backdrop-filter: blur(0px); }
+          to { opacity: 1; backdrop-filter: blur(12px); }
+      }
+      .sms-banner-animate {
+          animation: slideDownBanner 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      @keyframes slideDownBanner {
+          from { transform: translateY(-100%); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
       }
     `;
     document.head.appendChild(style);
@@ -355,6 +632,20 @@ export default function HomeScreen() {
         className="text-slate-800 min-h-screen flex flex-col font-sans select-none overflow-x-hidden transition-colors duration-1000"
         style={{ backgroundColor: activeProduct.bgColor }}
       >
+        {/* Mock SMS Banner Gateway */}
+        {smsBanner && (
+          <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[9999] w-full max-w-md px-4 sms-banner-animate">
+            <div className="bg-slate-900/95 backdrop-blur-md text-white border border-white/10 rounded-2xl p-4 shadow-2xl flex items-center gap-3">
+              <span className="text-xl">💬</span>
+              <div className="flex-1">
+                <p className="text-[10px] uppercase tracking-wider text-[#D89A7C] font-semibold">SMS GATEWAY ALERT</p>
+                <p className="text-sm font-medium mt-0.5">{smsBanner}</p>
+              </div>
+              <button onClick={() => setSmsBanner(null)} className="text-white/60 hover:text-white text-lg">×</button>
+            </div>
+          </div>
+        )}
+
         {/* Dynamic Background Shader */}
         <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
           <WebGLShader activeProductIndex={activeIdx} />
@@ -384,7 +675,7 @@ export default function HomeScreen() {
             <button 
               className="text-white text-[12px] font-bold tracking-[0.15em] px-8 py-3.5 rounded-full shadow-lg transition-all transform active:scale-95"
               style={{ backgroundColor: activeProduct.primaryColor, shadowColor: activeProduct.primaryColor }}
-              onClick={() => router.push('/shop')}
+              onClick={handleGetStarted}
             >
               GET STARTED
             </button>
@@ -458,7 +749,7 @@ export default function HomeScreen() {
                 <button 
                   className="text-white px-9 py-4.5 rounded-full text-[12px] font-bold tracking-[0.18em] shadow-xl hover:opacity-90 transition-all transform hover:-translate-y-0.5 active:scale-95"
                   style={{ backgroundColor: activeProduct.primaryColor }}
-                  onClick={() => router.push('/shop')}
+                  onClick={handleGetStarted}
                 >
                   EXPLORE COLLECTION
                 </button>
@@ -521,6 +812,289 @@ export default function HomeScreen() {
           </div>
         </section>
 
+        {/* --- PREMIUM AUTHENTICATION GLASSMORPHIC MODAL --- */}
+        {showAuthModal && (
+          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-[#FFF8F7]/40 backdrop-blur-2xl modal-animate-fade p-4">
+            <div 
+              className="glass-panel w-full max-w-[460px] p-8 rounded-[2.2rem] border border-white/60 shadow-2xl relative transition-all duration-500 overflow-hidden flex flex-col"
+              style={{ minHeight: authStep === 'signup' ? '600px' : '450px' }}
+            >
+              {/* Close Button */}
+              <button 
+                onClick={() => setShowAuthModal(false)}
+                className="absolute top-6 right-6 text-[#2B2B2B]/60 hover:text-[#2B2B2B] text-xl transition-colors font-semibold"
+              >
+                ×
+              </button>
+
+              {/* SUCCESS ANIMATION VIEW */}
+              {authStep === 'success' && (
+                <div className="flex-1 flex flex-col items-center justify-center text-center py-12 animate-fade-in">
+                  <div className="w-20 h-20 bg-green-500/10 border-2 border-green-500 rounded-full flex items-center justify-center mb-6 animate-pulse">
+                    <span className="text-3xl text-green-500 font-bold">✓</span>
+                  </div>
+                  <h2 className="text-2xl font-serif-luxury text-[#2B2B2B] font-semibold tracking-tight">Verified Successfully!</h2>
+                  <p className="text-sm text-[#6E6E6E] mt-3">Welcome to Elixir. Directing you to store collection...</p>
+                  <ActivityIndicator color={activeProduct.primaryColor} style={{ marginTop: 24 }} />
+                </div>
+              )}
+
+              {/* SIGN IN STATE VIEW */}
+              {authStep === 'login' && (
+                <div className="animate-fade-in flex flex-col h-full justify-between">
+                  <div>
+                    <h2 className="text-2xl font-serif-luxury text-[#2B2B2B] font-semibold tracking-tight mb-1">Sign In</h2>
+                    <p className="text-xs text-[#6E6E6E] mb-6">Enter your registered email and password to log in.</p>
+
+                    {authError && (
+                      <div className="bg-red-500/10 border border-red-500/20 text-red-600 text-xs rounded-xl p-3 mb-4 text-center">
+                        {authError}
+                      </div>
+                    )}
+
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1.5">Email Address</label>
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                          placeholder="yourname@domain.com"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1.5">Password</label>
+                        <input
+                          type="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                          placeholder="••••••••"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center mt-4">
+                      <label className="flex items-center gap-2 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={rememberMe}
+                          onChange={(e) => setRememberMe(e.target.checked)}
+                          className="rounded text-[#C87A5A] focus:ring-[#C87A5A] border-[#F0E5E5] cursor-pointer"
+                        />
+                        <span className="text-[11px] font-medium text-[#6E6E6E]">Remember Me</span>
+                      </label>
+                      <button className="text-[11px] font-bold text-[#C87A5A] hover:underline">Forgot Password?</button>
+                    </div>
+                  </div>
+
+                  <div className="mt-8">
+                    <button
+                      onClick={handleSignIn}
+                      className="w-full text-white py-3.5 rounded-xl text-[12px] font-bold tracking-widest transition-opacity hover:opacity-95 shadow-md flex items-center justify-center gap-2"
+                      style={{ backgroundColor: activeProduct.primaryColor }}
+                      disabled={authLoading}
+                    >
+                      {authLoading ? <ActivityIndicator color="#FFFFFF" size="small" /> : 'SIGN IN TO ELIXIR'}
+                    </button>
+
+                    {/* Social Logins */}
+                    <div className="flex items-center gap-2 my-5">
+                      <div className="flex-1 h-[1px] bg-[#F0E5E5]"></div>
+                      <span className="text-[9px] font-bold tracking-wider text-[#6E6E6E] uppercase">OR CONNECT WITH</span>
+                      <div className="flex-1 h-[1px] bg-[#F0E5E5]"></div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 mb-6">
+                      <button className="border border-[#F0E5E5] bg-white/40 hover:bg-white/70 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-2">
+                        <span>Google</span>
+                      </button>
+                      <button className="border border-[#F0E5E5] bg-white/40 hover:bg-white/70 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-2">
+                        <span>Apple</span>
+                      </button>
+                    </div>
+
+                    <p className="text-center text-xs text-[#6E6E6E]">
+                      Don't have an account?{' '}
+                      <button onClick={() => { setAuthStep('signup'); setAuthError(''); }} className="text-[#C87A5A] font-bold hover:underline">
+                        Create Account
+                      </button>
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* SIGN UP STATE VIEW */}
+              {authStep === 'signup' && (
+                <div className="animate-fade-in flex flex-col h-full justify-between">
+                  <div>
+                    <h2 className="text-2xl font-serif-luxury text-[#2B2B2B] font-semibold tracking-tight mb-1">Create Account</h2>
+                    <p className="text-xs text-[#6E6E6E] mb-6">Register below to secure your luxury access.</p>
+
+                    {authError && (
+                      <div className="bg-red-500/10 border border-red-500/20 text-red-600 text-xs rounded-xl p-3 mb-4 text-center">
+                        {authError}
+                      </div>
+                    )}
+
+                    <div className="space-y-3.5">
+                      <div>
+                        <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1">Full Name</label>
+                        <input
+                          type="text"
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
+                          className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                          placeholder="Arjun Singh"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1">Email Address</label>
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                          placeholder="arjun.singh@gmail.com"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1">Phone Number</label>
+                        <input
+                          type="text"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                          placeholder="+91 9876543210"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1">Password</label>
+                          <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                            placeholder="••••••"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1">Confirm Password</label>
+                          <input
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                            placeholder="••••••"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <label className="flex items-start gap-2 mt-4 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={acceptTerms}
+                        onChange={(e) => setAcceptTerms(e.target.checked)}
+                        className="rounded text-[#C87A5A] focus:ring-[#C87A5A] border-[#F0E5E5] cursor-pointer mt-0.5"
+                      />
+                      <span className="text-[11px] leading-snug text-[#6E6E6E]">
+                        I accept Elixir's <span className="text-[#C87A5A] font-bold">Terms of Service</span> and{' '}
+                        <span className="text-[#C87A5A] font-bold">Privacy Policy</span>.
+                      </span>
+                    </label>
+                  </div>
+
+                  <div className="mt-6">
+                    <button
+                      onClick={handleSignUp}
+                      className="w-full text-white py-3.5 rounded-xl text-[12px] font-bold tracking-widest transition-opacity hover:opacity-95 shadow-md flex items-center justify-center gap-2"
+                      style={{ backgroundColor: activeProduct.primaryColor }}
+                      disabled={authLoading}
+                    >
+                      {authLoading ? <ActivityIndicator color="#FFFFFF" size="small" /> : 'REGISTER & VERIFY PHONE'}
+                    </button>
+
+                    <p className="text-center text-xs text-[#6E6E6E] mt-4">
+                      Already registered?{' '}
+                      <button onClick={() => { setAuthStep('login'); setAuthError(''); }} className="text-[#C87A5A] font-bold hover:underline">
+                        Sign In
+                      </button>
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* OTP STATE VIEW */}
+              {authStep === 'otp' && (
+                <div className="animate-fade-in flex flex-col h-full justify-between">
+                  <div>
+                    <h2 className="text-2xl font-serif-luxury text-[#2B2B2B] font-semibold tracking-tight mb-1">Verify Mobile</h2>
+                    <p className="text-xs text-[#6E6E6E] mb-2">We sent a 6-digit OTP code to <span className="font-bold text-[#2B2B2B]">{phone}</span>.</p>
+                    <button 
+                      onClick={() => setAuthStep('signup')} 
+                      className="text-xs text-[#C87A5A] hover:underline font-bold mb-6"
+                    >
+                      Change Phone Number
+                    </button>
+
+                    {authError && (
+                      <div className="bg-red-500/10 border border-red-500/20 text-red-600 text-xs rounded-xl p-3 mb-4 text-center">
+                        {authError}
+                      </div>
+                    )}
+
+                    {/* Auto Shifting OTP Inputs */}
+                    <div className="flex justify-between gap-2 mt-4">
+                      {otpArray.map((digit, idx) => (
+                        <input
+                          key={idx}
+                          ref={(el) => (otpRefs.current[idx] = el)}
+                          type="text"
+                          maxLength={1}
+                          value={digit}
+                          onKeyDown={(e) => handleOtpKeyPress(e, idx)}
+                          onChange={(e) => handleOtpBoxChange(e.target.value, idx)}
+                          className="w-12 h-12 bg-white/60 border border-[#F0E5E5] rounded-xl text-center text-lg font-bold focus:outline-none focus:border-[#C87A5A] transition-all transform focus:scale-105"
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-12">
+                    <button
+                      onClick={() => handleVerifyOtp(otpArray.join(''))}
+                      className="w-full text-white py-3.5 rounded-xl text-[12px] font-bold tracking-widest transition-opacity hover:opacity-95 shadow-md flex items-center justify-center gap-2"
+                      style={{ backgroundColor: activeProduct.primaryColor }}
+                      disabled={authLoading || otpArray.join('').length < 6}
+                    >
+                      {authLoading ? <ActivityIndicator color="#FFFFFF" size="small" /> : 'VERIFY CODE'}
+                    </button>
+
+                    <div className="text-center mt-6">
+                      {countdown > 0 ? (
+                        <p className="text-xs text-[#6E6E6E]">
+                          Resend code in <span className="font-bold text-[#2B2B2B]">{countdown}s</span>
+                        </p>
+                      ) : (
+                        <button 
+                          onClick={sendVerificationOtp} 
+                          className="text-xs text-[#C87A5A] font-bold hover:underline"
+                        >
+                          Resend OTP Code
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          </div>
+        )}
+
         {/* Footer */}
         <footer className="w-full py-20 px-6 md:px-16 bg-[#FFF8F7] border-t border-[#F0E5E5]">
           <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
@@ -554,7 +1128,7 @@ export default function HomeScreen() {
           </div>
           <div className="max-w-[1280px] mx-auto border-t border-[#F0E5E5] mt-16 pt-8 flex justify-between items-center text-xs text-[#6E6E6E]">
             <span>© 2026 Elixir Protein Co. All rights reserved.</span>
-            <span>Uncompromising Bioavailability</span>
+            <span>Made with ❤️ for athletes</span>
           </div>
         </footer>
       </div>
@@ -571,7 +1145,7 @@ export default function HomeScreen() {
         <Text style={styles.logoText}>ELIXIR PROTEIN</Text>
         <TouchableOpacity 
           style={[styles.getStartedBtn, { backgroundColor: activeProduct.primaryColor }]}
-          onPress={() => router.push('/shop')}
+          onPress={handleGetStarted}
         >
           <Text style={styles.getStartedText}>SHOP</Text>
         </TouchableOpacity>
@@ -618,7 +1192,7 @@ export default function HomeScreen() {
 
         <TouchableOpacity 
           style={[styles.primaryBtn, { backgroundColor: activeProduct.primaryColor }]} 
-          onPress={() => router.push('/shop')}
+          onPress={handleGetStarted}
         >
           <Text style={styles.primaryBtnText}>EXPLORE COLLECTION</Text>
         </TouchableOpacity>
