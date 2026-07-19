@@ -335,7 +335,7 @@ export default function HomeScreen() {
       if (params.get('triggerAuth') === 'true') {
         setTimeout(() => {
           handleGetStarted();
-        }, 150);
+        }, 600);
       }
     }
   }, []);
@@ -543,10 +543,16 @@ export default function HomeScreen() {
           opacity: 0;
           transform: translateY(30px);
           transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+          animation: revealFallback 1.5s ease-out 0.3s forwards;
       }
       .reveal.active {
           opacity: 1;
           transform: translateY(0);
+          animation: none;
+      }
+      @keyframes revealFallback {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
       }
       .powder-glow {
           filter: drop-shadow(0 15px 30px var(--glow-color, rgba(200, 122, 90, 0.25)));
@@ -595,7 +601,17 @@ export default function HomeScreen() {
       document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     };
 
-    setTimeout(setupObserver, 150);
+    setTimeout(setupObserver, 300);
+
+    // Fallback: force-activate any .reveal elements already in viewport after page settles
+    setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          el.classList.add('active');
+        }
+      });
+    }, 800);
 
     return () => {
       try {
