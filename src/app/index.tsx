@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Dimensions, Platform, useWindowDimensions, Modal, Alert } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Dimensions, Platform, useWindowDimensions, Modal, Alert, Image } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -120,54 +120,60 @@ const CATEGORIES = [
 const FLASH_SALE_PRODUCTS = [
   {
     id: 10,
-    name: 'Whey Isolate (1kg) - Dark Gold Series',
+    name: 'ON Micronized Creatine Powder (250g)',
     rating: '4.9',
-    originalPrice: '$89.00',
-    salePrice: '$69.00',
-    save: 'SAVE 22%',
-    imageText: 'WHEY'
+    originalPrice: '$35.00',
+    salePrice: '$28.00',
+    save: 'SAVE 20%',
+    image: require('../../assets/images/optimum_nutrition_creatine.png'),
+    imageKey: 'optimum'
   },
   {
     id: 11,
-    name: 'Pre-Workout Rush (30 Servings)',
+    name: 'Rule 1 Micronized Creatine (375g)',
     rating: '4.8',
     originalPrice: '$45.00',
     salePrice: '$32.00',
     save: 'SAVE 28%',
-    imageText: 'RUSH'
+    image: require('../../assets/images/rule1_creatine.png'),
+    imageKey: 'rule1'
   },
   {
     id: 12,
-    name: 'Liquid Carnitine 3000 (450ml)',
+    name: 'Myprotein Creatine Monohydrate (250g)',
     rating: '4.7',
-    originalPrice: '$35.00',
-    salePrice: '$24.99',
+    originalPrice: '$38.00',
+    salePrice: '$26.99',
     save: 'SAVE 29%',
-    imageText: 'LCAR'
+    image: require('../../assets/images/myprotein_creatine.png'),
+    imageKey: 'myprotein'
   }
 ];
 
 const BEST_SELLERS = [
   {
     id: 20,
-    name: 'Advanced Whey Gold Blend (2kg)',
+    name: 'MuscleTech Platinum Creatine (400g)',
     rating: '4.9',
-    price: '$110.00',
-    imageText: 'WHEY'
+    price: '$39.00',
+    image: require('../../assets/images/muscletech_creatine.png'),
+    imageKey: 'muscletech'
   },
   {
     id: 21,
-    name: 'Pure Micronized Glutamine (250g)',
+    name: 'MuscleBlaze M3 Creatine Monohydrate (100g)',
     rating: '4.8',
-    price: '$28.00',
-    imageText: 'GLUT'
+    price: '$18.00',
+    image: require('../../assets/images/muscleblaze_creatine.png'),
+    imageKey: 'muscleblaze'
   },
   {
     id: 22,
-    name: 'Premium Fish Oil (90 Softgels)',
+    name: 'Asitis Creatine Monohydrate (250g)',
     rating: '4.9',
     price: '$22.00',
-    imageText: 'FISH'
+    image: require('../../assets/images/asitis_creatine.png'),
+    imageKey: 'asitis'
   }
 ];
 
@@ -181,11 +187,11 @@ export default function HomeScreen() {
   const isWeb = Platform.OS === 'web';
   const contentWidth = isWeb ? Math.min(width, 800) : width;
 
-  const handleProductPress = (name: string, priceStr: string) => {
+  const handleProductPress = (name: string, priceStr: string, imageKey?: string) => {
     const price = Number(priceStr.replace('$', '')) || 69.00;
     router.push({
       pathname: '/details',
-      params: { name, price }
+      params: { name, price, imageKey }
     });
   };
 
@@ -502,10 +508,10 @@ export default function HomeScreen() {
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.productCardScroll}>
           {FLASH_SALE_PRODUCTS.map((prod) => (
-            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={prod.id} style={styles.floatingProductCard} activeOpacity={0.95}>
+            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice, prod.imageKey)} key={prod.id} style={styles.floatingProductCard} activeOpacity={0.95}>
               <View style={styles.productImagePlaceholder}>
                 <LinearGradient colors={['#FCEEEF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
-                <Text style={styles.productImageText}>{prod.imageText}</Text>
+                <Image source={prod.image} style={{ width: '90%', height: '90%' }} resizeMode="contain" />
                 <View style={styles.saveBadge}>
                   <Text style={styles.saveBadgeText}>{prod.save}</Text>
                 </View>
@@ -542,10 +548,10 @@ export default function HomeScreen() {
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.productCardScroll}>
           {BEST_SELLERS.map((prod) => (
-            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.price)} key={prod.id} style={styles.floatingProductCard} activeOpacity={0.95}>
+            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.price, prod.imageKey)} key={prod.id} style={styles.floatingProductCard} activeOpacity={0.95}>
               <View style={styles.productImagePlaceholder}>
                 <LinearGradient colors={['#FCEEEF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
-                <Text style={styles.productImageText}>{prod.imageText}</Text>
+                <Image source={prod.image} style={{ width: '90%', height: '90%' }} resizeMode="contain" />
               </View>
 
               <View style={styles.productDetails}>
@@ -582,10 +588,10 @@ export default function HomeScreen() {
         <Text style={styles.sectionTitle}>Recommended For You</Text>
         <View style={styles.gridContainer}>
           {FLASH_SALE_PRODUCTS.map((prod) => (
-            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={`rec-${prod.id}`} style={styles.gridProductCard} activeOpacity={0.95}>
+            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice, prod.imageKey)} key={`rec-${prod.id}`} style={styles.gridProductCard} activeOpacity={0.95}>
               <View style={styles.gridImagePlaceholder}>
                 <LinearGradient colors={['#FCEEEF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
-                <Text style={styles.gridImageText}>{prod.imageText}</Text>
+                <Image source={prod.image} style={{ width: '90%', height: '90%' }} resizeMode="contain" />
               </View>
 
               <View style={styles.productDetails}>

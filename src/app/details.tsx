@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Dimensions, Share, TextInput } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Dimensions, Share, TextInput, Image } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -67,6 +67,15 @@ const ChevronUpIcon = () => (
 );
 
 // --- MOCK RELATED PRODUCTS ---
+const PRODUCT_IMAGES: { [key: string]: any } = {
+  optimum: require('../../assets/images/optimum_nutrition_creatine.png'),
+  rule1: require('../../assets/images/rule1_creatine.png'),
+  myprotein: require('../../assets/images/myprotein_creatine.png'),
+  muscletech: require('../../assets/images/muscletech_creatine.png'),
+  muscleblaze: require('../../assets/images/muscleblaze_creatine.png'),
+  asitis: require('../../assets/images/asitis_creatine.png'),
+};
+
 const RELATED_PRODUCTS = [
   { id: '101', name: 'Creatine Monohydrate 300g', price: '$32.00', imageText: 'CRT' },
   { id: '102', name: 'BCAA Amino Rush 250g', price: '$29.00', imageText: 'BCAA' },
@@ -76,8 +85,10 @@ const RELATED_PRODUCTS = [
 export default function ProductDetailScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const productName = params.name ? String(params.name) : 'Gold Standard Whey Isolate';
-  const productPrice = params.price ? Number(params.price) : 69.00;
+  const productName = params.name ? String(params.name) : 'ON Micronized Creatine Powder';
+  const productPrice = params.price ? Number(params.price) : 28.00;
+  const imageKey = params.imageKey ? String(params.imageKey) : 'optimum';
+  const productImage = PRODUCT_IMAGES[imageKey] || PRODUCT_IMAGES.optimum;
 
   // UI state
   const [quantity, setQuantity] = useState(1);
@@ -267,7 +278,7 @@ export default function ProductDetailScreen() {
                   {/* Rotating Monogram Label */}
                   <Animated.View style={[styles.tubLabel, animatedLabelStyle]}>
                     <Text style={styles.tubLabelBrand}>AURUM</Text>
-                    <Text style={styles.tubLabelProduct}>WHEY</Text>
+                    <Text style={styles.tubLabelProduct}>{imageKey ? 'CREA' : 'WHEY'}</Text>
                   </Animated.View>
                 </View>
               </View>
@@ -309,15 +320,15 @@ export default function ProductDetailScreen() {
               >
                 <View style={styles.carouselSlide}>
                   <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
-                  <Text style={styles.carouselImageText}>WHEY - FRONT</Text>
+                  <Image source={productImage} style={{ width: '90%', height: '90%', alignSelf: 'center' }} resizeMode="contain" />
                 </View>
                 <View style={styles.carouselSlide}>
                   <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
-                  <Text style={styles.carouselImageText}>WHEY - BACK (NUTRITION)</Text>
+                  <Image source={productImage} style={{ width: '90%', height: '90%', alignSelf: 'center', opacity: 0.85 }} resizeMode="contain" />
                 </View>
                 <View style={styles.carouselSlide}>
                   <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
-                  <Text style={styles.carouselImageText}>WHEY - SCOOP DETAILS</Text>
+                  <Image source={productImage} style={{ width: '90%', height: '90%', alignSelf: 'center', opacity: 0.7 }} resizeMode="contain" />
                 </View>
               </ScrollView>
               
