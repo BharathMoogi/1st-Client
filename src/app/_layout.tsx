@@ -67,22 +67,12 @@ export default function TabLayout() {
     opacity: appOpacity.value,
   }));
 
-  // ── WEB: render current route via <Slot /> inside centered phone frame ──
+  // ── WEB: render current route via <Slot /> full-screen ──
   if (isWeb) {
     return (
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <View style={styles.webOuterContainer}>
-          <LinearGradient
-            colors={['#070707', '#111111', '#070707']}
-            style={StyleSheet.absoluteFill}
-          />
-          <View style={styles.glowBlob} />
-          <View style={styles.phoneFrame}>
-            {/* Notch pill */}
-            <View style={styles.phoneSpeaker} />
-            {/* Slot renders the matched route: index.tsx, explore.tsx, etc. */}
-            <Slot />
-          </View>
+        <View style={styles.container}>
+          <Slot />
         </View>
       </ThemeProvider>
     );
