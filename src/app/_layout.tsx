@@ -73,7 +73,7 @@ export default function TabLayout() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <View style={styles.webOuterContainer}>
           <LinearGradient
-            colors={['#E0F7F4', '#F5FFFE', '#E0F7F4']}
+            colors={['#FFE4EC', '#FFF0F5', '#FFE4EC']}
             style={StyleSheet.absoluteFill}
           />
           <View style={styles.glowBlob} />
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   webOuterContainer: {
     flex: 1,
-    backgroundColor: '#E8F5E9',
+    backgroundColor: '#FFE4EC',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     width: 600,
     height: 600,
     borderRadius: 300,
-    backgroundColor: 'rgba(0, 150, 136, 0.06)',
+    backgroundColor: 'rgba(255, 100, 130, 0.06)',
   },
   phoneFrame: {
     width: 390,
