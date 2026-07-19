@@ -510,7 +510,7 @@ export default function HomeScreen() {
                 <img
                   className="rounded-3xl w-full h-[400px] object-cover shadow-inner"
                   alt="Pure protein powder macro render"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtjjhzgI8FQNPP6uBNUzEPKifO1JPBFnDS2PTQWwYN2Wwlx6Z2xBa-kqsktS0gVEVl8xeUzVPaJydPbMOnLBIDttVNnz8zc2iJ76lV_tUFZrj60I5IgOqIXh-88EE8k_6e29VtF64F1tYhcNIR3qHYiERck8zJ8fSV3uZvJ3FmUFNKW02mud42-CuleAy57zdmXT-BuOT09LfYYp1-lBITgXSUca78690TNMkyK5KS9T0_ChXViZu87gYLrv9c4yE0OmE6Up3kxhYA"
+                  src={require('../../assets/images/elixir_shaker_opened_box.png')}
                 />
                 <div className="absolute -bottom-8 -right-6 glass-panel p-6 rounded-2xl shadow-xl max-w-[260px] border border-white">
                   <p className="text-xs text-[#2B2B2B] font-semibold italic mb-3">"The mixability and vanilla flavour profile feels exceptionally premium. Truly clean formulation."</p>
