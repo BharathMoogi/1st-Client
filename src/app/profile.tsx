@@ -125,7 +125,7 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
+        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -262,7 +262,7 @@ export default function ProfileScreen() {
           <TouchableOpacity onPress={() => setModalType(null)} activeOpacity={1} style={styles.modalBacking} />
           
           <View style={styles.modalBox}>
-            <LinearGradient colors={['#0F0E0D', '#1A1A1A']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
             
             {modalType === 'rewards' && (
               <View style={styles.modalContent}>
@@ -318,7 +318,7 @@ export default function ProfileScreen() {
         <View style={styles.logoutOverlay}>
           <TouchableOpacity onPress={() => setLogoutConfirmOpen(false)} activeOpacity={1} style={styles.logoutBacking} />
           <View style={styles.logoutDrawer}>
-            <LinearGradient colors={['#0F0E0D', '#1A1A1A']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
             <Text style={styles.logoutTitle}>Logout Profile?</Text>
             <Text style={styles.logoutSubtitle}>You will need to re-authenticate using your login credentials.</Text>
             
@@ -341,7 +341,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',

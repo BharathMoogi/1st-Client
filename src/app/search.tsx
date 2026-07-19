@@ -231,7 +231,7 @@ export default function SearchScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#1A1A1A', '#121110', '#1A1A1A']}
+        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -396,7 +396,7 @@ export default function SearchScreen() {
           
           <View style={styles.filtersDrawer}>
             <LinearGradient
-              colors={['#0F0E0D', '#1A1A1A']}
+              colors={['#FFFFFF', '#F5F5F5']}
               style={StyleSheet.absoluteFill}
             />
 
@@ -484,7 +484,7 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',

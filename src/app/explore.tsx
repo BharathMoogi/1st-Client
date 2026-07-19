@@ -310,7 +310,7 @@ export default function CategoriesScreen() {
     <ScrollView style={styles.container} bounces={true} showsVerticalScrollIndicator={false}>
       {/* Background Linear Gradients */}
       <LinearGradient
-        colors={['#1A1A1A', '#121110', '#1A1A1A']}
+        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -346,7 +346,7 @@ export default function CategoriesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
   },
   ambientGlow: {
     position: 'absolute',
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     width: 260,
     height: 260,
     borderRadius: 130,
-    backgroundColor: 'rgba(212, 175, 55, 0.04)',
+    backgroundColor: 'rgba(0, 150, 136, 0.02)',
   },
   header: {
     marginTop: 70,

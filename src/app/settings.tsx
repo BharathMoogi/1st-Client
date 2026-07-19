@@ -88,7 +88,7 @@ export default function SettingsScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
+        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -225,7 +225,7 @@ export default function SettingsScreen() {
           <TouchableOpacity onPress={() => setLanguageModalOpen(false)} activeOpacity={1} style={styles.modalBacking} />
           
           <View style={styles.modalBox}>
-            <LinearGradient colors={['#0F0E0D', '#1A1A1A']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
             <Text style={styles.modalTitle}>Select App Language</Text>
 
             <View style={styles.languageOptionsList}>
@@ -257,7 +257,7 @@ export default function SettingsScreen() {
           <TouchableOpacity onPress={() => setDeleteConfirmOpen(false)} activeOpacity={1} style={styles.deleteBacking} />
           
           <View style={styles.deleteDrawer}>
-            <LinearGradient colors={['#0F0E0D', '#1A1A1A']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
             <Text style={styles.deleteTitle}>Delete Account Permanently?</Text>
             <Text style={styles.deleteSubtitle}>
               Warning: This action is irreversible. All VIP club progress, rewards points (2,450 points), and order logs will be wiped from our database permanently.
@@ -282,7 +282,7 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',

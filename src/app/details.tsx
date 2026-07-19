@@ -198,7 +198,7 @@ export default function ProductDetailScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
+        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -308,15 +308,15 @@ export default function ProductDetailScreen() {
                 style={styles.carousel}
               >
                 <View style={styles.carouselSlide}>
-                  <LinearGradient colors={['#17181A', '#1A1A1A']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.carouselImageText}>WHEY - FRONT</Text>
                 </View>
                 <View style={styles.carouselSlide}>
-                  <LinearGradient colors={['#17181A', '#1A1A1A']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.carouselImageText}>WHEY - BACK (NUTRITION)</Text>
                 </View>
                 <View style={styles.carouselSlide}>
-                  <LinearGradient colors={['#17181A', '#1A1A1A']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.carouselImageText}>WHEY - SCOOP DETAILS</Text>
                 </View>
               </ScrollView>
@@ -495,7 +495,7 @@ export default function ProductDetailScreen() {
                   style={StyleSheet.absoluteFill}
                 />
                 <View style={styles.relatedImage}>
-                  <LinearGradient colors={['#17181A', '#090A0A']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.relatedImageText}>{prod.imageText}</Text>
                 </View>
                 <Text style={styles.relatedName} numberOfLines={1}>{prod.name}</Text>
@@ -512,7 +512,7 @@ export default function ProductDetailScreen() {
       {/* --- STICKY BOTTOM ACTIONS BAR --- */}
       <Animated.View style={[styles.stickyBottomBar, animatedMountFooterStyle]}>
         <LinearGradient
-          colors={['#0F0D0A', '#1A1A1A']}
+          colors={['#FFFFFF', '#F5F5F5']}
           style={StyleSheet.absoluteFill}
         />
 
@@ -545,7 +545,7 @@ export default function ProductDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
@@ -733,7 +733,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     backgroundColor: '#009688',
     borderWidth: 2,
-    bordercolor: '#1A1A1A',
+    borderColor: '#E0E0E0',
   },
   hiddenSliderInput: {
     position: 'absolute',

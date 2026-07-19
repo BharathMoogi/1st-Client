@@ -165,7 +165,7 @@ export default function OrdersScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
+        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -390,7 +390,7 @@ export default function OrdersScreen() {
           <TouchableOpacity onPress={() => setReturnModalOpen(false)} activeOpacity={1} style={styles.returnBacking} />
           <View style={styles.returnDrawer}>
             <LinearGradient
-              colors={['#0F0E0D', '#1A1A1A']}
+              colors={['#FFFFFF', '#F5F5F5']}
               style={StyleSheet.absoluteFill}
             />
 
@@ -449,7 +449,7 @@ export default function OrdersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',

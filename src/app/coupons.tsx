@@ -190,7 +190,7 @@ export default function CouponsScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
+        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -254,7 +254,7 @@ export default function CouponsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
@@ -434,7 +434,7 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1.2,
     borderColor: 'rgba(0,150,136,0.10)',
   },
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1.2,
     borderColor: 'rgba(0,150,136,0.10)',
   },

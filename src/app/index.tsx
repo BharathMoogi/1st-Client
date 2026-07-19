@@ -279,7 +279,7 @@ export default function HomeScreen() {
     <ScrollView style={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
       {/* Background Linear Gradients */}
       <LinearGradient
-        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
+        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -444,7 +444,7 @@ export default function HomeScreen() {
                 style={StyleSheet.absoluteFill}
               />
               <View style={styles.productImagePlaceholder}>
-                <LinearGradient colors={['#1F1D1A', '#0D0D0E']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.productImageText}>{prod.imageText}</Text>
                 <View style={styles.saveBadge}>
                   <Text style={styles.saveBadgeText}>{prod.save}</Text>
@@ -489,7 +489,7 @@ export default function HomeScreen() {
                 style={StyleSheet.absoluteFill}
               />
               <View style={styles.productImagePlaceholder}>
-                <LinearGradient colors={['#1A1B1D', '#090A0A']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.productImageText}>{prod.imageText}</Text>
               </View>
 
@@ -538,7 +538,7 @@ export default function HomeScreen() {
                 style={StyleSheet.absoluteFill}
               />
               <View style={styles.gridImagePlaceholder}>
-                <LinearGradient colors={['#1B1B1C', '#0C0C0D']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.gridImageText}>{prod.imageText}</Text>
               </View>
 
@@ -566,7 +566,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
   },
   ambientGlow: {
     position: 'absolute',
@@ -575,7 +575,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     borderRadius: 150,
-    backgroundColor: 'rgba(212, 175, 55, 0.04)',
+    backgroundColor: 'rgba(0, 150, 136, 0.02)',
   },
   topBar: {
     flexDirection: 'row',
@@ -609,7 +609,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(212, 175, 55, 0.05)',
+    backgroundColor: 'rgba(0, 150, 136, 0.02)',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
@@ -707,7 +707,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bannerBadge: {
-    backgroundColor: 'rgba(212, 175, 55, 0.12)',
+    backgroundColor: 'rgba(0, 150, 136, 0.02)',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 8,
@@ -780,7 +780,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    backgroundColor: 'rgba(212, 175, 55, 0.05)',
+    backgroundColor: 'rgba(0, 150, 136, 0.02)',
   },
   categoryCircleText: {
     fontSize: 11,
@@ -993,7 +993,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    backgroundColor: 'rgba(212, 175, 55, 0.03)',
+    backgroundColor: 'rgba(0, 150, 136, 0.02)',
   },
   brandCardText: {
     fontSize: 11,

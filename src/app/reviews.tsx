@@ -138,7 +138,7 @@ export default function ReviewsScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
+        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -197,24 +197,24 @@ export default function ReviewsScreen() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.mediaSlider}>
           {/* Photo uploads */}
           <View style={styles.mediaBox}>
-            <LinearGradient colors={['#17181A', '#090A0A']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
             <Text style={styles.mediaLabelText}>PHOTO</Text>
           </View>
           <View style={styles.mediaBox}>
-            <LinearGradient colors={['#17181A', '#090A0A']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
             <Text style={styles.mediaLabelText}>PHOTO</Text>
           </View>
           
           {/* Video uploads (with play button) */}
           <View style={styles.mediaBox}>
-            <LinearGradient colors={['#17181A', '#090A0A']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
             <Text style={styles.mediaLabelText}>VIDEO</Text>
             <View style={styles.videoPlayOverlay}>
               <PlayIcon />
             </View>
           </View>
           <View style={styles.mediaBox}>
-            <LinearGradient colors={['#17181A', '#090A0A']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
             <Text style={styles.mediaLabelText}>VIDEO</Text>
             <View style={styles.videoPlayOverlay}>
               <PlayIcon />
@@ -275,7 +275,7 @@ export default function ReviewsScreen() {
           <TouchableOpacity onPress={() => setWriteModalOpen(false)} activeOpacity={1} style={styles.modalBacking} />
           
           <View style={styles.modalBox}>
-            <LinearGradient colors={['#0F0E0D', '#1A1A1A']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
             
             {/* Modal header */}
             <View style={styles.modalHeaderRow}>
@@ -345,7 +345,7 @@ export default function ReviewsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
@@ -563,7 +563,7 @@ const styles = StyleSheet.create({
     height: 90,
     borderTopWidth: 0.5,
     borderColor: 'rgba(0,150,136,0.08)',
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     paddingHorizontal: 20,
   },

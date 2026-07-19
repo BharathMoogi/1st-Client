@@ -185,7 +185,7 @@ export default function CartScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
+        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -221,7 +221,7 @@ export default function CartScreen() {
                 
                 {/* Image block */}
               <View style={styles.cardImage}>
-                <LinearGradient colors={['#F5F5F5', '#1A1A1A']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.cardImageText}>{item.imageText}</Text>
               </View>
 
@@ -364,7 +364,7 @@ export default function CartScreen() {
       {cartItems.length > 0 && (
         <View style={styles.stickyFooter}>
           <LinearGradient
-            colors={['#0F0E0D', '#1A1A1A']}
+            colors={['#FFFFFF', '#F5F5F5']}
             style={StyleSheet.absoluteFill}
           />
           <View style={styles.footerPriceCol}>
@@ -394,7 +394,7 @@ export default function CartScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
@@ -539,7 +539,7 @@ const styles = StyleSheet.create({
     padding: 16,
     overflow: 'hidden',
     gap: 4,
-    backgroundColor: 'rgba(212, 175, 55, 0.03)',
+    backgroundColor: 'rgba(0, 150, 136, 0.02)',
   },
   deliveryTitle: {
     fontSize: 8,

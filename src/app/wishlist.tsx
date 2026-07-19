@@ -169,7 +169,7 @@ export default function WishlistScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#1A1A1A', '#0F0D0A', '#1A1A1A']}
+        colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -206,7 +206,7 @@ export default function WishlistScreen() {
               
               {/* Product image block */}
               <View style={styles.imageBlock}>
-                <LinearGradient colors={['#17181A', '#090A0A']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FFFFFF', '#F5F5F5']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.imageText}>{item.imageText}</Text>
                 
                 {/* Trash Button */}
@@ -278,7 +278,7 @@ export default function WishlistScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundcolor: '#1A1A1A',
+    backgroundColor: '#FFFFFF',
   },
   clearAllBtn: {
     paddingHorizontal: 12,
