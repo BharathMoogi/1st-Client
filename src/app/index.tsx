@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, TextInput, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TextInput, TouchableOpacity, Dimensions, Platform, useWindowDimensions } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -177,6 +177,9 @@ const BRANDS = [
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const isWeb = Platform.OS === 'web';
+  const contentWidth = isWeb ? Math.min(width, 800) : width;
 
   const handleProductPress = (name: string, priceStr: string) => {
     const price = Number(priceStr.replace('$', '')) || 69.00;
@@ -276,7 +279,7 @@ export default function HomeScreen() {
   const formatTime = (num: number) => (num < 10 ? `0${num}` : num);
 
   return (
-    <ScrollView style={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
+    <ScrollView style={[styles.container, { alignSelf: 'center', width: '100%', maxWidth: 800 }]} bounces={false} showsVerticalScrollIndicator={false}>
       {/* Background Linear Gradients */}
       <LinearGradient
         colors={['#FFFFFF', '#F9F9F9', '#FFFFFF']}
@@ -285,7 +288,7 @@ export default function HomeScreen() {
       />
 
       {/* Ambient gold glow */}
-      <View style={styles.ambientGlow} />
+      <View style={[styles.ambientGlow, { left: contentWidth / 2 - 150 }]} />
 
       {/* --- TOP APP BAR --- */}
       <Animated.View style={[styles.topBar, animatedHeroStyle]}>
@@ -323,8 +326,8 @@ export default function HomeScreen() {
       </Animated.View>
 
       {/* --- PREMIUM BANNER CAROUSEL --- */}
-      <Animated.View style={[styles.carouselContainer, animatedHeroStyle]}>
-        <Animated.View style={[styles.bannerCard, animatedBannerStyle, { backgroundColor: BANNERS[activeBanner].color }]}>
+      <Animated.View style={[styles.carouselContainer, { width: contentWidth }, animatedHeroStyle]}>
+        <Animated.View style={[styles.bannerCard, { width: contentWidth - 40 }, animatedBannerStyle, { backgroundColor: BANNERS[activeBanner].color }]}>
           <LinearGradient
             colors={['rgba(212, 175, 55, 0.10)', 'rgba(0, 0, 0, 0.7)']}
             style={StyleSheet.absoluteFill}
@@ -532,7 +535,7 @@ export default function HomeScreen() {
         <Text style={styles.sectionTitle}>Recommended For You</Text>
         <View style={styles.gridContainer}>
           {FLASH_SALE_PRODUCTS.map((prod) => (
-            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={`rec-${prod.id}`} style={styles.gridProductCard} activeOpacity={0.95}>
+            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={`rec-${prod.id}`} style={[styles.gridProductCard, { width: (contentWidth - 56) / 2 }]} activeOpacity={0.95}>
               <LinearGradient
                 colors={['rgba(0,150,136,0.05)', 'rgba(255,255,255,0.01)']}
                 style={StyleSheet.absoluteFill}
