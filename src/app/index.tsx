@@ -288,6 +288,7 @@ export default function HomeScreen() {
   const formatTime = (num: number) => (num < 10 ? `0${num}` : num);
 
   return (
+    <>
     <ScrollView style={[styles.container, { alignSelf: 'center', width: '100%', maxWidth: 800 }]} bounces={false} showsVerticalScrollIndicator={false}>
       {/* Background Linear Gradients */}
       <LinearGradient
@@ -656,6 +657,7 @@ export default function HomeScreen() {
         </View>
       </View>
     </Modal>
+    </>
   );
 }
 
