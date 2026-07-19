@@ -568,8 +568,8 @@ export default function HomeScreen() {
           animation: modalFadeIn 0.3s ease-out forwards;
       }
       @keyframes modalFadeIn {
-          from { opacity: 0; backdrop-filter: blur(0px); }
-          to { opacity: 1; backdrop-filter: blur(12px); }
+          from { opacity: 0; }
+          to { opacity: 1; }
       }
       .sms-banner-animate {
           animation: slideDownBanner 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -825,7 +825,7 @@ export default function HomeScreen() {
 
         {/* --- PREMIUM AUTHENTICATION GLASSMORPHIC MODAL --- */}
         {showAuthModal && (
-          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-[#FFF8F7]/40 backdrop-blur-2xl modal-animate-fade p-4">
+          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/30 modal-animate-fade p-4">
             <div 
               className="glass-panel w-full max-w-[460px] p-8 rounded-[2.2rem] border border-white/60 shadow-2xl relative transition-all duration-500 overflow-hidden flex flex-col"
               style={{ minHeight: authStep === 'signup' ? '600px' : '450px' }}
