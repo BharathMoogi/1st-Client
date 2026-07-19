@@ -10,7 +10,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
+import { auth, db } from '../api/firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { getDoc, doc } from 'firebase/firestore';
 import Svg, { Path, Circle, Rect, G, Line } from 'react-native-svg';
+import { Platform } from 'react-native';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -93,7 +97,53 @@ const LogoutIcon = () => (
 export default function ProfileScreen() {
   const router = useRouter();
 
+  const [userData, setUserData] = useState<{
+    fullName: string;
+    email: string;
+    phone: string;
+  } | null>(null);
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      const unsub = onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          setTimeout(() => {
+            router.replace('/?triggerAuth=true');
+          }, 100);
+          return;
+        }
+
+        try {
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            setUserData({
+              fullName: data.fullName || user.displayName || 'Elixir Member',
+              email: data.email || user.email || '',
+              phone: data.phone || user.phoneNumber || ''
+            });
+          } else {
+            setUserData({
+              fullName: user.displayName || 'Elixir Member',
+              email: user.email || '',
+              phone: user.phoneNumber || ''
+            });
+          }
+        } catch (e) {
+          setUserData({
+            fullName: user.displayName || 'Elixir Member',
+            email: user.email || '',
+            phone: user.phoneNumber || ''
+          });
+        }
+      });
+      return unsub;
+    };
+    let unsubPromise = checkAuth();
+    return () => {
+      unsubPromise.then(unsub => unsub());
+    };
+  }, []);
 
   // Modals state
   const [modalType, setModalType] = useState<'rewards' | 'coupons' | 'address' | 'help' | null>(null);
@@ -110,10 +160,18 @@ export default function ProfileScreen() {
     );
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setLogoutConfirmOpen(false);
-    // Route back to Splash/Login layout state
-    router.replace('/shop');
+    const user = auth.currentUser;
+    if (user && Platform.OS === 'web') {
+      localStorage.removeItem(`phone_verified_${user.uid}`);
+    }
+    try {
+      await signOut(auth);
+    } catch (e) {
+      console.error(e);
+    }
+    router.replace('/');
   };
 
   // Reanimated style bindings
@@ -147,12 +205,19 @@ export default function ProfileScreen() {
           <View style={styles.avatarWrapper}>
             <View style={styles.avatarBorderGlow} />
             <LinearGradient colors={['#A85D63', '#8B4A50']} style={styles.avatar}>
-              <Text style={styles.avatarText}>BR</Text>
+              <Text style={styles.avatarText}>
+                {userData?.fullName
+                  ? userData.fullName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+                  : 'EX'}
+              </Text>
             </LinearGradient>
           </View>
 
-          <Text style={styles.userNameText}>Bharat R</Text>
-          <Text style={styles.userEmailText}>vip.member@aurumwellness.com</Text>
+          <Text style={styles.userNameText}>{userData ? userData.fullName : 'Loading...'}</Text>
+          <Text style={styles.userEmailText}>{userData ? userData.email : ''}</Text>
+          {userData?.phone ? (
+            <Text style={styles.userPhoneText}>{userData.phone}</Text>
+          ) : null}
 
           <Animated.View style={[styles.vipBadge, animatedVipStyle]}>
             <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
@@ -426,6 +491,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#6E6E6E',
     fontWeight: '300',
+  },
+  userPhoneText: {
+    fontSize: 12,
+    color: '#A85D63',
+    fontWeight: '400',
+    marginTop: 2,
+    letterSpacing: 0.3,
   },
   vipBadge: {
     height: 24,
