@@ -20,7 +20,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const TEAL = '#009688';
 const TEAL_LIGHT = '#80CBC4';
 const TEAL_DARK = '#00796B';
-const BG = '#FFFFFF';
+const BG = '#FFE4EC';
 const CARD_BG = '#FFFFFF';
 
 // --- VECTOR ICONS FOR HOME SCREEN ---

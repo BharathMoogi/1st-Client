@@ -73,7 +73,7 @@ export default function TabLayout() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <View style={styles.webOuterContainer}>
           <LinearGradient
-            colors={['#FFE4EC', '#FFF0F5', '#FFE4EC']}
+            colors={['#070707', '#111111', '#070707']}
             style={StyleSheet.absoluteFill}
           />
           <View style={styles.glowBlob} />
@@ -121,11 +121,11 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFE4EC',
   },
   webOuterContainer: {
     flex: 1,
-    backgroundColor: '#FFE4EC',
+    backgroundColor: '#070707',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     width: 600,
     height: 600,
     borderRadius: 300,
-    backgroundColor: 'rgba(255, 100, 130, 0.06)',
+    backgroundColor: 'rgba(255, 100, 130, 0.02)',
   },
   phoneFrame: {
     width: 390,
@@ -144,14 +144,14 @@ const styles = StyleSheet.create({
     maxHeight: '94%',
     borderRadius: 40,
     borderWidth: 10,
-    borderColor: '#CCCCCC',
-    backgroundColor: '#FFFFFF',
+    borderColor: '#1a1a1a',
+    backgroundColor: '#FFE4EC',
     overflow: 'hidden',
     position: 'relative',
-    shadowColor: '#009688',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 20 },
-    shadowOpacity: 0.15,
-    shadowRadius: 40,
+    shadowOpacity: 0.6,
+    shadowRadius: 30,
     elevation: 10,
   },
   phoneSpeaker: {
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     marginLeft: -50,
     width: 100,
     height: 25,
-    backgroundColor: '#E0E0E0',
+    backgroundColor: '#1a1a1a',
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
     zIndex: 999999,
