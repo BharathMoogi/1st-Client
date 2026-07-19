@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput, Dimensions, Image } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -75,7 +75,7 @@ const INITIAL_CART = [
     brand: 'AURUM WELLNESS',
     name: 'Gold Standard Whey Isolate (1kg)',
     price: 69.00,
-    imageText: 'WHEY',
+    image: require('../../assets/images/whey_protein_banner.png'),
     qty: 1,
   },
   {
@@ -83,7 +83,7 @@ const INITIAL_CART = [
     brand: 'AURUM WELLNESS',
     name: 'Tritan Shaker Bottle (700ml)',
     price: 12.00,
-    imageText: 'SHAKER',
+    image: require('../../assets/images/tritan_shaker_bottle.png'),
     qty: 2,
   }
 ];
@@ -214,16 +214,11 @@ export default function CartScreen() {
           <View style={styles.itemsListContainer}>
             {cartItems.map((item) => (
               <View key={item.id} style={styles.cartCard}>
-                <LinearGradient
-                  colors={['rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.01)']}
-                  style={StyleSheet.absoluteFill}
-                />
-                
                 {/* Image block */}
-              <View style={styles.cardImage}>
-                <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
-                <Text style={styles.cardImageText}>{item.imageText}</Text>
-              </View>
+                <View style={styles.cardImage}>
+                  <LinearGradient colors={['#FCEEEF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
+                  <Image source={item.image} style={{ width: '85%', height: '85%', alignSelf: 'center' }} resizeMode="contain" />
+                </View>
 
                 {/* Details column */}
                 <View style={styles.cardDetails}>
@@ -307,10 +302,6 @@ export default function CartScreen() {
           <View style={styles.breakdownSection}>
             <Text style={styles.sectionTitle}>Price Details</Text>
             <View style={styles.breakdownBox}>
-              <LinearGradient
-                colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
-                style={StyleSheet.absoluteFill}
-              />
               
               <View style={styles.breakdownRow}>
                 <Text style={styles.breakdownLabel}>Subtotal</Text>
@@ -449,17 +440,22 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(216, 154, 124, 0.1)',
-    backgroundColor: 'rgba(23, 23, 23, 0.8)',
+    borderColor: '#F0E5E5',
+    backgroundColor: '#FFFFFF',
     overflow: 'hidden',
     flexDirection: 'row',
     padding: 12,
     gap: 14,
+    shadowColor: '#A85D63',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   cardImage: {
     width: 72,
     height: '100%',
-    borderRadius: 10,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
@@ -467,7 +463,7 @@ const styles = StyleSheet.create({
   cardImageText: {
     fontSize: 10,
     fontWeight: '200',
-    color: 'rgba(255, 255, 255, 0.25)',
+    color: '#A85D63',
     letterSpacing: 1.5,
   },
   cardDetails: {
@@ -490,7 +486,7 @@ const styles = StyleSheet.create({
   cardName: {
     fontSize: 13,
     color: '#2B2B2B',
-    fontWeight: '400',
+    fontWeight: '500',
   },
   trashBtn: {
     width: 24,
@@ -506,7 +502,7 @@ const styles = StyleSheet.create({
   cardPrice: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#D89A7C',
+    color: '#A85D63',
   },
   qtyBox: {
     flexDirection: 'row',
@@ -514,15 +510,15 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: 'rgba(168, 93, 99,0.12)',
-    backgroundColor: 'rgba(255,255,255,0.02)',
+    borderColor: '#F0E5E5',
+    backgroundColor: '#FFFFFF',
   },
   qtyBtn: {
     width: 28,
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#D89A7C',
+    backgroundColor: '#FCEEEF',
     borderRadius: 6,
   },
   qtyText: {
@@ -634,11 +630,16 @@ const styles = StyleSheet.create({
   breakdownBox: {
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(168, 93, 99,0.08)',
+    borderColor: '#F0E5E5',
     padding: 18,
     gap: 14,
     overflow: 'hidden',
-    backgroundColor: 'rgba(23, 23, 23, 0.5)',
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#A85D63',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   breakdownRow: {
     flexDirection: 'row',
@@ -647,20 +648,20 @@ const styles = StyleSheet.create({
   },
   breakdownLabel: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.45)',
+    color: '#6E6E6E',
     fontWeight: '300',
   },
   breakdownValue: {
     fontSize: 12,
     color: '#2B2B2B',
-    fontWeight: '400',
+    fontWeight: '500',
   },
   freeShippingText: {
     color: '#34A853',
     fontWeight: '500',
   },
   slashedShippingText: {
-    color: 'rgba(255,255,255,0.3)',
+    color: 'rgba(0,0,0,0.25)',
     textDecorationLine: 'line-through',
     fontWeight: '300',
   },
