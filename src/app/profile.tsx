@@ -113,7 +113,7 @@ export default function ProfileScreen() {
   const handleLogout = () => {
     setLogoutConfirmOpen(false);
     // Route back to Splash/Login layout state
-    router.replace('/');
+    router.replace('/shop');
   };
 
   // Reanimated style bindings

@@ -243,7 +243,7 @@ export default function NotificationCenterScreen() {
           <Text style={styles.emptyTitle}>You're All Caught Up</Text>
           <Text style={styles.emptySubtitle}>No new notifications found in this category.</Text>
           
-          <TouchableOpacity onPress={() => router.replace('/')} activeOpacity={0.8} style={styles.exploreBtn}>
+          <TouchableOpacity onPress={() => router.replace('/shop')} activeOpacity={0.8} style={styles.exploreBtn}>
             <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
             <Text style={styles.exploreText}>RETURN TO HOME</Text>
           </TouchableOpacity>

@@ -351,7 +351,7 @@ export default function CartScreen() {
           <ShoppingBagIcon />
           <Text style={styles.emptyTitle}>Your Cart is Empty</Text>
           <Text style={styles.emptySubtitle}>Start adding luxury wellness essentials to your catalog</Text>
-          <TouchableOpacity onPress={() => router.replace('/')} activeOpacity={0.8} style={styles.emptyExploreBtn}>
+          <TouchableOpacity onPress={() => router.replace('/shop')} activeOpacity={0.8} style={styles.emptyExploreBtn}>
             <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
             <Text style={styles.emptyExploreText}>START SHOPPING</Text>
           </TouchableOpacity>

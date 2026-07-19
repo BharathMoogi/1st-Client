@@ -266,7 +266,7 @@ export default function WishlistScreen() {
 
           <GoldButton
             text="EXPLORE RANGE"
-            onPress={() => router.replace('/')}
+            onPress={() => router.replace('/shop')}
             style={{ width: '70%', marginTop: 16 }}
           />
         </Animated.View>

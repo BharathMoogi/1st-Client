@@ -523,7 +523,7 @@ export default function CheckoutScreen() {
               </View>
             </View>
 
-            <TouchableOpacity onPress={() => router.replace('/')} activeOpacity={0.85} style={styles.stepButton}>
+            <TouchableOpacity onPress={() => router.replace('/shop')} activeOpacity={0.85} style={styles.stepButton}>
               <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
               <Text style={styles.stepButtonText}>RETURN TO HOME</Text>
             </TouchableOpacity>

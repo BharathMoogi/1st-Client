@@ -81,7 +81,7 @@ export default function SettingsScreen() {
   const handleDeleteAccount = () => {
     setDeleteConfirmOpen(false);
     // Route back to Splash/Login states
-    router.replace('/');
+    router.replace('/shop');
   };
 
   return (
