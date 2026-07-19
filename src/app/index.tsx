@@ -522,7 +522,17 @@ export default function HomeScreen() {
     const style = document.createElement('style');
     style.id = 'elixir-custom-styles';
     style.innerHTML = `
-      body { font-family: 'Inter', sans-serif; background-color: #FFF8F7; }
+      *, *::before, *::after { box-sizing: border-box; }
+      body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background-color: #FFF8F7; margin: 0; padding: 0; }
+      /* Critical layout classes that can't wait for Tailwind CDN */
+      .elixir-root { min-height: 100vh; display: flex; flex-direction: column; position: relative; overflow-x: hidden; }
+      .elixir-nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 50; display: flex; justify-content: space-between; align-items: center; padding: 0 64px; height: 96px; background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(240,229,229,0.4); }
+      .elixir-nav-logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.25em; color: #2B2B2B; }
+      .elixir-nav-links { display: flex; align-items: center; gap: 48px; }
+      .elixir-nav-link { color: #2B2B2B; font-weight: 500; font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; text-decoration: none; opacity: 1; transition: opacity 0.2s; }
+      .elixir-nav-link:hover { opacity: 0.65; }
+      .elixir-hero { position: relative; padding-top: 176px; padding-bottom: 80px; min-height: 92vh; display: flex; align-items: center; z-index: 20; }
+      .elixir-hero-inner { max-width: 1280px; margin: 0 auto; width: 100%; padding: 0 64px; position: relative; }
       .font-serif-luxury {
         font-family: 'Playfair Display', serif;
       }
@@ -656,18 +666,29 @@ export default function HomeScreen() {
   if (Platform.OS === 'web') {
     return (
       <div 
-        className="text-slate-800 min-h-screen flex flex-col font-sans select-none overflow-x-hidden transition-colors duration-1000"
-        style={{ 
-          backgroundColor: activeProduct.bgColor,
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-          overflowX: 'hidden',
-          position: 'relative',
-        }}
+        className="elixir-root"
+        style={{ backgroundColor: activeProduct.bgColor }}
       >
-        {/* Mock SMS Banner Gateway */}
+        {/* Critical CSS injected on first paint - before Tailwind CDN loads */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          *, *::before, *::after { box-sizing: border-box; }
+          body { margin: 0; padding: 0; background-color: #FFF8F7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+          .elixir-root { min-height: 100vh; display: flex; flex-direction: column; position: relative; overflow-x: hidden; }
+          .elixir-nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 50; display: flex; justify-content: space-between; align-items: center; padding: 0 64px; height: 96px; background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(240,229,229,0.4); }
+          .elixir-nav-logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.25em; color: #2B2B2B; }
+          .elixir-nav-links { display: flex; align-items: center; gap: 48px; }
+          .elixir-nav-link { color: #2B2B2B; font-weight: 500; font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
+          .elixir-nav-link:hover { opacity: 0.65; }
+          .elixir-hero { position: relative; padding-top: 176px; padding-bottom: 80px; min-height: 92vh; display: flex; align-items: center; z-index: 20; }
+          .elixir-hero-inner { max-width: 1280px; margin: 0 auto; width: 100%; padding: 0 64px; position: relative; }
+          .reveal { opacity: 0; transform: translateY(30px); transition: opacity 1s ease, transform 1s ease; animation: revealFallback 1.5s ease-out 0.3s forwards; }
+          .reveal.active { opacity: 1; transform: translateY(0); animation: none; }
+          @keyframes revealFallback { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+          .glass-panel { background: rgba(255,255,255,0.45); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.4); }
+          .modal-animate-fade { animation: modalFadeIn 0.3s ease-out forwards; }
+          @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        `}} />
+
         {smsBanner && (
           <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[9999] w-full max-w-md px-4 sms-banner-animate">
             <div className="bg-slate-900/95 backdrop-blur-md text-white border border-white/10 rounded-2xl p-4 shadow-2xl flex items-center gap-3">
@@ -696,15 +717,13 @@ export default function HomeScreen() {
         </div>
 
         {/* Top Header App Bar */}
-        <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 md:px-16 h-24 bg-white/10 backdrop-blur-xl border-b border-[#F0E5E5]/40">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-bold tracking-[0.25em] text-[#2B2B2B]">ELIXIR PROTEIN</span>
-          </div>
-          <div className="hidden md:flex items-center space-x-12">
-            <a className="text-[#2B2B2B] font-medium hover:opacity-75 transition-opacity cursor-pointer text-[13px] tracking-widest uppercase">Formula</a>
-            <a className="text-[#2B2B2B] font-medium hover:opacity-75 transition-opacity cursor-pointer text-[13px] tracking-widest uppercase" onClick={() => router.push('/shop')}>Shop</a>
-            <a className="text-[#2B2B2B] font-medium hover:opacity-75 transition-opacity cursor-pointer text-[13px] tracking-widest uppercase">Journal</a>
-            <a className="text-[#2B2B2B] font-medium hover:opacity-75 transition-opacity cursor-pointer text-[13px] tracking-widest uppercase">Impact</a>
+        <nav className="elixir-nav">
+          <div className="elixir-nav-logo">ELIXIR PROTEIN</div>
+          <div className="elixir-nav-links">
+            <a className="elixir-nav-link">Formula</a>
+            <a className="elixir-nav-link" onClick={() => router.push('/shop')}>Shop</a>
+            <a className="elixir-nav-link">Journal</a>
+            <a className="elixir-nav-link">Impact</a>
           </div>
           <div>
             <button 
@@ -718,8 +737,8 @@ export default function HomeScreen() {
         </nav>
 
         {/* Hero Section */}
-        <section className="relative pt-44 pb-20 min-h-[92vh] flex items-center z-20">
-          <div className="max-w-[1280px] mx-auto w-full px-6 md:px-16 relative">
+        <section className="elixir-hero">
+          <div className="elixir-hero-inner">
             
             {/* Centerpiece Canister (Renders behind text layers in overlay stack) */}
             <div className="absolute inset-0 flex justify-center items-center pointer-events-none z-0">
