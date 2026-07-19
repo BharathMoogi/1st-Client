@@ -13,6 +13,9 @@ import Animated, {
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path, Circle, G, Rect } from 'react-native-svg';
 import { useRouter } from 'expo-router';
+import { auth, db } from '../api/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { getDoc, doc } from 'firebase/firestore';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -192,6 +195,38 @@ export default function ShopScreen() {
   const { width } = useWindowDimensions();
   const isWeb = Platform.OS === 'web';
   const contentWidth = isWeb ? Math.min(width, 800) : width;
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const unsub = onAuthStateChanged(auth, async (user) => {
+        unsub();
+        if (!user) {
+          router.replace('/?triggerAuth=true');
+          return;
+        }
+
+        // Check verification status
+        if (Platform.OS === 'web') {
+          const cached = localStorage.getItem(`phone_verified_${user.uid}`);
+          if (cached === 'true') return;
+        }
+
+        try {
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists() && userDoc.data().phoneVerified) {
+            if (Platform.OS === 'web') {
+              localStorage.setItem(`phone_verified_${user.uid}`, 'true');
+            }
+          } else {
+            router.replace('/?triggerAuth=true');
+          }
+        } catch (e) {
+          router.replace('/?triggerAuth=true');
+        }
+      });
+    };
+    checkAuth();
+  }, []);
 
   const handleProductPress = (name: string, priceStr: string, imageKey?: string) => {
     const price = Number(priceStr.replace('$', '')) || 69.00;
