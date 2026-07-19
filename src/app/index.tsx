@@ -326,8 +326,8 @@ export default function HomeScreen() {
       </Animated.View>
 
       {/* --- PREMIUM BANNER CAROUSEL --- */}
-      <Animated.View style={[styles.carouselContainer, { width: contentWidth }, animatedHeroStyle]}>
-        <Animated.View style={[styles.bannerCard, { width: contentWidth - 40 }, animatedBannerStyle, { backgroundColor: BANNERS[activeBanner].color }]}>
+      <Animated.View style={[styles.carouselContainer, animatedHeroStyle]}>
+        <Animated.View style={[styles.bannerCard, animatedBannerStyle, { backgroundColor: BANNERS[activeBanner].color }]}>
           <LinearGradient
             colors={['rgba(212, 175, 55, 0.10)', 'rgba(0, 0, 0, 0.7)']}
             style={StyleSheet.absoluteFill}
@@ -535,7 +535,7 @@ export default function HomeScreen() {
         <Text style={styles.sectionTitle}>Recommended For You</Text>
         <View style={styles.gridContainer}>
           {FLASH_SALE_PRODUCTS.map((prod) => (
-            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={`rec-${prod.id}`} style={[styles.gridProductCard, { width: (contentWidth - 56) / 2 }]} activeOpacity={0.95}>
+            <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={`rec-${prod.id}`} style={styles.gridProductCard} activeOpacity={0.95}>
               <LinearGradient
                 colors={['rgba(0,150,136,0.05)', 'rgba(255,255,255,0.01)']}
                 style={StyleSheet.absoluteFill}
@@ -654,12 +654,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   carouselContainer: {
-    width: SCREEN_WIDTH,
-    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 20,
     marginVertical: 12,
   },
   bannerCard: {
-    width: SCREEN_WIDTH - 40,
+    width: '100%',
     height: 185,
     borderRadius: 24,
     borderWidth: 1,
@@ -1010,12 +1010,12 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   gridProductCard: {
-    width: (SCREEN_WIDTH - 56) / 2,
+    width: '47%',
     borderRadius: 20,
     borderWidth: 1,
     borderColor: 'rgba(212, 175, 55, 0.12)',
     overflow: 'hidden',
-    backgroundColor: 'rgba(23, 23, 23, 0.8)',
+    backgroundColor: '#FFFFFF',
   },
   gridImagePlaceholder: {
     height: 110,
