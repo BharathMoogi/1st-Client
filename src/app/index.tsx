@@ -684,9 +684,20 @@ export default function HomeScreen() {
           .reveal { opacity: 0; transform: translateY(30px); transition: opacity 1s ease, transform 1s ease; animation: revealFallback 1.5s ease-out 0.3s forwards; }
           .reveal.active { opacity: 1; transform: translateY(0); animation: none; }
           @keyframes revealFallback { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-          .glass-panel { background: rgba(255,255,255,0.45); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.4); }
+          .glass-panel { background: rgba(255,255,255,0.45); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.4); }
           .modal-animate-fade { animation: modalFadeIn 0.3s ease-out forwards; }
           @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+          
+          /* Form Elements styling */
+          .elixir-modal-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 600; color: #2B2B2B; letter-spacing: -0.015em; margin-bottom: 4px; margin-top: 0; }
+          .elixir-modal-desc { font-size: 0.75rem; color: #6E6E6E; margin-bottom: 24px; margin-top: 0; }
+          .elixir-form-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6E6E6E; display: block; margin-bottom: 4px; }
+          .elixir-form-input { width: 100%; background: rgba(255,255,255,0.5); border: 1px solid #F0E5E5; padding: 10px 16px; border-radius: 12px; font-size: 14px; color: #2B2B2B; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+          .elixir-form-input:focus { border-color: #C87A5A; }
+          .elixir-form-btn { width: 100%; font-weight: 700; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: white; border: none; padding: 14px 24px; border-radius: 12px; cursor: pointer; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; }
+          .elixir-form-btn:hover { opacity: 0.95; }
+          .elixir-otp-input { width: 48px; height: 48px; background: rgba(255,255,255,0.6); border: 1px solid #F0E5E5; border-radius: 12px; text-align: center; font-size: 18px; font-weight: 700; color: #2B2B2B; outline: none; transition: all 0.2s; box-sizing: border-box; }
+          .elixir-otp-input:focus { border-color: #C87A5A; transform: scale(1.05); }
         `}} />
 
         {smsBanner && (
@@ -910,8 +921,8 @@ export default function HomeScreen() {
               {authStep === 'login' && (
                 <div className="animate-fade-in flex flex-col h-full justify-between">
                   <div>
-                    <h2 className="text-2xl font-serif-luxury text-[#2B2B2B] font-semibold tracking-tight mb-1">Sign In</h2>
-                    <p className="text-xs text-[#6E6E6E] mb-6">Enter your registered email and password to log in.</p>
+                    <h2 className="elixir-modal-title">Sign In</h2>
+                    <p className="elixir-modal-desc">Enter your registered email and password to log in.</p>
 
                     {authError && (
                       <div className="bg-red-500/10 border border-red-500/20 text-red-600 text-xs rounded-xl p-3 mb-4 text-center">
@@ -921,22 +932,22 @@ export default function HomeScreen() {
 
                     <div className="space-y-4">
                       <div>
-                        <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1.5">Email Address</label>
+                        <label className="elixir-form-label">Email Address</label>
                         <input
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                          className="elixir-form-input w-full bg-white/50 border border-[#F0E5E5] px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
                           placeholder="yourname@domain.com"
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1.5">Password</label>
+                        <label className="elixir-form-label">Password</label>
                         <input
                           type="password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                          className="elixir-form-input w-full bg-white/50 border border-[#F0E5E5] px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
                           placeholder="••••••••"
                         />
                       </div>
@@ -996,8 +1007,8 @@ export default function HomeScreen() {
               {authStep === 'signup' && (
                 <div className="animate-fade-in flex flex-col h-full justify-between">
                   <div>
-                    <h2 className="text-2xl font-serif-luxury text-[#2B2B2B] font-semibold tracking-tight mb-1">Create Account</h2>
-                    <p className="text-xs text-[#6E6E6E] mb-6">Register below to secure your luxury access.</p>
+                    <h2 className="elixir-modal-title">Create Account</h2>
+                    <p className="elixir-modal-desc">Register below to secure your luxury access.</p>
 
                     {authError && (
                       <div className="bg-red-500/10 border border-red-500/20 text-red-600 text-xs rounded-xl p-3 mb-4 text-center">
@@ -1007,53 +1018,53 @@ export default function HomeScreen() {
 
                     <div className="space-y-3.5">
                       <div>
-                        <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1">Full Name</label>
+                        <label className="elixir-form-label">Full Name</label>
                         <input
                           type="text"
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
-                          className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                          className="elixir-form-input w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
                           placeholder="Arjun Singh"
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1">Email Address</label>
+                        <label className="elixir-form-label">Email Address</label>
                         <input
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                          className="elixir-form-input w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
                           placeholder="arjun.singh@gmail.com"
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1">Phone Number</label>
+                        <label className="elixir-form-label">Phone Number</label>
                         <input
                           type="text"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                          className="elixir-form-input w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
                           placeholder="+91 9876543210"
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1">Password</label>
+                          <label className="elixir-form-label">Password</label>
                           <input
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                            className="elixir-form-input w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
                             placeholder="••••••"
                           />
                         </div>
                         <div>
-                          <label className="text-[10px] tracking-wider font-bold text-[#6E6E6E] uppercase block mb-1">Confirm Password</label>
+                          <label className="elixir-form-label">Confirm Password</label>
                           <input
                             type="password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
+                            className="elixir-form-input w-full bg-white/50 border border-[#F0E5E5] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#C87A5A] transition-colors"
                             placeholder="••••••"
                           />
                         </div>
@@ -1077,7 +1088,7 @@ export default function HomeScreen() {
                   <div className="mt-6">
                     <button
                       onClick={handleSignUp}
-                      className="w-full text-white py-3.5 rounded-xl text-[12px] font-bold tracking-widest transition-opacity hover:opacity-95 shadow-md flex items-center justify-center gap-2"
+                      className="elixir-form-btn w-full text-white py-3.5 rounded-xl text-[12px] font-bold tracking-widest transition-opacity hover:opacity-95 shadow-md flex items-center justify-center gap-2"
                       style={{ backgroundColor: activeProduct.primaryColor }}
                       disabled={authLoading}
                     >
@@ -1098,8 +1109,8 @@ export default function HomeScreen() {
               {authStep === 'otp' && (
                 <div className="animate-fade-in flex flex-col h-full justify-between">
                   <div>
-                    <h2 className="text-2xl font-serif-luxury text-[#2B2B2B] font-semibold tracking-tight mb-1">Verify Mobile</h2>
-                    <p className="text-xs text-[#6E6E6E] mb-2">We sent a 6-digit OTP code to <span className="font-bold text-[#2B2B2B]">{phone}</span>.</p>
+                    <h2 className="elixir-modal-title">Verify Mobile</h2>
+                    <p className="elixir-modal-desc" style={{ marginBottom: 12 }}>We sent a 6-digit OTP code to <span className="font-bold text-[#2B2B2B]">{phone}</span>.</p>
                     <button 
                       onClick={() => setAuthStep('signup')} 
                       className="text-xs text-[#C87A5A] hover:underline font-bold mb-6"
@@ -1124,7 +1135,7 @@ export default function HomeScreen() {
                           value={digit}
                           onKeyDown={(e) => handleOtpKeyPress(e, idx)}
                           onChange={(e) => handleOtpBoxChange(e.target.value, idx)}
-                          className="w-12 h-12 bg-white/60 border border-[#F0E5E5] rounded-xl text-center text-lg font-bold focus:outline-none focus:border-[#C87A5A] transition-all transform focus:scale-105"
+                          className="elixir-otp-input w-12 h-12 bg-white/60 border border-[#F0E5E5] rounded-xl text-center text-lg font-bold focus:outline-none focus:border-[#C87A5A] transition-all transform focus:scale-105"
                         />
                       ))}
                     </div>
@@ -1133,7 +1144,7 @@ export default function HomeScreen() {
                   <div className="mt-12">
                     <button
                       onClick={() => handleVerifyOtp(otpArray.join(''))}
-                      className="w-full text-white py-3.5 rounded-xl text-[12px] font-bold tracking-widest transition-opacity hover:opacity-95 shadow-md flex items-center justify-center gap-2"
+                      className="elixir-form-btn w-full text-white py-3.5 rounded-xl text-[12px] font-bold tracking-widest transition-opacity hover:opacity-95 shadow-md flex items-center justify-center gap-2"
                       style={{ backgroundColor: activeProduct.primaryColor }}
                       disabled={authLoading || otpArray.join('').length < 6}
                     >
