@@ -20,7 +20,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 // 1. Protein (Shaker Cup)
 const ProteinSvg = () => (
   <Svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-    <G stroke="#D4A373" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <G stroke="#D89A7C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* Lid & Cap */}
       <Path d="M6 3h12v2H6z" />
       <Path d="M10 3V1h4v2" />
@@ -35,7 +35,7 @@ const ProteinSvg = () => (
 // 2. Mass Gainer (Heavy Dumbbell / Weight Plates)
 const GainerSvg = () => (
   <Svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-    <G stroke="#D4A373" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <G stroke="#D89A7C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* Center bar */}
       <Path d="M2 12h20" />
       {/* Weights Left */}
@@ -45,8 +45,8 @@ const GainerSvg = () => (
       <Rect x="16" y="6" width="3" height="12" rx="1.5" />
       <Rect x="13" y="8" width="2" height="8" rx="1" />
       {/* Collars */}
-      <Circle cx="4" cy="12" r="1.5" fill="#D4A373" />
-      <Circle cx="20" cy="12" r="1.5" fill="#D4A373" />
+      <Circle cx="4" cy="12" r="1.5" fill="#D89A7C" />
+      <Circle cx="20" cy="12" r="1.5" fill="#D89A7C" />
     </G>
   </Svg>
 );
@@ -54,14 +54,14 @@ const GainerSvg = () => (
 // 3. Creatine (Energetic Crystals / Molecules)
 const CreatineSvg = () => (
   <Svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-    <G stroke="#D4A373" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <G stroke="#D89A7C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* Central Diamond Node */}
-      <Path d="M12 2l3 6 6 3-6 3-3 6-3-6-6-3 6-3 3-6z" fill="rgba(212, 163, 115, 0.25)" />
+      <Path d="M12 2l3 6 6 3-6 3-3 6-3-6-6-3 6-3 3-6z" fill="rgba(216, 154, 124, 0.25)" />
       {/* Surrounding Sparkles */}
-      <Circle cx="5" cy="5" r="1" fill="#D4A373" />
-      <Circle cx="19" cy="19" r="1" fill="#D4A373" />
-      <Circle cx="19" cy="5" r="1.5" fill="#D4A373" />
-      <Circle cx="5" cy="19" r="1.5" fill="#D4A373" />
+      <Circle cx="5" cy="5" r="1" fill="#D89A7C" />
+      <Circle cx="19" cy="19" r="1" fill="#D89A7C" />
+      <Circle cx="19" cy="5" r="1.5" fill="#D89A7C" />
+      <Circle cx="5" cy="19" r="1.5" fill="#D89A7C" />
     </G>
   </Svg>
 );
@@ -69,14 +69,14 @@ const CreatineSvg = () => (
 // 4. BCAA (Amino Acid Hexagon Links)
 const BcaaSvg = () => (
   <Svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-    <G stroke="#D4A373" strokeWidth="1.5" strokeLinejoin="round">
+    <G stroke="#D89A7C" strokeWidth="1.5" strokeLinejoin="round">
       {/* Hexagon 1 */}
       <Path d="M12 5l4 2.5v5l-4 2.5-4-2.5v-5z" />
       {/* Hexagon 2 */}
       <Path d="M18 11.5l4 2.5v5l-4 2.5-4-2.5v-5z" />
       {/* Connection link dots */}
-      <Circle cx="12" cy="12.5" r="2" fill="#D4A373" />
-      <Circle cx="14" cy="7.5" r="1" fill="#D4A373" />
+      <Circle cx="12" cy="12.5" r="2" fill="#D89A7C" />
+      <Circle cx="14" cy="7.5" r="1" fill="#D89A7C" />
     </G>
   </Svg>
 );
@@ -84,11 +84,11 @@ const BcaaSvg = () => (
 // 5. Pre Workout (Lightning Bolt Shield)
 const PreWorkoutSvg = () => (
   <Svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-    <G stroke="#D4A373" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <G stroke="#D89A7C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* Shield border */}
       <Path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       {/* Lightning bolt */}
-      <Path d="M13 6l-4 6h5l-2 6 4-6h-5z" fill="#D4A373" />
+      <Path d="M13 6l-4 6h5l-2 6 4-6h-5z" fill="#D89A7C" />
     </G>
   </Svg>
 );
@@ -96,7 +96,7 @@ const PreWorkoutSvg = () => (
 // 6. Vitamins (Essential Capsule / Sun)
 const VitaminsSvg = () => (
   <Svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-    <G stroke="#D4A373" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <G stroke="#D89A7C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* Capsule */}
       <Path d="M7 11.5a4.5 4.5 0 0 1 9 0V15a4.5 4.5 0 0 1-9 0z" />
       {/* Diagonal dividing line */}
@@ -110,7 +110,7 @@ const VitaminsSvg = () => (
 // 7. Accessories (Duffle Bag / Gear)
 const AccessoriesSvg = () => (
   <Svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-    <G stroke="#D4A373" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <G stroke="#D89A7C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* Cylinder duffle bag body */}
       <Rect x="4" y="8" width="16" height="10" rx="2" />
       {/* Left/Right caps */}
@@ -206,7 +206,7 @@ function AnimatedCategoryCard({ item, onPress }: { item: typeof CATEGORIES_DATA[
     const borderColor = interpolateColor(
       glow.value,
       [0.15, 0.8],
-      ['rgba(212, 163, 115, 0.18)', 'rgba(212, 163, 115, 0.8)']
+      ['rgba(216, 154, 124, 0.18)', 'rgba(216, 154, 124, 0.8)']
     );
 
     return {
@@ -249,7 +249,7 @@ function AnimatedCategoryCard({ item, onPress }: { item: typeof CATEGORIES_DATA[
         {/* CTA link arrow */}
         <View style={styles.cardFooter}>
           <Text style={styles.exploreText}>EXPLORE RANGE</Text>
-          <Svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <Svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <Path d="M5 12h14M12 5l7 7-7 7" />
           </Svg>
         </View>
@@ -310,7 +310,7 @@ export default function CategoriesScreen() {
     <ScrollView style={styles.container} bounces={true} showsVerticalScrollIndicator={false}>
       {/* Background Linear Gradients */}
       <LinearGradient
-        colors={['#FFF7F8', '#FFFFFF', '#FFF7F8']}
+        colors={['#FFF8F7', '#FFFFFF', '#FFF8F7']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     width: 260,
     height: 260,
     borderRadius: 130,
-    backgroundColor: 'rgba(139, 30, 63, 0.02)',
+    backgroundColor: 'rgba(168, 93, 99, 0.02)',
   },
   header: {
     marginTop: 70,
@@ -367,19 +367,19 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontWeight: '300',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 4,
   },
   headerDivider: {
     width: 32,
     height: 1,
-    backgroundColor: '#8B1E3F',
+    backgroundColor: '#A85D63',
     opacity: 0.5,
   },
   headerSubtitle: {
     fontSize: 9,
     fontWeight: '400',
-    color: '#8B1E3F',
+    color: '#A85D63',
     letterSpacing: 2,
     textTransform: 'uppercase',
   },
@@ -422,19 +422,19 @@ const styles = StyleSheet.create({
   cardTagline: {
     fontSize: 8,
     fontWeight: '600',
-    color: '#8B1E3F',
+    color: '#A85D63',
     letterSpacing: 1.5,
     textTransform: 'uppercase',
   },
   cardTitle: {
     fontSize: 16,
     fontWeight: '400',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 0.5,
   },
   cardDescription: {
     fontSize: 10,
-    color: '#6B7280',
+    color: '#6E6E6E',
     lineHeight: 14,
     fontWeight: '300',
   },
@@ -451,7 +451,7 @@ const styles = StyleSheet.create({
   exploreText: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#8B1E3F',
+    color: '#A85D63',
     letterSpacing: 1,
   },
   bottomPadding: {

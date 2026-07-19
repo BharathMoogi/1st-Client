@@ -20,13 +20,13 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR PRODUCT LISTING ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
 
 const GridViewIcon = ({ active }: { active: boolean }) => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#D4A373' : 'rgba(0,0,0,0.35)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#D89A7C' : 'rgba(0,0,0,0.35)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Rect x="3" y="3" width="7" height="7" />
     <Rect x="14" y="3" width="7" height="7" />
     <Rect x="14" y="14" width="7" height="7" />
@@ -35,25 +35,25 @@ const GridViewIcon = ({ active }: { active: boolean }) => (
 );
 
 const ListViewIcon = ({ active }: { active: boolean }) => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#D4A373' : 'rgba(0,0,0,0.35)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#D89A7C' : 'rgba(0,0,0,0.35)'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M3 12h18M3 6h18M3 18h18" />
   </Svg>
 );
 
 const SortIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 4 5 5m-5-5-5 5m5-5v16M9 20 4 15m5 5 5-5m-5 5V4" />
   </Svg>
 );
 
 const FilterIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
   </Svg>
 );
 
 const StarIcon = () => (
-  <Svg width="10" height="10" viewBox="0 0 24 24" fill="#D4A373">
+  <Svg width="10" height="10" viewBox="0 0 24 24" fill="#D89A7C">
     <Path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
   </Svg>
 );
@@ -231,7 +231,7 @@ function ProductCard({
             </View>
 
             <TouchableOpacity activeOpacity={0.85} style={styles.listAddButton}>
-              <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
               <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
                 <LinearGradient
                   colors={['rgba(255,255,255,0)', 'rgba(0,0,0,0.35)', 'rgba(255,255,255,0)']}
@@ -296,7 +296,7 @@ function ProductCard({
 
       {/* Add Button */}
       <TouchableOpacity activeOpacity={0.85} style={styles.gridAddButton}>
-        <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
+        <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
         <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
           <LinearGradient
             colors={['rgba(255,255,255,0)', 'rgba(0,0,0,0.35)', 'rgba(255,255,255,0)']}
@@ -415,12 +415,12 @@ export default function ProductListingScreen() {
     <View style={styles.container}>
       {/* Background Linear Gradients */}
       <LinearGradient
-        colors={['#FFF7F8', '#FFFFFF', '#FFF7F8']}
+        colors={['#FFF8F7', '#FFFFFF', '#FFF8F7']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
       {/* Ambient gold glow top left */}
-      <View style={{ position: 'absolute', top: -100, left: -100, width: 300, height: 300, borderRadius: 150, backgroundColor: 'rgba(212, 163, 115,0.04)' }} />
+      <View style={{ position: 'absolute', top: -100, left: -100, width: 300, height: 300, borderRadius: 150, backgroundColor: 'rgba(216, 154, 124,0.04)' }} />
 
       {/* --- TOP HEADER APP BAR --- */}
       <Animated.View style={animatedHeaderStyle}>
@@ -497,7 +497,7 @@ export default function ProductListingScreen() {
             ListFooterComponent={() =>
               isEndLoading ? (
                 <View style={styles.footerLoaderContainer}>
-                  <ActivityIndicator size="small" color="#8B1E3F" />
+                  <ActivityIndicator size="small" color="#A85D63" />
                   <Text style={styles.footerLoaderText}>LAZY LOADING MORE...</Text>
                 </View>
               ) : <View style={{ height: 60 }} />
@@ -522,7 +522,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     paddingBottom: 10,
   },
   backButton: {
@@ -536,7 +536,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 16,
     fontWeight: '300',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 2,
   },
   toggleButton: {
@@ -551,7 +551,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 44,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     backgroundColor: 'rgba(0,0,0,0.15)',
   },
   actionItem: {
@@ -563,14 +563,14 @@ const styles = StyleSheet.create({
   },
   actionText: {
     fontSize: 11,
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontWeight: '600',
     letterSpacing: 1.2,
   },
   actionDivider: {
     width: 1,
     height: '60%',
-    backgroundColor: 'rgba(139, 30, 63,0.08)',
+    backgroundColor: 'rgba(168, 93, 99,0.08)',
     alignSelf: 'center',
   },
   loadingContainer: {
@@ -634,7 +634,7 @@ const styles = StyleSheet.create({
   discountText: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 0.5,
   },
   gridHeartBtn: {
@@ -663,7 +663,7 @@ const styles = StyleSheet.create({
   },
   productName: {
     fontSize: 12,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontWeight: '400',
     lineHeight: 16,
     height: 32,
@@ -682,10 +682,10 @@ const styles = StyleSheet.create({
   ratingText: {
     fontSize: 9,
     fontWeight: '600',
-    color: '#8B1E3F',
+    color: '#A85D63',
   },
   proteinTag: {
-    backgroundColor: 'rgba(212, 163, 115, 0.12)',
+    backgroundColor: 'rgba(216, 154, 124, 0.12)',
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
@@ -693,7 +693,7 @@ const styles = StyleSheet.create({
   proteinTagText: {
     fontSize: 8,
     fontWeight: '600',
-    color: '#8B1E3F',
+    color: '#A85D63',
   },
   priceRow: {
     flexDirection: 'row',
@@ -702,13 +702,13 @@ const styles = StyleSheet.create({
   },
   slashedPrice: {
     fontSize: 10,
-    color: '#9CA3AF',
+    color: '#6E6E6E',
     textDecorationLine: 'line-through',
   },
   currentPrice: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#8B1E3F',
+    color: '#A85D63',
   },
   gridAddButton: {
     height: 40,
@@ -722,7 +722,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   addButtonText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 10,
     fontWeight: '700',
     letterSpacing: 1,
@@ -801,7 +801,7 @@ const styles = StyleSheet.create({
   footerLoaderText: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#8B1E3F',
+    color: '#A85D63',
     letterSpacing: 1.5,
   },
 });

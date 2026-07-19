@@ -18,25 +18,25 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR PRODUCT DETAILS ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
 
 const HeartIcon = ({ filled }: { filled: boolean }) => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill={filled ? '#EA4335' : 'none'} stroke={filled ? '#EA4335' : '#D4A373'} strokeWidth="2">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill={filled ? '#EA4335' : 'none'} stroke={filled ? '#EA4335' : '#D89A7C'} strokeWidth="2">
     <Path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
   </Svg>
 );
 
 const ShareIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13" />
   </Svg>
 );
 
 const StarIcon = () => (
-  <Svg width="14" height="14" viewBox="0 0 24 24" fill="#D4A373">
+  <Svg width="14" height="14" viewBox="0 0 24 24" fill="#D89A7C">
     <Path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
   </Svg>
 );
@@ -55,13 +55,13 @@ const MinusIcon = () => (
 );
 
 const ChevronDownIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m6 9 6 6 6-6" />
   </Svg>
 );
 
 const ChevronUpIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m18 15-6-6-6 6" />
   </Svg>
 );
@@ -198,12 +198,12 @@ export default function ProductDetailScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#FFF7F8', '#FFFFFF', '#FFF7F8']}
+        colors={['#FFF8F7', '#FFFFFF', '#FFF8F7']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
       {/* Ambient gold glow at top */}
-      <View style={{ position: 'absolute', top: -80, left: SCREEN_WIDTH / 2 - 120, width: 240, height: 240, borderRadius: 120, backgroundColor: 'rgba(212, 163, 115,0.05)' }} />
+      <View style={{ position: 'absolute', top: -80, left: SCREEN_WIDTH / 2 - 120, width: 240, height: 240, borderRadius: 120, backgroundColor: 'rgba(216, 154, 124,0.05)' }} />
 
       {/* --- TOP HEADER APP BAR --- */}
       <Animated.View style={[styles.header, animatedMountHeaderStyle]}>
@@ -308,15 +308,15 @@ export default function ProductDetailScreen() {
                 style={styles.carousel}
               >
                 <View style={styles.carouselSlide}>
-                  <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.carouselImageText}>WHEY - FRONT</Text>
                 </View>
                 <View style={styles.carouselSlide}>
-                  <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.carouselImageText}>WHEY - BACK (NUTRITION)</Text>
                 </View>
                 <View style={styles.carouselSlide}>
-                  <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.carouselImageText}>WHEY - SCOOP DETAILS</Text>
                 </View>
               </ScrollView>
@@ -428,7 +428,7 @@ export default function ProductDetailScreen() {
           <Text style={styles.sectionTitle}>Frequently Bought Together</Text>
           <View style={styles.bundleBox}>
             <LinearGradient
-              colors={['rgba(139, 30, 63,0.05)', 'rgba(255,255,255,0.01)']}
+              colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
               style={StyleSheet.absoluteFill}
             />
 
@@ -478,7 +478,7 @@ export default function ProductDetailScreen() {
             </View>
 
             <TouchableOpacity activeOpacity={0.85} style={styles.bundleAddButton}>
-              <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
               <Text style={styles.bundleAddButtonText}>ADD BUNDLE TO CART</Text>
             </TouchableOpacity>
           </View>
@@ -491,11 +491,11 @@ export default function ProductDetailScreen() {
             {RELATED_PRODUCTS.map((prod) => (
               <View key={prod.id} style={styles.relatedCard}>
                 <LinearGradient
-                  colors={['rgba(139, 30, 63,0.05)', 'rgba(255,255,255,0.01)']}
+                  colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
                   style={StyleSheet.absoluteFill}
                 />
                 <View style={styles.relatedImage}>
-                  <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.relatedImageText}>{prod.imageText}</Text>
                 </View>
                 <Text style={styles.relatedName} numberOfLines={1}>{prod.name}</Text>
@@ -512,7 +512,7 @@ export default function ProductDetailScreen() {
       {/* --- STICKY BOTTOM ACTIONS BAR --- */}
       <Animated.View style={[styles.stickyBottomBar, animatedMountFooterStyle]}>
         <LinearGradient
-          colors={['#FFFFFF', '#FFF7F8']}
+          colors={['#FFFFFF', '#FFF8F7']}
           style={StyleSheet.absoluteFill}
         />
 
@@ -533,7 +533,7 @@ export default function ProductDetailScreen() {
             <Text style={styles.cartButtonText}>ADD TO CART</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.85} style={styles.buyButton}>
-            <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
             <Text style={styles.buyButtonText}>BUY NOW</Text>
           </TouchableOpacity>
         </View>
@@ -555,23 +555,23 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     paddingBottom: 10,
   },
   iconButton: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'rgba(212, 163, 115, 0.06)',
+    backgroundColor: 'rgba(216, 154, 124, 0.06)',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#ECECEC',
+    borderColor: '#F0E5E5',
   },
   headerTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 2,
   },
   headerRight: {
@@ -596,23 +596,23 @@ const styles = StyleSheet.create({
     height: 38,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'rgba(139, 30, 63,0.10)',
+    borderColor: 'rgba(168, 93, 99,0.10)',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.02)',
   },
   selectorTabActive: {
-    borderColor: '#8B1E3F',
-    backgroundColor: 'rgba(212, 163, 115, 0.06)',
+    borderColor: '#A85D63',
+    backgroundColor: 'rgba(216, 154, 124, 0.06)',
   },
   selectorText: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#6B7280',
+    color: '#6E6E6E',
     letterSpacing: 1,
   },
   selectorTextActive: {
-    color: '#8B1E3F',
+    color: '#A85D63',
   },
   mediaContainer: {
     height: 280,
@@ -624,7 +624,7 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     backgroundColor: 'rgba(255,255,255,0.01)',
     overflow: 'hidden',
     justifyContent: 'space-between',
@@ -645,7 +645,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 8,
     borderRadius: 4,
-    backgroundColor: 'rgba(212, 163, 115, 0.07)',
+    backgroundColor: 'rgba(216, 154, 124, 0.07)',
   },
   tubLid: {
     width: 80,
@@ -653,14 +653,14 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: '#0F0E0E',
     borderWidth: 1.5,
-    borderColor: '#D4A373',
+    borderColor: '#D89A7C',
   },
   tubBody: {
     width: 96,
     height: 110,
     backgroundColor: '#050505',
     borderWidth: 1.5,
-    borderColor: '#D4A373',
+    borderColor: '#D89A7C',
     borderTopWidth: 0,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
@@ -673,7 +673,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 2,
     height: '100%',
-    backgroundColor: 'rgba(212, 163, 115, 0.15)',
+    backgroundColor: 'rgba(216, 154, 124, 0.15)',
   },
   tubLabel: {
     width: 60,
@@ -681,20 +681,20 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: '#1E1B15',
     borderWidth: 1,
-    borderColor: 'rgba(212, 163, 115, 0.4)',
+    borderColor: 'rgba(216, 154, 124, 0.4)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   tubLabelBrand: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#D4A373',
+    color: '#D89A7C',
     letterSpacing: 1,
   },
   tubLabelProduct: {
     fontSize: 9,
     fontWeight: '300',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 0.5,
   },
   sliderContainer: {
@@ -705,7 +705,7 @@ const styles = StyleSheet.create({
   sliderLabel: {
     fontSize: 8,
     fontWeight: '600',
-    color: '#6B7280',
+    color: '#6E6E6E',
     letterSpacing: 1.5,
   },
   sliderTrack: {
@@ -716,7 +716,7 @@ const styles = StyleSheet.create({
   },
   sliderLine: {
     height: 2,
-    backgroundColor: 'rgba(139, 30, 63,0.12)',
+    backgroundColor: 'rgba(168, 93, 99,0.12)',
     width: '100%',
   },
   sliderThumbWrapper: {
@@ -731,7 +731,7 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: '#8B1E3F',
+    backgroundColor: '#A85D63',
     borderWidth: 2,
     borderColor: '#E0E0E0',
   },
@@ -746,7 +746,7 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     backgroundColor: 'rgba(255,255,255,0.01)',
     overflow: 'hidden',
     position: 'relative',
@@ -780,7 +780,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.2)',
   },
   carouselIndicatorDotActive: {
-    backgroundColor: '#D4A373',
+    backgroundColor: '#D89A7C',
     width: 12,
   },
   detailsSection: {
@@ -791,13 +791,13 @@ const styles = StyleSheet.create({
   brandText: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#D4A373',
+    color: '#D89A7C',
     letterSpacing: 2,
   },
   productNameText: {
     fontSize: 22,
     fontWeight: '300',
-    color: '#1F2937',
+    color: '#2B2B2B',
     lineHeight: 28,
   },
   ratingAndStatusRow: {
@@ -839,13 +839,13 @@ const styles = StyleSheet.create({
   },
   originalPriceText: {
     fontSize: 13,
-    color: '#9CA3AF',
+    color: '#6E6E6E',
     textDecorationLine: 'line-through',
   },
   priceValueText: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#D4A373',
+    color: '#D89A7C',
   },
   discountBadge: {
     backgroundColor: '#EA4335',
@@ -856,7 +856,7 @@ const styles = StyleSheet.create({
   discountBadgeText: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#1F2937',
+    color: '#2B2B2B',
   },
   nutritionSection: {
     paddingHorizontal: 20,
@@ -865,7 +865,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 1.5,
     marginBottom: 12,
   },
@@ -878,7 +878,7 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     backgroundColor: 'rgba(255,255,255,0.01)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -887,11 +887,11 @@ const styles = StyleSheet.create({
   nutritionCellValue: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#D4A373',
+    color: '#D89A7C',
   },
   nutritionCellLabel: {
     fontSize: 9,
-    color: '#6B7280',
+    color: '#6E6E6E',
     fontWeight: '400',
   },
   collapsibleContainer: {
@@ -904,11 +904,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 52,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.10)',
+    borderColor: 'rgba(168, 93, 99,0.10)',
   },
   collapsibleTitle: {
     fontSize: 13,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontWeight: '400',
   },
   collapsibleBody: {
@@ -916,7 +916,7 @@ const styles = StyleSheet.create({
   },
   collapsibleText: {
     fontSize: 12,
-    color: '#6B7280',
+    color: '#6E6E6E',
     lineHeight: 18,
     fontWeight: '300',
   },
@@ -927,7 +927,7 @@ const styles = StyleSheet.create({
   bundleBox: {
     borderRadius: 16,
     borderWidth: 1.2,
-    borderColor: '#ECECEC',
+    borderColor: '#F0E5E5',
     overflow: 'hidden',
     padding: 16,
     gap: 14,
@@ -942,8 +942,8 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 4,
     borderWidth: 1.5,
-    borderColor: '#8B1E3F',
-    backgroundColor: 'rgba(212, 163, 115, 0.1)',
+    borderColor: '#A85D63',
+    backgroundColor: 'rgba(216, 154, 124, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -959,7 +959,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 1,
-    backgroundColor: '#D4A373',
+    backgroundColor: '#D89A7C',
   },
   bundleItemInfo: {
     flex: 1,
@@ -969,12 +969,12 @@ const styles = StyleSheet.create({
   },
   bundleItemName: {
     fontSize: 12,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontWeight: '300',
   },
   bundleItemPrice: {
     fontSize: 12,
-    color: '#D4A373',
+    color: '#D89A7C',
     fontWeight: '500',
   },
   bundleTotalRow: {
@@ -982,17 +982,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderTopWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.10)',
+    borderColor: 'rgba(168, 93, 99,0.10)',
     paddingTop: 12,
   },
   bundleTotalLabel: {
     fontSize: 12,
-    color: '#6B7280',
+    color: '#6E6E6E',
     fontWeight: '400',
   },
   bundleTotalValue: {
     fontSize: 16,
-    color: '#D4A373',
+    color: '#D89A7C',
     fontWeight: '600',
   },
   bundleAddButton: {
@@ -1003,7 +1003,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   bundleAddButtonText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,
@@ -1020,7 +1020,7 @@ const styles = StyleSheet.create({
     width: 130,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     padding: 10,
     gap: 6,
     overflow: 'hidden',
@@ -1039,12 +1039,12 @@ const styles = StyleSheet.create({
   },
   relatedName: {
     fontSize: 11,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontWeight: '300',
   },
   relatedPrice: {
     fontSize: 11,
-    color: '#D4A373',
+    color: '#D89A7C',
     fontWeight: '500',
   },
   bottomSpacer: {
@@ -1056,7 +1056,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 90,
     borderTopWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.10)',
+    borderColor: 'rgba(168, 93, 99,0.10)',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
@@ -1069,7 +1069,7 @@ const styles = StyleSheet.create({
     height: 42,
     borderRadius: 10,
     borderWidth: 1.2,
-    borderColor: 'rgba(139, 30, 63,0.12)',
+    borderColor: 'rgba(168, 93, 99,0.12)',
     backgroundColor: 'rgba(255,255,255,0.02)',
   },
   qtyButton: {
@@ -1077,11 +1077,11 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#D4A373',
+    backgroundColor: '#D89A7C',
     borderRadius: 8,
   },
   qtyText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 14,
     fontWeight: '600',
     width: 32,
@@ -1098,12 +1098,12 @@ const styles = StyleSheet.create({
     height: 42,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#8B1E3F',
+    borderColor: '#A85D63',
     justifyContent: 'center',
     alignItems: 'center',
   },
   cartButtonText: {
-    color: '#D4A373',
+    color: '#D89A7C',
     fontSize: 11,
     fontWeight: '600',
     letterSpacing: 1,
@@ -1117,7 +1117,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   buyButtonText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,

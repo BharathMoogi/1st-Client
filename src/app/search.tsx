@@ -19,7 +19,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR SEARCH SCREEN ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B1E3F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A85D63" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
@@ -31,7 +31,7 @@ const SearchIcon = () => (
   </Svg>
 );
 
-const MicIcon = ({ color = '#8B1E3F' }: { color?: string }) => (
+const MicIcon = ({ color = '#A85D63' }: { color?: string }) => (
   <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
     <Path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" />
@@ -45,7 +45,7 @@ const CloseIcon = ({ size = 12, color = 'rgba(0,0,0,0.5)' }: { size?: number, co
 );
 
 const FilterIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B1E3F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A85D63" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
   </Svg>
 );
@@ -199,7 +199,7 @@ export default function SearchScreen() {
     const borderColor = interpolateColor(
       inputBorderGlow.value,
       [0, 1],
-      ['rgba(255, 255, 255, 0.08)', 'rgba(212, 163, 115, 0.7)']
+      ['rgba(255, 255, 255, 0.08)', 'rgba(216, 154, 124, 0.7)']
     );
     return { borderColor };
   });
@@ -231,12 +231,12 @@ export default function SearchScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#FFF7F8', '#FFFFFF', '#FFF7F8']}
+        colors={['#FFF8F7', '#FFFFFF', '#FFF8F7']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
       {/* Ambient gold glow */}
-      <View style={{ position: 'absolute', top: -100, left: SCREEN_WIDTH / 2 - 100, width: 200, height: 200, borderRadius: 100, backgroundColor: 'rgba(212, 163, 115,0.03)' }} />
+      <View style={{ position: 'absolute', top: -100, left: SCREEN_WIDTH / 2 - 100, width: 200, height: 200, borderRadius: 100, backgroundColor: 'rgba(216, 154, 124,0.03)' }} />
 
       {/* --- TOP HEADER APP BAR --- */}
       <Animated.View style={[styles.header, animatedMountStyle]}>
@@ -303,14 +303,14 @@ export default function SearchScreen() {
           {/* Quick Filters Toggle */}
           <TouchableOpacity onPress={() => setFiltersOpen(true)} activeOpacity={0.8} style={styles.filtersToggleBtn}>
             <LinearGradient
-              colors={['rgba(139, 30, 63,0.05)', 'rgba(255,255,255,0.01)']}
+              colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
               style={StyleSheet.absoluteFill}
             />
             <View style={styles.filtersToggleLeft}>
               <FilterIcon />
               <Text style={styles.filtersToggleText}>Advanced Supplement Filters</Text>
             </View>
-            <Svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8B1E3F" strokeWidth="2.5">
+            <Svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#A85D63" strokeWidth="2.5">
               <Path d="m9 18 6-6-6-6" />
             </Svg>
           </TouchableOpacity>
@@ -351,7 +351,7 @@ export default function SearchScreen() {
                   style={styles.popularTag}
                 >
                   <LinearGradient
-                    colors={['rgba(212, 163, 115,0.08)', 'rgba(212, 163, 115,0.01)']}
+                    colors={['rgba(216, 154, 124,0.08)', 'rgba(216, 154, 124,0.01)']}
                     style={StyleSheet.absoluteFill}
                   />
                   <Text style={styles.popularTagText}>{item}</Text>
@@ -396,7 +396,7 @@ export default function SearchScreen() {
           
           <View style={styles.filtersDrawer}>
             <LinearGradient
-              colors={['#FFFFFF', '#FFF7F8']}
+              colors={['#FFFFFF', '#FFF8F7']}
               style={StyleSheet.absoluteFill}
             />
 
@@ -471,7 +471,7 @@ export default function SearchScreen() {
 
             {/* Apply Button */}
             <TouchableOpacity onPress={applyFilters} activeOpacity={0.85} style={styles.applyBtn}>
-              <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
               <Text style={styles.applyBtnText}>APPLY FILTERS</Text>
             </TouchableOpacity>
           </View>
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
     height: 48,
     gap: 10,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     paddingBottom: 10,
   },
   backButton: {
@@ -510,7 +510,7 @@ const styles = StyleSheet.create({
     height: 38,
     borderRadius: 12,
     borderWidth: 1,
-    backgroundColor: 'rgba(139, 30, 63,0.05)',
+    backgroundColor: 'rgba(168, 93, 99,0.05)',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
@@ -519,7 +519,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 13,
   },
   clearTextButton: {
@@ -538,7 +538,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#ECECEC',
+    borderColor: '#F0E5E5',
   },
   bodyScroll: {
     flex: 1,
@@ -551,7 +551,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#ECECEC',
+    borderColor: '#F0E5E5',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -565,7 +565,7 @@ const styles = StyleSheet.create({
   },
   filtersToggleText: {
     fontSize: 12,
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -580,12 +580,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 1.5,
   },
   clearAllText: {
     fontSize: 11,
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontWeight: '500',
     letterSpacing: 0.5,
   },
@@ -624,12 +624,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ECECEC',
+    borderColor: '#F0E5E5',
     overflow: 'hidden',
   },
   popularTagText: {
     fontSize: 11,
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -653,7 +653,7 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
   suggestionMatch: {
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontWeight: '500',
   },
   emptySuggestions: {
@@ -662,7 +662,7 @@ const styles = StyleSheet.create({
   },
   emptySuggestionsText: {
     fontSize: 12,
-    color: '#6B7280',
+    color: '#6E6E6E',
     textAlign: 'center',
   },
 
@@ -680,7 +680,7 @@ const styles = StyleSheet.create({
   voiceHeader: {
     fontSize: 22,
     fontWeight: '300',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 3,
   },
   voiceInstruction: {
@@ -702,17 +702,17 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     borderWidth: 1.5,
-    borderColor: '#8B1E3F',
-    backgroundColor: 'rgba(212, 163, 115, 0.1)',
+    borderColor: '#A85D63',
+    backgroundColor: 'rgba(216, 154, 124, 0.1)',
   },
   voiceMicActiveCircle: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#8B1E3F',
+    backgroundColor: '#A85D63',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#8B1E3F',
+    shadowColor: '#A85D63',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 10,
@@ -728,7 +728,7 @@ const styles = StyleSheet.create({
   closeVoiceText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 1.5,
   },
 
@@ -749,7 +749,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     borderWidth: 1.5,
-    borderColor: '#ECECEC',
+    borderColor: '#F0E5E5',
     overflow: 'hidden',
     padding: 24,
     justifyContent: 'space-between',
@@ -764,7 +764,7 @@ const styles = StyleSheet.create({
   filtersTitle: {
     fontSize: 16,
     fontWeight: '400',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 0.5,
   },
   filtersScroll: {
@@ -794,8 +794,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   filterBadgeActive: {
-    borderColor: '#8B1E3F',
-    backgroundColor: 'rgba(212, 163, 115, 0.08)',
+    borderColor: '#A85D63',
+    backgroundColor: 'rgba(216, 154, 124, 0.08)',
   },
   filterBadgeText: {
     fontSize: 11,
@@ -803,7 +803,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   filterBadgeTextActive: {
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontWeight: '600',
   },
   applyBtn: {
@@ -815,7 +815,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   applyBtnText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1.5,

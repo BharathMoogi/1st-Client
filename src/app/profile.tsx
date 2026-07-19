@@ -16,7 +16,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR PROFILE ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
@@ -28,7 +28,7 @@ const ChevronRightIcon = () => (
 );
 
 const PackageIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2">
     <Path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
     <Path d="M3.27 6.96 12 12.01l8.73-5.05" />
     <Path d="M12 22.08V12" />
@@ -36,49 +36,49 @@ const PackageIcon = () => (
 );
 
 const HeartIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2">
     <Path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
   </Svg>
 );
 
 const BellIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
     <Path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
   </Svg>
 );
 
 const AwardIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2">
     <Circle cx="12" cy="8" r="6" />
     <Path d="M15.47 14L19 22l-7-3-7 3 3.53-8" />
   </Svg>
 );
 
 const TagIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2">
     <Path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-    <line x1="7" y1="7" x2="7.01" y2="7" stroke="#D4A373" strokeWidth="2" />
+    <line x1="7" y1="7" x2="7.01" y2="7" stroke="#D89A7C" strokeWidth="2" />
   </Svg>
 );
 
 const PinIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2">
     <Path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
     <Circle cx="12" cy="10" r="3" />
   </Svg>
 );
 
 const HelpIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2">
     <Circle cx="12" cy="12" r="10" />
     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-    <Line x1="12" y1="17" x2="12.01" y2="17" stroke="#D4A373" strokeWidth="2" />
+    <Line x1="12" y1="17" x2="12.01" y2="17" stroke="#D89A7C" strokeWidth="2" />
   </Svg>
 );
 
 const SettingsIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2">
     <Circle cx="12" cy="12" r="3" />
     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
   </Svg>
@@ -125,7 +125,7 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#FFF7F8', '#FFFFFF', '#FFF7F8']}
+        colors={['#FFF8F7', '#FFFFFF', '#FFF8F7']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -146,7 +146,7 @@ export default function ProfileScreen() {
           {/* Glowing Monogram Avatar */}
           <View style={styles.avatarWrapper}>
             <View style={styles.avatarBorderGlow} />
-            <LinearGradient colors={['#8B1E3F', '#6D1832']} style={styles.avatar}>
+            <LinearGradient colors={['#A85D63', '#8B4A50']} style={styles.avatar}>
               <Text style={styles.avatarText}>BR</Text>
             </LinearGradient>
           </View>
@@ -155,7 +155,7 @@ export default function ProfileScreen() {
           <Text style={styles.userEmailText}>vip.member@aurumwellness.com</Text>
 
           <Animated.View style={[styles.vipBadge, animatedVipStyle]}>
-            <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
             <Text style={styles.vipBadgeText}>VIP GOLD CLUB</Text>
           </Animated.View>
         </View>
@@ -163,7 +163,7 @@ export default function ProfileScreen() {
         {/* --- REWARDS STATUS CARD --- */}
         <TouchableOpacity onPress={() => router.push('/rewards')} style={styles.rewardsCard} activeOpacity={0.9}>
           <LinearGradient
-            colors={['rgba(139, 30, 63,0.05)', 'rgba(255,255,255,0.01)']}
+            colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
             style={StyleSheet.absoluteFill}
           />
           <View style={styles.rewardsTopRow}>
@@ -262,7 +262,7 @@ export default function ProfileScreen() {
           <TouchableOpacity onPress={() => setModalType(null)} activeOpacity={1} style={styles.modalBacking} />
           
           <View style={styles.modalBox}>
-            <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
             
             {modalType === 'rewards' && (
               <View style={styles.modalContent}>
@@ -318,7 +318,7 @@ export default function ProfileScreen() {
         <View style={styles.logoutOverlay}>
           <TouchableOpacity onPress={() => setLogoutConfirmOpen(false)} activeOpacity={1} style={styles.logoutBacking} />
           <View style={styles.logoutDrawer}>
-            <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
             <Text style={styles.logoutTitle}>Logout Profile?</Text>
             <Text style={styles.logoutSubtitle}>You will need to re-authenticate using your login credentials.</Text>
             
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     paddingBottom: 10,
   },
   headerBtn: {
@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 15,
     fontWeight: '400',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 2,
   },
   scrollContainer: {
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
     height: 88,
     borderRadius: 44,
     borderWidth: 1.5,
-    borderColor: '#8B1E3F',
+    borderColor: '#A85D63',
     opacity: 0.25,
   },
   avatar: {
@@ -404,27 +404,27 @@ const styles = StyleSheet.create({
     borderRadius: 38,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#8B1E3F',
+    shadowColor: '#A85D63',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
   },
   avatarText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 22,
     fontWeight: '700',
     letterSpacing: 1,
   },
   userNameText: {
     fontSize: 20,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontWeight: '400',
     letterSpacing: 0.5,
     marginTop: 4,
   },
   userEmailText: {
     fontSize: 12,
-    color: '#6B7280',
+    color: '#6E6E6E',
     fontWeight: '300',
   },
   vipBadge: {
@@ -437,7 +437,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   vipBadgeText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 9,
     fontWeight: '700',
     letterSpacing: 1.5,
@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
   rewardsCard: {
     borderRadius: 16,
     borderWidth: 1.2,
-    borderColor: 'rgba(139, 30, 63,0.10)',
+    borderColor: 'rgba(168, 93, 99,0.10)',
     padding: 16,
     overflow: 'hidden',
     gap: 12,
@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
   rewardsPointsValue: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#8B1E3F',
+    color: '#A85D63',
   },
   progressBarWrapper: {
     height: 6,
@@ -474,14 +474,14 @@ const styles = StyleSheet.create({
   },
   progressBarBackground: {
     height: '100%',
-    backgroundColor: 'rgba(139, 30, 63,0.10)',
+    backgroundColor: 'rgba(168, 93, 99,0.10)',
     borderRadius: 3,
     width: '100%',
   },
   progressBarActive: {
     position: 'absolute',
     height: '100%',
-    backgroundColor: '#8B1E3F',
+    backgroundColor: '#A85D63',
     borderRadius: 3,
   },
   rewardsBottomText: {
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
   menuContainer: {
     borderRadius: 18,
     borderWidth: 1.2,
-    borderColor: 'rgba(139, 30, 63,0.10)',
+    borderColor: 'rgba(168, 93, 99,0.10)',
     padding: 8,
     backgroundColor: 'rgba(255,255,255,0.01)',
   },
@@ -504,7 +504,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 52,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     paddingHorizontal: 12,
   },
   menuItemLeft: {
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     fontSize: 13,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontWeight: '300',
   },
   
@@ -542,7 +542,7 @@ const styles = StyleSheet.create({
   },
   settingToggleText: {
     fontSize: 13,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontWeight: '300',
   },
 
@@ -575,7 +575,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#8B1E3F',
+    color: '#A85D63',
     letterSpacing: 0.5,
     textAlign: 'center',
   },
@@ -603,13 +603,13 @@ const styles = StyleSheet.create({
   addressListTitle: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#8B1E3F',
+    color: '#A85D63',
     alignSelf: 'flex-start',
     marginTop: 6,
   },
   addressListText: {
     fontSize: 11,
-    color: '#6B7280',
+    color: '#6E6E6E',
     alignSelf: 'flex-start',
     fontWeight: '300',
     lineHeight: 16,
@@ -626,7 +626,7 @@ const styles = StyleSheet.create({
   modalCloseBtnText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 1,
   },
 
@@ -655,7 +655,7 @@ const styles = StyleSheet.create({
   logoutTitle: {
     fontSize: 18,
     fontWeight: '500',
-    color: '#1F2937',
+    color: '#2B2B2B',
   },
   logoutSubtitle: {
     fontSize: 12,
@@ -678,7 +678,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoutCancelText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,
@@ -692,7 +692,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   logoutConfirmText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,

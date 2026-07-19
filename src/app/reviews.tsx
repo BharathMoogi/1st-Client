@@ -15,25 +15,25 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR REVIEWS ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
 
 const StarIcon = ({ filled = true, size = 12 }: { filled?: boolean; size?: number }) => (
-  <Svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? '#D4A373' : 'none'} stroke="#D4A373" strokeWidth="1.5">
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? '#D89A7C' : 'none'} stroke="#D89A7C" strokeWidth="1.5">
     <Path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
   </Svg>
 );
 
 const CheckIcon = () => (
-  <Svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M20 6 9 17l-5-5" />
   </Svg>
 );
 
 const PlayIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="#D4A373">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="#D89A7C">
     <Path d="m8 5 10 7-10 7V5z" />
   </Svg>
 );
@@ -138,7 +138,7 @@ export default function ReviewsScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#FFF7F8', '#FFFFFF', '#FFF7F8']}
+        colors={['#FFF8F7', '#FFFFFF', '#FFF8F7']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -159,7 +159,7 @@ export default function ReviewsScreen() {
         {/* --- RATINGS SUMMARY SECTION --- */}
         <View style={styles.summaryCard}>
           <LinearGradient
-            colors={['rgba(139, 30, 63,0.05)', 'rgba(255,255,255,0.01)']}
+            colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
             style={StyleSheet.absoluteFill}
           />
           {/* Left panel: Total rating score */}
@@ -197,24 +197,24 @@ export default function ReviewsScreen() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.mediaSlider}>
           {/* Photo uploads */}
           <View style={styles.mediaBox}>
-            <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
             <Text style={styles.mediaLabelText}>PHOTO</Text>
           </View>
           <View style={styles.mediaBox}>
-            <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
             <Text style={styles.mediaLabelText}>PHOTO</Text>
           </View>
           
           {/* Video uploads (with play button) */}
           <View style={styles.mediaBox}>
-            <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
             <Text style={styles.mediaLabelText}>VIDEO</Text>
             <View style={styles.videoPlayOverlay}>
               <PlayIcon />
             </View>
           </View>
           <View style={styles.mediaBox}>
-            <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
             <Text style={styles.mediaLabelText}>VIDEO</Text>
             <View style={styles.videoPlayOverlay}>
               <PlayIcon />
@@ -264,7 +264,7 @@ export default function ReviewsScreen() {
       {/* --- STICKY WRITE REVIEW CTA --- */}
       <Animated.View style={[styles.stickyFooterBar, animatedFooterStyle]}>
         <TouchableOpacity onPress={() => setWriteModalOpen(true)} activeOpacity={0.85} style={styles.writeCtaBtn}>
-          <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
+          <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
           <Text style={styles.writeCtaText}>WRITE REVIEW</Text>
         </TouchableOpacity>
       </Animated.View>
@@ -275,7 +275,7 @@ export default function ReviewsScreen() {
           <TouchableOpacity onPress={() => setWriteModalOpen(false)} activeOpacity={1} style={styles.modalBacking} />
           
           <View style={styles.modalBox}>
-            <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
             
             {/* Modal header */}
             <View style={styles.modalHeaderRow}>
@@ -330,7 +330,7 @@ export default function ReviewsScreen() {
 
               {/* Submit CTA */}
               <TouchableOpacity onPress={handleSubmitReview} activeOpacity={0.85} style={styles.submitReviewBtn}>
-                <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.submitReviewBtnText}>SUBMIT REVIEW</Text>
               </TouchableOpacity>
 
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     paddingBottom: 10,
   },
   headerBtn: {
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 2,
   },
   scrollContainer: {
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
   summaryCard: {
     borderRadius: 18,
     borderWidth: 1.2,
-    borderColor: 'rgba(139, 30, 63,0.10)',
+    borderColor: 'rgba(168, 93, 99,0.10)',
     backgroundColor: 'rgba(255,255,255,0.01)',
     overflow: 'hidden',
     flexDirection: 'row',
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
   averageScoreText: {
     fontSize: 36,
     fontWeight: '800',
-    color: '#8B1E3F',
+    color: '#A85D63',
   },
   starsRowInline: {
     flexDirection: 'row',
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
   },
   totalReviewsCount: {
     fontSize: 9,
-    color: '#6B7280',
+    color: '#6E6E6E',
     fontWeight: '300',
   },
   summaryBarsRight: {
@@ -423,7 +423,7 @@ const styles = StyleSheet.create({
   },
   rowStarLabel: {
     fontSize: 10,
-    color: '#6B7280',
+    color: '#6E6E6E',
     width: 18,
     textAlign: 'right',
   },
@@ -442,12 +442,12 @@ const styles = StyleSheet.create({
   barActive: {
     position: 'absolute',
     height: '100%',
-    backgroundColor: '#8B1E3F',
+    backgroundColor: '#A85D63',
     borderRadius: 2,
   },
   rowPctLabel: {
     fontSize: 9,
-    color: '#6B7280',
+    color: '#6E6E6E',
     width: 26,
     textAlign: 'left',
   },
@@ -471,7 +471,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 12,
     borderWidth: 1.2,
-    borderColor: 'rgba(139, 30, 63,0.10)',
+    borderColor: 'rgba(168, 93, 99,0.10)',
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundcolor: '#6B7280',
+    backgroundcolor: '#6E6E6E',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0.5,
@@ -502,7 +502,7 @@ const styles = StyleSheet.create({
   reviewCard: {
     borderRadius: 16,
     borderWidth: 1.2,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     backgroundColor: 'rgba(255,255,255,0.005)',
     overflow: 'hidden',
     padding: 16,
@@ -529,7 +529,7 @@ const styles = StyleSheet.create({
   },
   authorName: {
     fontSize: 12,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontWeight: '500',
   },
   verifiedBadge: {
@@ -546,7 +546,7 @@ const styles = StyleSheet.create({
   verifiedText: {
     fontSize: 8,
     fontWeight: '600',
-    color: '#8B1E3F',
+    color: '#A85D63',
   },
   reviewComment: {
     fontSize: 12,
@@ -562,7 +562,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 90,
     borderTopWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     paddingHorizontal: 20,
@@ -575,7 +575,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   writeCtaText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1.5,
@@ -607,13 +607,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     paddingBottom: 12,
   },
   modalTitle: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#1F2937',
+    color: '#2B2B2B',
   },
   modalCloseBtn: {
     width: 24,
@@ -646,9 +646,9 @@ const styles = StyleSheet.create({
     height: 42,
     borderRadius: 10,
     borderWidth: 1.2,
-    borderColor: 'rgba(139, 30, 63,0.10)',
+    borderColor: 'rgba(168, 93, 99,0.10)',
     backgroundColor: 'rgba(255,255,255,0.02)',
-    color: '#1F2937',
+    color: '#2B2B2B',
     paddingHorizontal: 16,
     fontSize: 12,
   },
@@ -656,9 +656,9 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 10,
     borderWidth: 1.2,
-    borderColor: 'rgba(139, 30, 63,0.10)',
+    borderColor: 'rgba(168, 93, 99,0.10)',
     backgroundColor: 'rgba(255,255,255,0.02)',
-    color: '#1F2937',
+    color: '#2B2B2B',
     paddingHorizontal: 16,
     paddingTop: 12,
     fontSize: 12,
@@ -676,7 +676,7 @@ const styles = StyleSheet.create({
   },
   uploadSimulatorText: {
     fontSize: 11,
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontWeight: '500',
   },
   submitReviewBtn: {
@@ -688,7 +688,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   submitReviewBtnText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,

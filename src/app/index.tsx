@@ -17,10 +17,10 @@ import { useRouter } from 'expo-router';
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // Luxury Design Tokens
-const TEAL = '#8B1E3F';
-const TEAL_LIGHT = '#D4A373';
-const TEAL_DARK = '#6D1832';
-const BG = '#FFF7F8';
+const TEAL = '#A85D63';
+const TEAL_LIGHT = '#D89A7C';
+const TEAL_DARK = '#8B4A50';
+const BG = '#FFF8F7';
 const CARD_BG = '#FFFFFF';
 
 // --- VECTOR ICONS FOR HOME SCREEN ---
@@ -32,14 +32,14 @@ const SearchIcon = () => (
 );
 
 const BellIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
     <Path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
   </Svg>
 );
 
 const CartIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Circle cx="8" cy="21" r="1" />
     <Circle cx="19" cy="21" r="1" />
     <Path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
@@ -47,7 +47,7 @@ const CartIcon = () => (
 );
 
 const PackageIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
     <Path d="M3.27 6.96 12 12.01l8.73-5.05" />
     <Path d="M12 22.08V12" />
@@ -55,27 +55,27 @@ const PackageIcon = () => (
 );
 
 const HeartIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
   </Svg>
 );
 
 const ProfileIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
     <Circle cx="12" cy="7" r="4" />
   </Svg>
 );
 
 const LocationIcon = () => (
-  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
     <Circle cx="12" cy="10" r="3" />
   </Svg>
 );
 
 const StarIcon = () => (
-  <Svg width="10" height="10" viewBox="0 0 24 24" fill="#D4A373">
+  <Svg width="10" height="10" viewBox="0 0 24 24" fill="#D89A7C">
     <Path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
   </Svg>
 );
@@ -88,7 +88,7 @@ const BANNERS = [
     tagline: 'ULTIMATE PERFORMANCE',
     description: 'Fuel muscle growth and repair with premium quality micro-filtered whey isolate.',
     promo: '20% OFF TODAY',
-    color: '#8B1E3F',
+    color: '#FCEEEF',
   },
   {
     id: 2,
@@ -96,7 +96,7 @@ const BANNERS = [
     tagline: 'MAXIMUM RAW POWER',
     description: 'Boost endurance, strength, and cellular ATP production with high-purity powder.',
     promo: 'BUY 1 GET 1',
-    color: '#6D1832',
+    color: '#F5E8E0',
   },
   {
     id: 3,
@@ -104,7 +104,7 @@ const BANNERS = [
     tagline: 'DAILY VITALITY MATRIX',
     description: 'Essential chelated minerals and active vitamins supporting immunity & energy.',
     promo: 'SPECIAL PRICE',
-    color: '#4B1025',
+    color: '#FEF0EC',
   },
 ];
 
@@ -282,7 +282,7 @@ export default function HomeScreen() {
     <ScrollView style={[styles.container, { alignSelf: 'center', width: '100%', maxWidth: 800 }]} bounces={false} showsVerticalScrollIndicator={false}>
       {/* Background Linear Gradients */}
       <LinearGradient
-        colors={['#FFF7F8', '#FFFFFF', '#FFF7F8']}
+        colors={['#FFF8F7', '#FFFFFF', '#FFF8F7']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -329,27 +329,27 @@ export default function HomeScreen() {
       <Animated.View style={[styles.carouselContainer, animatedHeroStyle]}>
         <Animated.View style={[styles.bannerCard, animatedBannerStyle, { backgroundColor: BANNERS[activeBanner].color }]}>
           <LinearGradient
-            colors={['rgba(139, 30, 63, 0.3)', 'rgba(75, 16, 37, 0.9)']}
+            colors={['rgba(252, 238, 239, 0.0)', 'rgba(168, 93, 99, 0.08)']}
             style={StyleSheet.absoluteFill}
           />
-          {/* Burgundy border top line */}
-          <View style={styles.bannerGoldLine} />
+          {/* Soft blush accent line */}
+          <View style={[styles.bannerGoldLine, { backgroundColor: '#A85D63' }]} />
           <View style={styles.bannerContent}>
-            <Text style={[styles.bannerTagline, { color: '#D4A373' }]}>{BANNERS[activeBanner].tagline}</Text>
-            <Text style={[styles.bannerTitle, { color: '#FFFFFF' }]}>{BANNERS[activeBanner].title}</Text>
-            <Text style={[styles.bannerDesc, { color: 'rgba(255,255,255,0.75)' }]}>{BANNERS[activeBanner].description}</Text>
+            <Text style={[styles.bannerTagline, { color: '#A85D63' }]}>{BANNERS[activeBanner].tagline}</Text>
+            <Text style={[styles.bannerTitle, { color: '#2B2B2B' }]}>{BANNERS[activeBanner].title}</Text>
+            <Text style={[styles.bannerDesc, { color: '#6E6E6E' }]}>{BANNERS[activeBanner].description}</Text>
             <View style={styles.bannerBottomRow}>
-              <View style={[styles.bannerBadge, { backgroundColor: 'rgba(212,163,115,0.2)', borderColor: '#D4A373' }]}>
-                <Text style={[styles.bannerBadgeText, { color: '#D4A373' }]}>{BANNERS[activeBanner].promo}</Text>
+              <View style={[styles.bannerBadge, { backgroundColor: 'rgba(200, 122, 90, 0.12)', borderColor: '#C87A5A' }]}>
+                <Text style={[styles.bannerBadgeText, { color: '#C87A5A' }]}>{BANNERS[activeBanner].promo}</Text>
               </View>
-              <TouchableOpacity activeOpacity={0.8} style={styles.bannerButton}>
+              <TouchableOpacity activeOpacity={0.8} style={[styles.bannerButton, { borderRadius: 50 }]}>
                 <LinearGradient
-                  colors={['#D4A373', '#B8864E']}
+                  colors={['#C87A5A', '#A85D63']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
-                  style={StyleSheet.absoluteFill}
+                  style={[StyleSheet.absoluteFill, { borderRadius: 50 }]}
                 />
-                <Text style={[styles.bannerButtonText, { color: '#FFFFFF' }]}>BUY NOW</Text>
+                <Text style={[styles.bannerButtonText, { color: '#FFFFFF', fontWeight: '600' }]}>SHOP NOW</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -373,7 +373,7 @@ export default function HomeScreen() {
       <Animated.View style={[styles.sectionContainer, animatedContentStyle]}>
         <View style={styles.proteinGoalBox}>
           <LinearGradient
-            colors={['rgba(212, 163, 115, 0.06)', 'rgba(255, 255, 255, 0.01)']}
+            colors={['rgba(216, 154, 124, 0.06)', 'rgba(255, 255, 255, 0.01)']}
             style={StyleSheet.absoluteFill}
           />
           <View style={styles.proteinHeader}>
@@ -390,7 +390,7 @@ export default function HomeScreen() {
           <View style={styles.progressTrack}>
             <Animated.View style={[styles.progressFill, animatedProteinStyle]}>
               <LinearGradient
-                colors={['#8B1E3F', '#D4A373']}
+                colors={['#A85D63', '#D89A7C']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={StyleSheet.absoluteFill}
@@ -412,7 +412,7 @@ export default function HomeScreen() {
             <TouchableOpacity key={cat.id} activeOpacity={0.8} style={styles.categoryItem}>
               <View style={styles.categoryCircle}>
                 <LinearGradient
-                  colors={['rgba(212, 163, 115, 0.15)', 'rgba(212, 163, 115, 0.02)']}
+                  colors={['rgba(216, 154, 124, 0.15)', 'rgba(216, 154, 124, 0.02)']}
                   style={StyleSheet.absoluteFill}
                 />
                 <Text style={styles.categoryCircleText}>{cat.iconText}</Text>
@@ -443,11 +443,11 @@ export default function HomeScreen() {
           {FLASH_SALE_PRODUCTS.map((prod) => (
             <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={prod.id} style={styles.floatingProductCard} activeOpacity={0.95}>
               <LinearGradient
-                colors={['rgba(139, 30, 63,0.05)', 'rgba(255,255,255,0.01)']}
+                colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
                 style={StyleSheet.absoluteFill}
               />
               <View style={styles.productImagePlaceholder}>
-                <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.productImageText}>{prod.imageText}</Text>
                 <View style={styles.saveBadge}>
                   <Text style={styles.saveBadgeText}>{prod.save}</Text>
@@ -467,7 +467,7 @@ export default function HomeScreen() {
               </View>
 
               <TouchableOpacity activeOpacity={0.85} style={styles.quickAddButton}>
-                <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.quickAddButtonText}>QUICK ADD</Text>
               </TouchableOpacity>
             </TouchableOpacity>
@@ -488,11 +488,11 @@ export default function HomeScreen() {
           {BEST_SELLERS.map((prod) => (
             <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.price)} key={prod.id} style={styles.floatingProductCard} activeOpacity={0.95}>
               <LinearGradient
-                colors={['rgba(139, 30, 63,0.05)', 'rgba(255,255,255,0.01)']}
+                colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
                 style={StyleSheet.absoluteFill}
               />
               <View style={styles.productImagePlaceholder}>
-                <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.productImageText}>{prod.imageText}</Text>
               </View>
 
@@ -506,7 +506,7 @@ export default function HomeScreen() {
               </View>
 
               <TouchableOpacity activeOpacity={0.85} style={styles.quickAddButton}>
-                <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.quickAddButtonText}>ADD TO CART</Text>
               </TouchableOpacity>
             </TouchableOpacity>
@@ -521,7 +521,7 @@ export default function HomeScreen() {
           {BRANDS.map((brand, i) => (
             <TouchableOpacity key={i} activeOpacity={0.8} style={styles.brandCard}>
               <LinearGradient
-                colors={['rgba(212, 163, 115, 0.12)', 'rgba(212, 163, 115, 0.02)']}
+                colors={['rgba(216, 154, 124, 0.12)', 'rgba(216, 154, 124, 0.02)']}
                 style={StyleSheet.absoluteFill}
               />
               <Text style={styles.brandCardText}>{brand}</Text>
@@ -537,11 +537,11 @@ export default function HomeScreen() {
           {FLASH_SALE_PRODUCTS.map((prod) => (
             <TouchableOpacity onPress={() => handleProductPress(prod.name, prod.salePrice)} key={`rec-${prod.id}`} style={styles.gridProductCard} activeOpacity={0.95}>
               <LinearGradient
-                colors={['rgba(139, 30, 63,0.05)', 'rgba(255,255,255,0.01)']}
+                colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
                 style={StyleSheet.absoluteFill}
               />
               <View style={styles.gridImagePlaceholder}>
-                <LinearGradient colors={['#FFFFFF', '#FFF7F8']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#FFFFFF', '#FFF8F7']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.gridImageText}>{prod.imageText}</Text>
               </View>
 
@@ -555,7 +555,7 @@ export default function HomeScreen() {
               </View>
 
               <TouchableOpacity activeOpacity={0.85} style={styles.gridAddButton}>
-                <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.quickAddButtonText}>QUICK ADD</Text>
               </TouchableOpacity>
             </TouchableOpacity>
@@ -578,7 +578,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     borderRadius: 150,
-    backgroundColor: 'rgba(139, 30, 63, 0.02)',
+    backgroundColor: 'rgba(168, 93, 99, 0.02)',
   },
   topBar: {
     flexDirection: 'row',
@@ -599,24 +599,24 @@ const styles = StyleSheet.create({
   locationHeader: {
     fontSize: 9,
     fontWeight: '400',
-    color: '#6B7280',
+    color: '#6E6E6E',
     textTransform: 'uppercase',
     letterSpacing: 1.2,
   },
   locationValue: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#1F2937',
+    color: '#2B2B2B',
   },
   notificationButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(139, 30, 63, 0.02)',
+    backgroundColor: 'rgba(168, 93, 99, 0.02)',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#ECECEC',
+    borderColor: '#F0E5E5',
     position: 'relative',
   },
   unreadDot: {
@@ -636,8 +636,8 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#ECECEC',
-    backgroundColor: 'rgba(139, 30, 63,0.05)',
+    borderColor: '#F0E5E5',
+    backgroundColor: 'rgba(168, 93, 99,0.05)',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
@@ -645,12 +645,12 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 13,
   },
   searchPlaceholderText: {
     flex: 1,
-    color: '#9CA3AF',
+    color: '#6E6E6E',
     fontSize: 13,
   },
   carouselContainer: {
@@ -663,21 +663,22 @@ const styles = StyleSheet.create({
     height: 185,
     borderRadius: 24,
     borderWidth: 1,
-    borderColor: '#ECECEC',
+    borderColor: '#F0E5E5',
     overflow: 'hidden',
-    shadowColor: '#8B1E3F',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
-    elevation: 8,
+    shadowColor: '#A85D63',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 6,
   },
   bannerGoldLine: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    height: 1.5,
-    backgroundColor: 'rgba(212, 163, 115, 0.4)',
+    height: 2,
+    backgroundColor: '#A85D63',
+    opacity: 0.35,
   },
   bannerContent: {
     flex: 1,
@@ -687,19 +688,19 @@ const styles = StyleSheet.create({
   bannerTagline: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#8B1E3F',
+    color: '#A85D63',
     letterSpacing: 2.5,
   },
   bannerTitle: {
     fontSize: 20,
     fontWeight: '300',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 1.5,
     marginTop: 4,
   },
   bannerDesc: {
     fontSize: 11,
-    color: '#6B7280',
+    color: '#6E6E6E',
     lineHeight: 16,
     fontWeight: '300',
     marginVertical: 6,
@@ -710,28 +711,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bannerBadge: {
-    backgroundColor: 'rgba(139, 30, 63, 0.02)',
+    backgroundColor: 'rgba(200, 122, 90, 0.08)',
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 8,
-    borderWidth: 0.5,
-    borderColor: 'rgba(212, 163, 115,0.35)',
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: '#C87A5A',
   },
   bannerBadgeText: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#8B1E3F',
+    color: '#C87A5A',
     letterSpacing: 1.2,
   },
   bannerButton: {
-    paddingHorizontal: 18,
-    paddingVertical: 9,
-    borderRadius: 12,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 50,
     overflow: 'hidden',
     position: 'relative',
   },
   bannerButtonText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 1.2,
@@ -745,10 +746,10 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 2.5,
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: '#F0E5E5',
   },
   indicatorDotActive: {
-    backgroundColor: '#8B1E3F',
+    backgroundColor: '#A85D63',
     width: 20,
     borderRadius: 3,
   },
@@ -762,7 +763,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '300',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 1.2,
     marginBottom: 14,
   },
@@ -778,32 +779,33 @@ const styles = StyleSheet.create({
     width: 68,
     height: 68,
     borderRadius: 34,
-    borderWidth: 1,
-    borderColor: 'rgba(212, 163, 115, 0.3)',
+    borderWidth: 1.5,
+    borderColor: '#F0E5E5',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    backgroundColor: 'rgba(139, 30, 63, 0.02)',
+    backgroundColor: '#FFFFFF',
   },
   categoryCircleText: {
     fontSize: 11,
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontWeight: '700',
     letterSpacing: 1.2,
   },
   categoryName: {
     fontSize: 11,
-    color: 'rgba(255,255,255,0.55)',
+    color: '#6E6E6E',
     fontWeight: '400',
     textAlign: 'center',
   },
   proteinGoalBox: {
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
+    borderColor: '#F0E5E5',
     overflow: 'hidden',
     padding: 16,
     gap: 12,
+    backgroundColor: '#FFFFFF',
   },
   proteinHeader: {
     flexDirection: 'row',
@@ -812,25 +814,25 @@ const styles = StyleSheet.create({
   },
   proteinTitle: {
     fontSize: 14,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontWeight: '400',
   },
   proteinSubtitle: {
     fontSize: 10,
-    color: '#6B7280',
+    color: '#6E6E6E',
   },
   proteinIntakeText: {
     fontSize: 13,
     color: 'rgba(0,0,0,0.6)',
   },
   goldTextBold: {
-    color: '#D4A373',
+    color: '#D89A7C',
     fontWeight: '600',
   },
   progressTrack: {
     height: 8,
     borderRadius: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: '#FCEEEF',
     overflow: 'hidden',
   },
   progressFill: {
@@ -844,12 +846,12 @@ const styles = StyleSheet.create({
   },
   proteinRemaining: {
     fontSize: 10,
-    color: 'rgba(255, 255, 255, 0.45)',
+    color: '#6E6E6E',
   },
   proteinPercent: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#D4A373',
+    color: '#D89A7C',
   },
   sectionHeaderRow: {
     flexDirection: 'row',
@@ -865,11 +867,11 @@ const styles = StyleSheet.create({
   flashSaleTitle: {
     fontSize: 18,
     fontWeight: '300',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 1.2,
   },
   countdownBadge: {
-    backgroundColor: '#8B1E3F',
+    backgroundColor: '#A85D63',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
@@ -882,7 +884,7 @@ const styles = StyleSheet.create({
   },
   seeAllText: {
     fontSize: 10,
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontWeight: '700',
     letterSpacing: 1.5,
   },
@@ -894,7 +896,7 @@ const styles = StyleSheet.create({
     width: 165,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#ECECEC',
+    borderColor: '#F0E5E5',
     backgroundColor: 'rgba(23, 23, 23, 0.8)',
     overflow: 'hidden',
     shadowColor: '#000000',
@@ -919,7 +921,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     left: 8,
-    backgroundColor: '#8B1E3F',
+    backgroundColor: '#A85D63',
     paddingHorizontal: 7,
     paddingVertical: 3,
     borderRadius: 6,
@@ -927,7 +929,7 @@ const styles = StyleSheet.create({
   saveBadgeText: {
     fontSize: 8,
     fontWeight: '800',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 0.5,
   },
   productDetails: {
@@ -942,11 +944,11 @@ const styles = StyleSheet.create({
   ratingText: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#8B1E3F',
+    color: '#A85D63',
   },
   productName: {
     fontSize: 12,
-    color: '#1F2937',
+    color: '#2B2B2B',
     lineHeight: 16,
     fontWeight: '400',
     height: 32,
@@ -958,18 +960,18 @@ const styles = StyleSheet.create({
   },
   originalPrice: {
     fontSize: 11,
-    color: '#6B7280',
+    color: '#6E6E6E',
     textDecorationLine: 'underline',
   },
   salePrice: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#8B1E3F',
+    color: '#A85D63',
   },
   originalPriceText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#1F2937',
+    color: '#2B2B2B',
   },
   quickAddButton: {
     height: 38,
@@ -979,7 +981,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   quickAddButtonText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 1.2,
@@ -992,15 +994,15 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: 'rgba(212, 163, 115, 0.25)',
+    borderColor: 'rgba(216, 154, 124, 0.25)',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    backgroundColor: 'rgba(139, 30, 63, 0.02)',
+    backgroundColor: 'rgba(168, 93, 99, 0.02)',
   },
   brandCardText: {
     fontSize: 11,
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontWeight: '700',
     letterSpacing: 2,
   },
@@ -1013,7 +1015,7 @@ const styles = StyleSheet.create({
     width: '47%',
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#ECECEC',
+    borderColor: '#F0E5E5',
     overflow: 'hidden',
     backgroundColor: '#FFFFFF',
   },
@@ -1025,19 +1027,19 @@ const styles = StyleSheet.create({
   gridImageText: {
     fontSize: 16,
     fontWeight: '200',
-    color: 'rgba(212, 163, 115, 0.2)',
+    color: 'rgba(216, 154, 124, 0.2)',
     letterSpacing: 2,
   },
   gridProductName: {
     fontSize: 12,
-    color: '#1F2937',
+    color: '#2B2B2B',
     lineHeight: 16,
     height: 32,
   },
   gridPriceText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#8B1E3F',
+    color: '#A85D63',
   },
   gridAddButton: {
     height: 36,

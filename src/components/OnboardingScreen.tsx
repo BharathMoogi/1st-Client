@@ -178,7 +178,7 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
           style={styles.buttonContainer}
         >
           <LinearGradient
-            colors={['#8B1E3F', '#6D1832']}
+            colors={['#A85D63', '#8B4A50']}
             style={styles.buttonGradient}
           />
           
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 18,
     fontWeight: '300',
-    color: '#D4A373',
+    color: '#D89A7C',
     letterSpacing: 4,
   },
   skipText: {
@@ -250,14 +250,14 @@ const styles = StyleSheet.create({
   subtitleText: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#D4A373',
+    color: '#D89A7C',
     letterSpacing: 3,
     textTransform: 'uppercase',
   },
   titleText: {
     fontSize: 32,
     fontWeight: '300',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 1,
     lineHeight: 40,
   },
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
   },
   dotActive: {
     width: 24,
-    backgroundColor: '#D4A373',
+    backgroundColor: '#D89A7C',
   },
   dotInactive: {
     width: 8,
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    shadowColor: '#6D1832',
+    shadowColor: '#8B4A50',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 10,

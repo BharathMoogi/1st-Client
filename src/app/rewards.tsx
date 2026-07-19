@@ -17,7 +17,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR REWARDS ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A373" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D89A7C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
@@ -30,13 +30,13 @@ const LockIcon = () => (
 );
 
 const CheckIcon = () => (
-  <Svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#8B1E3F" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#A85D63" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M20 6 9 17l-5-5" />
   </Svg>
 );
 
 const CopyIcon = () => (
-  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B1E3F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A85D63" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
     <Path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
   </Svg>
@@ -118,7 +118,7 @@ export default function RewardsScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#FFF7F8', '#FFFFFF', '#FFF7F8']}
+        colors={['#FFF8F7', '#FFFFFF', '#FFF8F7']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -139,7 +139,7 @@ export default function RewardsScreen() {
         {/* --- REWARDS POINTS CARD & PROGRESS BAR --- */}
         <View style={styles.pointsCard}>
           <LinearGradient
-            colors={['rgba(212, 163, 115, 0.15)', 'rgba(0, 0, 0, 0.5)']}
+            colors={['rgba(216, 154, 124, 0.15)', 'rgba(0, 0, 0, 0.5)']}
             style={StyleSheet.absoluteFill}
           />
           <Text style={styles.pointsLabel}>REWARDS BALANCE</Text>
@@ -207,7 +207,7 @@ export default function RewardsScreen() {
             return (
               <View key={ach.id} style={[styles.achievementCard, !completed ? styles.achievementCardLocked : null]}>
                 <LinearGradient
-                  colors={['rgba(139, 30, 63,0.05)', 'rgba(255,255,255,0.01)']}
+                  colors={['rgba(168, 93, 99,0.05)', 'rgba(255,255,255,0.01)']}
                   style={StyleSheet.absoluteFill}
                 />
                 <View style={styles.achievementHeaderRow}>
@@ -235,7 +235,7 @@ export default function RewardsScreen() {
         <Text style={styles.sectionHeaderTitle}>REFERRAL PROGRAM</Text>
         <View style={styles.referralCard}>
           <LinearGradient
-            colors={['rgba(212, 163, 115, 0.12)', 'rgba(212, 163, 115, 0.02)']}
+            colors={['rgba(216, 154, 124, 0.12)', 'rgba(216, 154, 124, 0.02)']}
             style={StyleSheet.absoluteFill}
           />
           <Text style={styles.referralTitle}>Invite Friends, Earn Gold Points</Text>
@@ -250,7 +250,7 @@ export default function RewardsScreen() {
             </View>
             <TouchableOpacity onPress={handleCopyCode} activeOpacity={0.85}>
               <Animated.View style={[styles.copyBtn, animatedCopyBtnStyle]}>
-                <LinearGradient colors={['#8B1E3F', '#6D1832']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
                 {copied ? <Text style={styles.copyBtnText}>COPIED!</Text> : (
                   <View style={styles.copyBtnInner}>
                     <CopyIcon />
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     height: 48,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     paddingBottom: 10,
   },
   headerBtn: {
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#1F2937',
+    color: '#2B2B2B',
     letterSpacing: 2,
   },
   scrollContainer: {
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
   pointsCard: {
     borderRadius: 24,
     borderWidth: 1.5,
-    borderColor: 'rgba(212, 163, 115, 0.25)',
+    borderColor: 'rgba(216, 154, 124, 0.25)',
     padding: 24,
     alignItems: 'center',
     overflow: 'hidden',
@@ -320,19 +320,19 @@ const styles = StyleSheet.create({
   pointsLabel: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#8B1E3F',
+    color: '#A85D63',
     letterSpacing: 2,
   },
   pointsValue: {
     fontSize: 48,
     fontWeight: '800',
-    color: '#8B1E3F',
+    color: '#A85D63',
     letterSpacing: 1,
     marginTop: 6,
   },
   pointsSubText: {
     fontSize: 12,
-    color: '#6B7280',
+    color: '#6E6E6E',
     fontWeight: '400',
     letterSpacing: 1.5,
   },
@@ -348,14 +348,14 @@ const styles = StyleSheet.create({
   },
   progressBarBackground: {
     height: '100%',
-    backgroundColor: 'rgba(139, 30, 63,0.12)',
+    backgroundColor: 'rgba(168, 93, 99,0.12)',
     borderRadius: 4,
     width: '100%',
   },
   progressBarActive: {
     position: 'absolute',
     height: '100%',
-    backgroundColor: '#8B1E3F',
+    backgroundColor: '#A85D63',
     borderRadius: 4,
   },
   progressLabelsRow: {
@@ -365,12 +365,12 @@ const styles = StyleSheet.create({
   },
   progressLabelLeft: {
     fontSize: 10,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontWeight: '500',
   },
   progressLabelRight: {
     fontSize: 10,
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontWeight: '600',
   },
 
@@ -394,12 +394,12 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 16,
     borderWidth: 1.2,
-    borderColor: 'rgba(139, 30, 63,0.08)',
+    borderColor: 'rgba(168, 93, 99,0.08)',
     backgroundColor: 'rgba(255,255,255,0.01)',
     overflow: 'hidden',
   },
   levelRowActive: {
-    borderColor: 'rgba(212, 163, 115, 0.25)',
+    borderColor: 'rgba(216, 154, 124, 0.25)',
   },
   levelLeft: {
     flexDirection: 'row',
@@ -411,7 +411,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#8B1E3F',
+    backgroundColor: '#A85D63',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -423,16 +423,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(139, 30, 63,0.12)',
+    borderColor: 'rgba(168, 93, 99,0.12)',
   },
   levelTitleActive: {
     fontSize: 13,
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontWeight: '600',
   },
   levelTitlePending: {
     fontSize: 13,
-    color: '#6B7280',
+    color: '#6E6E6E',
     fontWeight: '400',
   },
   levelSubtitle: {
@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
   levelStatusTextActive: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#8B1E3F',
+    color: '#A85D63',
     letterSpacing: 0.5,
   },
   levelStatusTextPending: {
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
     width: (SCREEN_WIDTH - 52) / 2, // 2 column math
     borderRadius: 16,
     borderWidth: 1.2,
-    borderColor: 'rgba(139, 30, 63,0.10)',
+    borderColor: 'rgba(168, 93, 99,0.10)',
     backgroundColor: 'rgba(255,255,255,0.01)',
     overflow: 'hidden',
     padding: 12,
@@ -487,7 +487,7 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
     borderRadius: 9,
-    backgroundColor: '#8B1E3F',
+    backgroundColor: '#A85D63',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -499,23 +499,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(139, 30, 63,0.12)',
+    borderColor: 'rgba(168, 93, 99,0.12)',
   },
   achievementStatusText: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#8B1E3F',
+    color: '#A85D63',
   },
   achievementStatusTextLocked: {
     color: 'rgba(255,255,255,0.35)',
   },
   achievementName: {
     fontSize: 12,
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontWeight: '500',
   },
   achievementNameLocked: {
-    color: '#6B7280',
+    color: '#6E6E6E',
   },
   achievementDescription: {
     fontSize: 9,
@@ -528,7 +528,7 @@ const styles = StyleSheet.create({
   referralCard: {
     borderRadius: 18,
     borderWidth: 1.2,
-    borderColor: '#ECECEC',
+    borderColor: '#F0E5E5',
     padding: 18,
     overflow: 'hidden',
     gap: 12,
@@ -536,7 +536,7 @@ const styles = StyleSheet.create({
   referralTitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#1F2937',
+    color: '#2B2B2B',
   },
   referralSubtitle: {
     fontSize: 12,
@@ -554,13 +554,13 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'rgba(212, 163, 115, 0.3)',
+    borderColor: 'rgba(216, 154, 124, 0.3)',
     backgroundColor: 'rgba(0,0,0,0.3)',
     justifyContent: 'center',
     paddingHorizontal: 16,
   },
   codeText: {
-    color: '#8B1E3F',
+    color: '#A85D63',
     fontSize: 13,
     fontWeight: '600',
     letterSpacing: 1,
@@ -579,7 +579,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   copyBtnText: {
-    color: '#1F2937',
+    color: '#2B2B2B',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 0.5,
