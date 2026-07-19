@@ -84,19 +84,23 @@ const StarIcon = () => (
 const BANNERS = [
   {
     id: 1,
-    title: 'GOLD STANDARD WHEY',
-    tagline: 'ULTIMATE PERFORMANCE',
+    title: 'AURUM WHEY ISOLATE',
+    tagline: 'PREMIUM ACTIVE NUTRITION',
     description: 'Fuel muscle growth and repair with premium quality micro-filtered whey isolate.',
-    promo: '20% OFF TODAY',
+    promo: '20% OFF FIRST ORDER',
     color: '#FCEEEF',
+    image: require('../../assets/images/whey_protein_banner.png'),
+    imageKey: 'whey'
   },
   {
     id: 2,
-    title: 'MICRONIZED CREATINE',
-    tagline: 'MAXIMUM RAW POWER',
-    description: 'Boost endurance, strength, and cellular ATP production with high-purity powder.',
-    promo: 'BUY 1 GET 1',
-    color: '#F5E8E0',
+    title: 'AURUM CREATINE M3',
+    tagline: 'EXPLOSIVE POWER MATRIX',
+    description: '100% pure micronized creatine monohydrate for enhanced strength, power & volume.',
+    promo: 'BEST SELLER',
+    color: '#FFF8F7',
+    image: require('../../assets/images/muscleblaze_creatine.png'),
+    imageKey: 'muscleblaze'
   },
   {
     id: 3,
@@ -105,6 +109,8 @@ const BANNERS = [
     description: 'Essential chelated minerals and active vitamins supporting immunity & energy.',
     promo: 'SPECIAL PRICE',
     color: '#FEF0EC',
+    image: require('../../assets/images/multivitamins_banner.png'),
+    imageKey: 'multivitamin'
   },
 ];
 
@@ -260,6 +266,8 @@ export default function HomeScreen() {
   // Reanimated shared values
   const proteinProgressWidth = useSharedValue(0);
   const bannerOpacity = useSharedValue(1);
+  const productImageTranslateX = useSharedValue(0);
+  const productImageOpacity = useSharedValue(1);
 
   // Mount stagger animations
   const heroOpacity = useSharedValue(0);
@@ -282,10 +290,21 @@ export default function HomeScreen() {
   // Auto-slide banners
   useEffect(() => {
     const timer = setInterval(() => {
-      bannerOpacity.value = withTiming(0, { duration: 300 }, (finished) => {
+      // Step 1: Slide out current image to the left and fade out
+      productImageTranslateX.value = withTiming(-60, { duration: 250 });
+      productImageOpacity.value = withTiming(0, { duration: 200 });
+
+      bannerOpacity.value = withTiming(0, { duration: 250 }, (finished) => {
         if (finished) {
           runOnJS(setActiveBanner)((activeBanner + 1) % BANNERS.length);
-          bannerOpacity.value = withTiming(1, { duration: 400 });
+
+          // Step 2: Set start position for new image (from right)
+          productImageTranslateX.value = 60;
+
+          // Step 3: Fade card back in and spring the new image into center
+          bannerOpacity.value = withTiming(1, { duration: 300 });
+          productImageOpacity.value = withTiming(1, { duration: 300 });
+          productImageTranslateX.value = withSpring(0, { damping: 14, stiffness: 90 });
         }
       });
     }, 5000);
@@ -320,6 +339,11 @@ export default function HomeScreen() {
 
   const animatedBannerStyle = useAnimatedStyle(() => ({
     opacity: bannerOpacity.value,
+  }));
+
+  const animatedProductImageStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: productImageTranslateX.value }],
+    opacity: productImageOpacity.value,
   }));
 
   const animatedProteinStyle = useAnimatedStyle(() => ({
@@ -401,24 +425,34 @@ export default function HomeScreen() {
           />
           {/* Soft blush accent line */}
           <View style={[styles.bannerGoldLine, { backgroundColor: '#A85D63' }]} />
-          <View style={styles.bannerContent}>
-            <Text style={[styles.bannerTagline, { color: '#A85D63' }]}>{BANNERS[activeBanner].tagline}</Text>
-            <Text style={[styles.bannerTitle, { color: '#2B2B2B' }]}>{BANNERS[activeBanner].title}</Text>
-            <Text style={[styles.bannerDesc, { color: '#6E6E6E' }]}>{BANNERS[activeBanner].description}</Text>
-            <View style={styles.bannerBottomRow}>
-              <View style={[styles.bannerBadge, { backgroundColor: 'rgba(200, 122, 90, 0.12)', borderColor: '#C87A5A' }]}>
-                <Text style={[styles.bannerBadgeText, { color: '#C87A5A' }]}>{BANNERS[activeBanner].promo}</Text>
+          <View style={styles.bannerContentRow}>
+            {/* Left Section: Details */}
+            <View style={styles.bannerLeftSection}>
+              <View>
+                <Text style={[styles.bannerTagline, { color: '#A85D63' }]}>{BANNERS[activeBanner].tagline}</Text>
+                <Text style={[styles.bannerTitle, { color: '#2B2B2B' }]} numberOfLines={1}>{BANNERS[activeBanner].title}</Text>
+                <Text style={[styles.bannerDesc, { color: '#6E6E6E' }]} numberOfLines={2}>{BANNERS[activeBanner].description}</Text>
               </View>
-              <TouchableOpacity activeOpacity={0.8} style={[styles.bannerButton, { borderRadius: 50 }]}>
-                <LinearGradient
-                  colors={['#C87A5A', '#A85D63']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={[StyleSheet.absoluteFill, { borderRadius: 50 }]}
-                />
-                <Text style={[styles.bannerButtonText, { color: '#FFFFFF', fontWeight: '600' }]}>SHOP NOW</Text>
-              </TouchableOpacity>
+              <View style={styles.bannerBottomRow}>
+                <View style={[styles.bannerBadge, { backgroundColor: 'rgba(200, 122, 90, 0.12)', borderColor: '#C87A5A' }]}>
+                  <Text style={[styles.bannerBadgeText, { color: '#C87A5A' }]}>{BANNERS[activeBanner].promo}</Text>
+                </View>
+                <TouchableOpacity activeOpacity={0.8} style={[styles.bannerButton, { borderRadius: 50 }]}>
+                  <LinearGradient
+                    colors={['#C87A5A', '#A85D63']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={[StyleSheet.absoluteFill, { borderRadius: 50 }]}
+                  />
+                  <Text style={[styles.bannerButtonText, { color: '#FFFFFF', fontWeight: '600' }]}>SHOP NOW</Text>
+                </TouchableOpacity>
+              </View>
             </View>
+
+            {/* Right Section: Sliding product image */}
+            <Animated.View style={[styles.bannerRightSection, animatedProductImageStyle]}>
+              <Image source={BANNERS[activeBanner].image} style={styles.bannerImage} resizeMode="contain" />
+            </Animated.View>
           </View>
         </Animated.View>
 
@@ -848,10 +882,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#A85D63',
     opacity: 0.35,
   },
-  bannerContent: {
+  bannerContentRow: {
+    flexDirection: 'row',
     flex: 1,
-    padding: 20,
+    padding: 16,
+  },
+  bannerLeftSection: {
+    flex: 1.3,
     justifyContent: 'space-between',
+    paddingRight: 8,
+  },
+  bannerRightSection: {
+    flex: 0.8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bannerImage: {
+    width: '100%',
+    height: '100%',
+    maxHeight: 140,
   },
   bannerTagline: {
     fontSize: 9,
