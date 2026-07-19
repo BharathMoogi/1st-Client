@@ -4,6 +4,8 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
+  withDelay,
+  withSpring,
   runOnJS,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -152,57 +154,88 @@ export default function NotificationCenterScreen() {
     return item.type === activeTab;
   });
 
+  // Mount animations
+  const headerOpacity = useSharedValue(0);
+  const headerTranslateY = useSharedValue(-14);
+  const tabsOpacity = useSharedValue(0);
+  const listOpacity = useSharedValue(0);
+  const listTranslateY = useSharedValue(22);
+
+  React.useEffect(() => {
+    headerOpacity.value = withTiming(1, { duration: 500 });
+    headerTranslateY.value = withSpring(0, { damping: 16, stiffness: 100 });
+    tabsOpacity.value = withDelay(120, withTiming(1, { duration: 400 }));
+    listOpacity.value = withDelay(220, withTiming(1, { duration: 500 }));
+    listTranslateY.value = withDelay(220, withSpring(0, { damping: 14, stiffness: 90 }));
+  }, []);
+
+  const animatedHeaderStyle = useAnimatedStyle(() => ({
+    opacity: headerOpacity.value,
+    transform: [{ translateY: headerTranslateY.value }],
+  }));
+  const animatedTabsStyle = useAnimatedStyle(() => ({ opacity: tabsOpacity.value }));
+  const animatedListStyle = useAnimatedStyle(() => ({
+    opacity: listOpacity.value,
+    transform: [{ translateY: listTranslateY.value }],
+  }));
+
   return (
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#131110', '#070707']}
+        colors={['#070707', '#0F0D0A', '#070707']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
 
       {/* --- TOP HEADER APP BAR --- */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} style={styles.headerBtn}>
-          <ChevronLeftIcon />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>NOTIFICATIONS</Text>
-        {filteredNotifications.length > 0 ? (
-          <TouchableOpacity onPress={handleClearAll} activeOpacity={0.7} style={styles.clearAllBtn}>
-            <Text style={styles.clearAllText}>Clear All</Text>
+      <Animated.View style={animatedHeaderStyle}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} style={styles.headerBtn}>
+            <ChevronLeftIcon />
           </TouchableOpacity>
-        ) : (
-          <View style={{ width: 36 }} />
-        )}
-      </View>
+          <Text style={styles.headerTitle}>NOTIFICATIONS</Text>
+          {filteredNotifications.length > 0 ? (
+            <TouchableOpacity onPress={handleClearAll} activeOpacity={0.7} style={styles.clearAllBtn}>
+              <Text style={styles.clearAllText}>Clear All</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={{ width: 36 }} />
+          )}
+        </View>
+      </Animated.View>
 
       {/* --- FILTER TAB ROWS --- */}
-      <View style={styles.tabSelectorRow}>
-        {(['all', 'orders', 'offers', 'restocks'] as const).map((tab) => {
-          const active = activeTab === tab;
-          return (
-            <TouchableOpacity
-              key={tab}
-              onPress={() => setActiveTab(tab)}
-              style={[styles.tabItem, active ? styles.tabItemActive : null]}
-              activeOpacity={0.7}
-            >
-              <Text style={[styles.tabText, active ? styles.tabTextActive : null]}>{tab.toUpperCase()}</Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+      <Animated.View style={animatedTabsStyle}>
+        <View style={styles.tabSelectorRow}>
+          {(['all', 'orders', 'offers', 'restocks'] as const).map((tab) => {
+            const active = activeTab === tab;
+            return (
+              <TouchableOpacity
+                key={tab}
+                onPress={() => setActiveTab(tab)}
+                style={[styles.tabItem, active ? styles.tabItemActive : null]}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.tabText, active ? styles.tabTextActive : null]}>{tab.toUpperCase()}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </Animated.View>
 
       {/* --- LIST FEED --- */}
       {filteredNotifications.length > 0 ? (
-        <FlatList
-          data={filteredNotifications}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          renderItem={({ item }) => (
-            <NotificationCard item={item} onDismiss={handleDismiss} />
-          )}
-        />
+        <Animated.View style={[{ flex: 1 }, animatedListStyle]}>
+          <FlatList
+            data={filteredNotifications}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContent}
+            renderItem={({ item }) => (
+              <NotificationCard item={item} onDismiss={handleDismiss} />
+            )}
+          />
+        </Animated.View>
       ) : (
         // Empty State visual
         <View style={styles.emptyContainer}>
@@ -211,7 +244,7 @@ export default function NotificationCenterScreen() {
           <Text style={styles.emptySubtitle}>No new notifications found in this category.</Text>
           
           <TouchableOpacity onPress={() => router.replace('/')} activeOpacity={0.8} style={styles.exploreBtn}>
-            <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
             <Text style={styles.exploreText}>RETURN TO HOME</Text>
           </TouchableOpacity>
         </View>
@@ -223,7 +256,7 @@ export default function NotificationCenterScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
   },
   header: {
     flexDirection: 'row',
@@ -260,7 +293,7 @@ const styles = StyleSheet.create({
   },
   clearAllText: {
     fontSize: 11,
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -279,7 +312,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   tabItemActive: {
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
   },
   tabText: {
     fontSize: 10,
@@ -288,7 +321,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   tabTextActive: {
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   listContent: {
     padding: 20,
@@ -345,7 +378,7 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#FFE082',
+    color: '#D4AF37',
     letterSpacing: 0.5,
   },
   cardTimeText: {
@@ -412,7 +445,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   exploreText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1.5,

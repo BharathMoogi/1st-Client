@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Switch, Dimensions, Modal } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withDelay,
+  withSpring,
+} from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import Svg, { Path, Circle, Rect, G, Line } from 'react-native-svg';
@@ -48,6 +55,29 @@ export default function SettingsScreen() {
   // Danger zone states
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
+  // Mount animations
+  const headerOpacity = useSharedValue(0);
+  const headerTranslateY = useSharedValue(-14);
+  const scrollOpacity = useSharedValue(0);
+  const scrollTranslateY = useSharedValue(24);
+
+  useEffect(() => {
+    headerOpacity.value = withTiming(1, { duration: 500 });
+    headerTranslateY.value = withSpring(0, { damping: 16, stiffness: 100 });
+    scrollOpacity.value = withDelay(160, withTiming(1, { duration: 500 }));
+    scrollTranslateY.value = withDelay(160, withSpring(0, { damping: 14, stiffness: 90 }));
+  }, []);
+
+  const animatedHeaderStyle = useAnimatedStyle(() => ({
+    opacity: headerOpacity.value,
+    transform: [{ translateY: headerTranslateY.value }],
+  }));
+
+  const animatedScrollStyle = useAnimatedStyle(() => ({
+    opacity: scrollOpacity.value,
+    transform: [{ translateY: scrollTranslateY.value }],
+  }));
+
   const handleDeleteAccount = () => {
     setDeleteConfirmOpen(false);
     // Route back to Splash/Login states
@@ -58,21 +88,23 @@ export default function SettingsScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#131110', '#070707']}
+        colors={['#070707', '#0F0D0A', '#070707']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
 
       {/* --- TOP HEADER APP BAR --- */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} style={styles.headerBtn}>
-          <ChevronLeftIcon />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>SETTINGS</Text>
-        <View style={{ width: 36 }} />
-      </View>
+      <Animated.View style={animatedHeaderStyle}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} style={styles.headerBtn}>
+            <ChevronLeftIcon />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>SETTINGS</Text>
+          <View style={{ width: 36 }} />
+        </View>
+      </Animated.View>
 
-      <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      <Animated.ScrollView style={[styles.scrollContainer, animatedScrollStyle]} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         
         {/* --- SECTION 1: GENERAL --- */}
         <Text style={styles.sectionHeaderTitle}>GENERAL CONFIGURATIONS</Text>
@@ -88,7 +120,7 @@ export default function SettingsScreen() {
             <Switch
               value={darkMode}
               onValueChange={setDarkMode}
-              trackColor={{ false: 'rgba(255,255,255,0.1)', true: '#E0B034' }}
+              trackColor={{ false: 'rgba(255,255,255,0.1)', true: '#D4AF37' }}
               thumbColor={darkMode ? '#FFFFFF' : '#777777'}
             />
           </View>
@@ -116,7 +148,7 @@ export default function SettingsScreen() {
             <Switch
               value={pushNotifications}
               onValueChange={setPushNotifications}
-              trackColor={{ false: 'rgba(255,255,255,0.1)', true: '#E0B034' }}
+              trackColor={{ false: 'rgba(255,255,255,0.1)', true: '#D4AF37' }}
               thumbColor={pushNotifications ? '#FFFFFF' : '#777777'}
             />
           </View>
@@ -126,7 +158,7 @@ export default function SettingsScreen() {
             <Switch
               value={emailAlerts}
               onValueChange={setEmailAlerts}
-              trackColor={{ false: 'rgba(255,255,255,0.1)', true: '#E0B034' }}
+              trackColor={{ false: 'rgba(255,255,255,0.1)', true: '#D4AF37' }}
               thumbColor={emailAlerts ? '#FFFFFF' : '#777777'}
             />
           </View>
@@ -185,7 +217,7 @@ export default function SettingsScreen() {
         </View>
 
         <View style={{ height: 60 }} />
-      </ScrollView>
+      </Animated.ScrollView>
 
       {/* --- LANGUAGE MODAL LIST SELECTOR --- */}
       <Modal visible={languageModalOpen} transparent animationType="fade">
@@ -250,7 +282,7 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
   },
   header: {
     flexDirection: 'row',
@@ -321,7 +353,7 @@ const styles = StyleSheet.create({
   },
   settingValueText: {
     fontSize: 12,
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '400',
   },
   
@@ -384,7 +416,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#FFE082',
+    color: '#D4AF37',
     letterSpacing: 0.5,
     textAlign: 'center',
     marginBottom: 8,
@@ -404,7 +436,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   languageItemActive: {
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
     backgroundColor: 'rgba(224,176,52,0.06)',
   },
   languageItemText: {
@@ -413,12 +445,12 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
   languageItemTextActive: {
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '600',
   },
   checkIcon: {
     fontSize: 12,
-    color: '#FFE082',
+    color: '#D4AF37',
   },
 
   // Delete drawer

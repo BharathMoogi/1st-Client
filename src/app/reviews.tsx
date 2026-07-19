@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput, Modal, Dimensions } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withDelay,
+  withSpring,
+} from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import Svg, { Path, Circle, Rect, G, Line } from 'react-native-svg';
@@ -98,25 +105,56 @@ export default function ReviewsScreen() {
     setWriteModalOpen(false);
   };
 
+  // Mount animations
+  const headerOpacity = useSharedValue(0);
+  const headerTranslateY = useSharedValue(-14);
+  const scrollOpacity = useSharedValue(0);
+  const scrollTranslateY = useSharedValue(24);
+  const footerTranslateY = useSharedValue(80);
+
+  useEffect(() => {
+    headerOpacity.value = withTiming(1, { duration: 500 });
+    headerTranslateY.value = withSpring(0, { damping: 16, stiffness: 100 });
+    scrollOpacity.value = withDelay(150, withTiming(1, { duration: 500 }));
+    scrollTranslateY.value = withDelay(150, withSpring(0, { damping: 14, stiffness: 90 }));
+    footerTranslateY.value = withDelay(300, withSpring(0, { damping: 14, stiffness: 90 }));
+  }, []);
+
+  const animatedHeaderStyle = useAnimatedStyle(() => ({
+    opacity: headerOpacity.value,
+    transform: [{ translateY: headerTranslateY.value }],
+  }));
+
+  const animatedScrollStyle = useAnimatedStyle(() => ({
+    opacity: scrollOpacity.value,
+    transform: [{ translateY: scrollTranslateY.value }],
+  }));
+
+  const animatedFooterStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: footerTranslateY.value }],
+  }));
+
   return (
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#131110', '#070707']}
+        colors={['#070707', '#0F0D0A', '#070707']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
 
       {/* --- TOP HEADER APP BAR --- */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} style={styles.headerBtn}>
-          <ChevronLeftIcon />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>CUSTOMER REVIEWS</Text>
-        <View style={{ width: 36 }} />
-      </View>
+      <Animated.View style={animatedHeaderStyle}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} style={styles.headerBtn}>
+            <ChevronLeftIcon />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>CUSTOMER REVIEWS</Text>
+          <View style={{ width: 36 }} />
+        </View>
+      </Animated.View>
 
-      <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      <Animated.ScrollView style={[styles.scrollContainer, animatedScrollStyle]} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         
         {/* --- RATINGS SUMMARY SECTION --- */}
         <View style={styles.summaryCard}>
@@ -221,15 +259,15 @@ export default function ReviewsScreen() {
         </View>
 
         <View style={{ height: 100 }} />
-      </ScrollView>
+      </Animated.ScrollView>
 
       {/* --- STICKY WRITE REVIEW CTA --- */}
-      <View style={styles.stickyFooterBar}>
+      <Animated.View style={[styles.stickyFooterBar, animatedFooterStyle]}>
         <TouchableOpacity onPress={() => setWriteModalOpen(true)} activeOpacity={0.85} style={styles.writeCtaBtn}>
-          <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+          <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
           <Text style={styles.writeCtaText}>WRITE REVIEW</Text>
         </TouchableOpacity>
-      </View>
+      </Animated.View>
 
       {/* --- WRITE REVIEW POPUP MODAL FORM --- */}
       <Modal visible={writeModalOpen} transparent animationType="slide">
@@ -292,7 +330,7 @@ export default function ReviewsScreen() {
 
               {/* Submit CTA */}
               <TouchableOpacity onPress={handleSubmitReview} activeOpacity={0.85} style={styles.submitReviewBtn}>
-                <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.submitReviewBtnText}>SUBMIT REVIEW</Text>
               </TouchableOpacity>
 
@@ -307,7 +345,7 @@ export default function ReviewsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
   },
   header: {
     flexDirection: 'row',
@@ -362,7 +400,7 @@ const styles = StyleSheet.create({
   averageScoreText: {
     fontSize: 36,
     fontWeight: '800',
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   starsRowInline: {
     flexDirection: 'row',
@@ -404,7 +442,7 @@ const styles = StyleSheet.create({
   barActive: {
     position: 'absolute',
     height: '100%',
-    backgroundColor: '#E0B034',
+    backgroundColor: '#D4AF37',
     borderRadius: 2,
   },
   rowPctLabel: {
@@ -508,7 +546,7 @@ const styles = StyleSheet.create({
   verifiedText: {
     fontSize: 8,
     fontWeight: '600',
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   reviewComment: {
     fontSize: 12,
@@ -537,7 +575,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   writeCtaText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1.5,
@@ -638,7 +676,7 @@ const styles = StyleSheet.create({
   },
   uploadSimulatorText: {
     fontSize: 11,
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '500',
   },
   submitReviewBtn: {
@@ -650,7 +688,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   submitReviewBtnText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,

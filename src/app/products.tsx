@@ -5,6 +5,7 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withTiming,
+  withDelay,
   Easing,
   withRepeat,
   runOnJS,
@@ -230,7 +231,7 @@ function ProductCard({
             </View>
 
             <TouchableOpacity activeOpacity={0.85} style={styles.listAddButton}>
-              <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
               <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
                 <LinearGradient
                   colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0)']}
@@ -295,7 +296,7 @@ function ProductCard({
 
       {/* Add Button */}
       <TouchableOpacity activeOpacity={0.85} style={styles.gridAddButton}>
-        <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+        <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
         <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
           <LinearGradient
             colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0)']}
@@ -330,6 +331,29 @@ export default function ProductListingScreen() {
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [isEndLoading, setIsEndLoading] = useState(false);
   const [sortOption, setSortOption] = useState<'default' | 'priceAsc' | 'priceDesc'>('default');
+
+  // Reanimated values for mount animation
+  const headerOpacity = useSharedValue(0);
+  const headerTranslateY = useSharedValue(-20);
+  const contentOpacity = useSharedValue(0);
+  const contentTranslateY = useSharedValue(20);
+
+  useEffect(() => {
+    headerOpacity.value = withTiming(1, { duration: 600 });
+    headerTranslateY.value = withSpring(0, { damping: 15 });
+    contentOpacity.value = withDelay(150, withTiming(1, { duration: 600 }));
+    contentTranslateY.value = withDelay(150, withSpring(0, { damping: 15 }));
+  }, []);
+
+  const animatedHeaderStyle = useAnimatedStyle(() => ({
+    opacity: headerOpacity.value,
+    transform: [{ translateY: headerTranslateY.value }],
+  }));
+
+  const animatedContentStyle = useAnimatedStyle(() => ({
+    opacity: contentOpacity.value,
+    transform: [{ translateY: contentTranslateY.value }],
+  }));
 
   // Load state simulation
   useEffect(() => {
@@ -391,90 +415,96 @@ export default function ProductListingScreen() {
     <View style={styles.container}>
       {/* Background Linear Gradients */}
       <LinearGradient
-        colors={['#070707', '#131110', '#070707']}
+        colors={['#070707', '#0F0D0A', '#070707']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
+      {/* Ambient gold glow top left */}
+      <View style={{ position: 'absolute', top: -100, left: -100, width: 300, height: 300, borderRadius: 150, backgroundColor: 'rgba(212,175,55,0.04)' }} />
 
       {/* --- TOP HEADER APP BAR --- */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleBack} activeOpacity={0.7} style={styles.backButton}>
-          <ChevronLeftIcon />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>{categoryTitle.toUpperCase()}</Text>
-        
-        {/* Toggle view button */}
-        <TouchableOpacity onPress={() => setIsList(!isList)} activeOpacity={0.7} style={styles.toggleButton}>
-          {isList ? <GridViewIcon active={true} /> : <ListViewIcon active={true} />}
-        </TouchableOpacity>
-      </View>
+      <Animated.View style={animatedHeaderStyle}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={handleBack} activeOpacity={0.7} style={styles.backButton}>
+            <ChevronLeftIcon />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>{categoryTitle.toUpperCase()}</Text>
+          
+          {/* Toggle view button */}
+          <TouchableOpacity onPress={() => setIsList(!isList)} activeOpacity={0.7} style={styles.toggleButton}>
+            {isList ? <GridViewIcon active={true} /> : <ListViewIcon active={true} />}
+          </TouchableOpacity>
+        </View>
 
-      {/* --- FILTER & SORT ACTIONS BAR --- */}
-      <View style={styles.actionsBar}>
-        <TouchableOpacity onPress={handleSort} activeOpacity={0.7} style={styles.actionItem}>
-          <SortIcon />
-          <Text style={styles.actionText}>
-            SORT{sortOption === 'priceAsc' ? ': LOW TO HIGH' : sortOption === 'priceDesc' ? ': HIGH TO LOW' : ''}
-          </Text>
-        </TouchableOpacity>
-        <View style={styles.actionDivider} />
-        <TouchableOpacity activeOpacity={0.7} style={styles.actionItem}>
-          <FilterIcon />
-          <Text style={styles.actionText}>FILTER</Text>
-        </TouchableOpacity>
-      </View>
+        {/* --- FILTER & SORT ACTIONS BAR --- */}
+        <View style={styles.actionsBar}>
+          <TouchableOpacity onPress={handleSort} activeOpacity={0.7} style={styles.actionItem}>
+            <SortIcon />
+            <Text style={styles.actionText}>
+              SORT{sortOption === 'priceAsc' ? ': LOW TO HIGH' : sortOption === 'priceDesc' ? ': HIGH TO LOW' : ''}
+            </Text>
+          </TouchableOpacity>
+          <View style={styles.actionDivider} />
+          <TouchableOpacity activeOpacity={0.7} style={styles.actionItem}>
+            <FilterIcon />
+            <Text style={styles.actionText}>FILTER</Text>
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
 
       {/* --- PRODUCT FLATLIST / SKELETON LOADER --- */}
-      {loading ? (
-        <View style={styles.loadingContainer}>
-          {/* Skeleton list matching active layout */}
-          {isList ? (
-            <View style={styles.skeletonColumn}>
-              <SkeletonCard isList={true} />
-              <SkeletonCard isList={true} />
-              <SkeletonCard isList={true} />
-            </View>
-          ) : (
-            <View style={styles.skeletonGrid}>
-              <SkeletonCard isList={false} />
-              <SkeletonCard isList={false} />
-              <SkeletonCard isList={false} />
-              <SkeletonCard isList={false} />
-            </View>
-          )}
-        </View>
-      ) : (
-        <FlatList
-          key={isList ? 'list' : 'grid'} // Force refresh grid column layouts
-          data={products}
-          numColumns={isList ? 1 : 2}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={[
-            styles.listScrollContent,
-            !isList ? styles.gridSpacing : null
-          ]}
-          columnWrapperStyle={!isList ? styles.gridColumnWrapper : undefined}
-          renderItem={({ item }) => (
-            <ProductCard
-              item={item}
-              isList={isList}
-              isWishlisted={wishlist.includes(item.id)}
-              onWishlistToggle={() => toggleWishlist(item.id)}
-              onPress={() => handleProductPress(item.name, item.price)}
-            />
-          )}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.2}
-          ListFooterComponent={() =>
-            isEndLoading ? (
-              <View style={styles.footerLoaderContainer}>
-                <ActivityIndicator size="small" color="#FFE082" />
-                <Text style={styles.footerLoaderText}>LAZY LOADING MORE...</Text>
+      <Animated.View style={[{ flex: 1 }, animatedContentStyle]}>
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            {/* Skeleton list matching active layout */}
+            {isList ? (
+              <View style={styles.skeletonColumn}>
+                <SkeletonCard isList={true} />
+                <SkeletonCard isList={true} />
+                <SkeletonCard isList={true} />
               </View>
-            ) : <View style={{ height: 60 }} />
-          }
-        />
-      )}
+            ) : (
+              <View style={styles.skeletonGrid}>
+                <SkeletonCard isList={false} />
+                <SkeletonCard isList={false} />
+                <SkeletonCard isList={false} />
+                <SkeletonCard isList={false} />
+              </View>
+            )}
+          </View>
+        ) : (
+          <FlatList
+            key={isList ? 'list' : 'grid'} // Force refresh grid column layouts
+            data={products}
+            numColumns={isList ? 1 : 2}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={[
+              styles.listScrollContent,
+              !isList ? styles.gridSpacing : null
+            ]}
+            columnWrapperStyle={!isList ? styles.gridColumnWrapper : undefined}
+            renderItem={({ item }) => (
+              <ProductCard
+                item={item}
+                isList={isList}
+                isWishlisted={wishlist.includes(item.id)}
+                onWishlistToggle={() => toggleWishlist(item.id)}
+                onPress={() => handleProductPress(item.name, item.price)}
+              />
+            )}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.2}
+            ListFooterComponent={() =>
+              isEndLoading ? (
+                <View style={styles.footerLoaderContainer}>
+                  <ActivityIndicator size="small" color="#D4AF37" />
+                  <Text style={styles.footerLoaderText}>LAZY LOADING MORE...</Text>
+                </View>
+              ) : <View style={{ height: 60 }} />
+            }
+          />
+        )}
+      </Animated.View>
     </View>
   );
 }
@@ -482,7 +512,7 @@ export default function ProductListingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
   },
   header: {
     flexDirection: 'row',
@@ -533,7 +563,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     fontSize: 11,
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '600',
     letterSpacing: 1.2,
   },
@@ -652,7 +682,7 @@ const styles = StyleSheet.create({
   ratingText: {
     fontSize: 9,
     fontWeight: '600',
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   proteinTag: {
     backgroundColor: 'rgba(224, 176, 52, 0.12)',
@@ -663,7 +693,7 @@ const styles = StyleSheet.create({
   proteinTagText: {
     fontSize: 8,
     fontWeight: '600',
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   priceRow: {
     flexDirection: 'row',
@@ -678,7 +708,7 @@ const styles = StyleSheet.create({
   currentPrice: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   gridAddButton: {
     height: 40,
@@ -692,7 +722,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   addButtonText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 10,
     fontWeight: '700',
     letterSpacing: 1,
@@ -771,7 +801,7 @@ const styles = StyleSheet.create({
   footerLoaderText: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#FFE082',
+    color: '#D4AF37',
     letterSpacing: 1.5,
   },
 });

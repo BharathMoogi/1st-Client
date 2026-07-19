@@ -5,7 +5,9 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withTiming,
+  withDelay,
   interpolateColor,
+  runOnJS,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path, Circle, Rect, G } from 'react-native-svg';
@@ -256,9 +258,46 @@ function AnimatedCategoryCard({ item, onPress }: { item: typeof CATEGORIES_DATA[
   );
 }
 
+// --- STAGGERED CARD WRAPPER (applies per-card mount animation) ---
+function StaggeredCard({ item, index, onPress }: { item: typeof CATEGORIES_DATA[0]; index: number; onPress: () => void }) {
+  const opacity = useSharedValue(0);
+  const translateY = useSharedValue(30);
+
+  React.useEffect(() => {
+    const delay = 120 + index * 90;
+    opacity.value = withDelay(delay, withTiming(1, { duration: 500 }));
+    translateY.value = withDelay(delay, withSpring(0, { damping: 14, stiffness: 90 }));
+  }, []);
+
+  const animStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: translateY.value }],
+  }));
+
+  return (
+    <Animated.View style={animStyle}>
+      <AnimatedCategoryCard item={item} onPress={onPress} />
+    </Animated.View>
+  );
+}
+
 // --- MAIN CATEGORIES VIEW ---
 export default function CategoriesScreen() {
   const router = useRouter();
+
+  // Header mount animation
+  const headerOpacity = useSharedValue(0);
+  const headerTranslateY = useSharedValue(-18);
+
+  React.useEffect(() => {
+    headerOpacity.value = withTiming(1, { duration: 600 });
+    headerTranslateY.value = withSpring(0, { damping: 16, stiffness: 100 });
+  }, []);
+
+  const animatedHeaderStyle = useAnimatedStyle(() => ({
+    opacity: headerOpacity.value,
+    transform: [{ translateY: headerTranslateY.value }],
+  }));
 
   const handleCategoryPress = (title: string) => {
     router.push({
@@ -276,18 +315,23 @@ export default function CategoriesScreen() {
         style={StyleSheet.absoluteFill}
       />
 
+      {/* Ambient gold glow top-right */}
+      <View style={styles.ambientGlow} pointerEvents="none" />
+
       {/* Header bar */}
-      <View style={styles.header}>
+      <Animated.View style={[styles.header, animatedHeaderStyle]}>
         <Text style={styles.headerTitle}>CATEGORIES</Text>
+        <View style={styles.headerDivider} />
         <Text style={styles.headerSubtitle}>SHOP LUXURY WELLNESS ESSENTIALS</Text>
-      </View>
+      </Animated.View>
 
       {/* Grid wrapper */}
       <View style={styles.gridWrapper}>
-        {CATEGORIES_DATA.map((item) => (
-          <AnimatedCategoryCard
+        {CATEGORIES_DATA.map((item, index) => (
+          <StaggeredCard
             key={item.id}
             item={item}
+            index={index}
             onPress={() => handleCategoryPress(item.title)}
           />
         ))}
@@ -302,7 +346,16 @@ export default function CategoriesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
+  },
+  ambientGlow: {
+    position: 'absolute',
+    top: -60,
+    right: -60,
+    width: 260,
+    height: 260,
+    borderRadius: 130,
+    backgroundColor: 'rgba(212, 175, 55, 0.04)',
   },
   header: {
     marginTop: 70,
@@ -316,12 +369,17 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     color: '#FFFFFF',
     letterSpacing: 4,
-    fontFamily: 'System',
+  },
+  headerDivider: {
+    width: 32,
+    height: 1,
+    backgroundColor: '#D4AF37',
+    opacity: 0.5,
   },
   headerSubtitle: {
     fontSize: 9,
     fontWeight: '400',
-    color: '#FFE082',
+    color: '#D4AF37',
     letterSpacing: 2,
     textTransform: 'uppercase',
   },
@@ -364,7 +422,7 @@ const styles = StyleSheet.create({
   cardTagline: {
     fontSize: 8,
     fontWeight: '600',
-    color: '#FFE082',
+    color: '#D4AF37',
     letterSpacing: 1.5,
     textTransform: 'uppercase',
   },
@@ -393,7 +451,7 @@ const styles = StyleSheet.create({
   exploreText: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#FFE082',
+    color: '#D4AF37',
     letterSpacing: 1,
   },
   bottomPadding: {

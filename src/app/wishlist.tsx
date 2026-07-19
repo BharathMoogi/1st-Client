@@ -4,6 +4,8 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
+  withDelay,
+  withSpring,
   Easing,
   withRepeat,
   runOnJS,
@@ -65,6 +67,12 @@ const INITIAL_WISHLIST = [
 export default function WishlistScreen() {
   const router = useRouter();
 
+  // Mount animation
+  const headerOpacity = useSharedValue(0);
+  const headerTranslateY = useSharedValue(-14);
+  const listOpacity = useSharedValue(0);
+  const listTranslateY = useSharedValue(24);
+
   // Wishlist state
   const [wishlistItems, setWishlistItems] = useState(INITIAL_WISHLIST);
 
@@ -79,6 +87,14 @@ export default function WishlistScreen() {
   const p1Opacity = useSharedValue(1);
   const p2Opacity = useSharedValue(1);
   const p3Opacity = useSharedValue(1);
+
+  useEffect(() => {
+    // Page mount entrance
+    headerOpacity.value = withTiming(1, { duration: 500 });
+    headerTranslateY.value = withSpring(0, { damping: 16, stiffness: 100 });
+    listOpacity.value = withDelay(180, withTiming(1, { duration: 500 }));
+    listTranslateY.value = withDelay(180, withSpring(0, { damping: 14, stiffness: 90 }));
+  }, []);
 
   useEffect(() => {
     if (wishlistItems.length === 0) {
@@ -124,6 +140,16 @@ export default function WishlistScreen() {
     transform: [{ scale: heartPulseScale.value }],
   }));
 
+  const animatedHeaderStyle = useAnimatedStyle(() => ({
+    opacity: headerOpacity.value,
+    transform: [{ translateY: headerTranslateY.value }],
+  }));
+
+  const animatedListStyle = useAnimatedStyle(() => ({
+    opacity: listOpacity.value,
+    transform: [{ translateY: listTranslateY.value }],
+  }));
+
   const animatedP1Style = useAnimatedStyle(() => ({
     transform: [{ translateY: p1Y.value }],
     opacity: p1Opacity.value,
@@ -143,25 +169,28 @@ export default function WishlistScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#131110', '#070707']}
+        colors={['#070707', '#0F0D0A', '#070707']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
 
       {/* --- TOP HEADER APP BAR --- */}
-      <Header
-        title="Wishlist"
-        rightAction={
-          wishlistItems.length > 0 ? (
-            <TouchableOpacity onPress={handleClearAll} activeOpacity={0.7} style={styles.clearAllBtn}>
-              <Text style={styles.clearAllText}>Clear All</Text>
-            </TouchableOpacity>
-          ) : undefined
-        }
-      />
+      <Animated.View style={animatedHeaderStyle}>
+        <Header
+          title="Wishlist"
+          rightAction={
+            wishlistItems.length > 0 ? (
+              <TouchableOpacity onPress={handleClearAll} activeOpacity={0.7} style={styles.clearAllBtn}>
+                <Text style={styles.clearAllText}>Clear All</Text>
+              </TouchableOpacity>
+            ) : undefined
+          }
+        />
+      </Animated.View>
 
       {/* --- CONDITIONAL VIEW --- */}
       {wishlistItems.length > 0 ? (
+        <Animated.View style={[{ flex: 1 }, animatedListStyle]}>
         <FlatList
           data={wishlistItems}
           numColumns={2}
@@ -215,6 +244,7 @@ export default function WishlistScreen() {
             </View>
           )}
         />
+        </Animated.View>
       ) : (
         // Empty State with Floating Particles Animations
         <Animated.View style={[styles.emptyContainer, animatedEmptyStyle]}>
@@ -248,7 +278,7 @@ export default function WishlistScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
   },
   clearAllBtn: {
     paddingHorizontal: 12,
@@ -260,7 +290,7 @@ const styles = StyleSheet.create({
   },
   clearAllText: {
     fontSize: 11,
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -349,7 +379,7 @@ const styles = StyleSheet.create({
   ratingText: {
     fontSize: 9,
     fontWeight: '600',
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   priceRow: {
     flexDirection: 'row',
@@ -364,7 +394,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#FFE082',
+    color: '#D4AF37',
   },
 
   // --- EMPTY STATE ---
@@ -388,7 +418,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#FFE082',
+    backgroundColor: '#D4AF37',
   },
   p1: {
     bottom: 20,

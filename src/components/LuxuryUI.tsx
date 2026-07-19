@@ -84,7 +84,7 @@ export function GoldButton({ text, onPress, style }: GoldButtonProps) {
       style={[style]}
     >
       <Animated.View style={[styles.goldBtn, animatedStyle]}>
-        <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+        <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
         <Text style={styles.goldBtnText}>{text}</Text>
       </Animated.View>
     </TouchableOpacity>

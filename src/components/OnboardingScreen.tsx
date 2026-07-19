@@ -178,7 +178,7 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
           style={styles.buttonContainer}
         >
           <LinearGradient
-            colors={['#E0B034', '#C08A18']}
+            colors={['#D4AF37', '#B8962D']}
             style={styles.buttonGradient}
           />
           
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    shadowColor: '#C08A18',
+    shadowColor: '#B8962D',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 10,

@@ -5,6 +5,7 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withTiming,
+  withDelay,
   Easing,
   withSequence,
   interpolate,
@@ -105,6 +106,21 @@ export default function ProductDetailScreen() {
     setActiveImageIndex(index);
   };
 
+  // Mount stagger animations
+  const mountHeaderOpacity = useSharedValue(0);
+  const mountHeaderTranslateY = useSharedValue(-20);
+  const mountContentOpacity = useSharedValue(0);
+  const mountContentTranslateY = useSharedValue(30);
+  const mountFooterOpacity = useSharedValue(0);
+
+  useEffect(() => {
+    mountHeaderOpacity.value = withTiming(1, { duration: 500 });
+    mountHeaderTranslateY.value = withTiming(0, { duration: 500, easing: Easing.out(Easing.quad) });
+    mountContentOpacity.value = withDelay(150, withTiming(1, { duration: 600 }));
+    mountContentTranslateY.value = withDelay(150, withTiming(0, { duration: 600, easing: Easing.out(Easing.quad) }));
+    mountFooterOpacity.value = withDelay(300, withTiming(1, { duration: 500 }));
+  }, []);
+
   const handleShare = async () => {
     try {
       await Share.share({
@@ -144,6 +160,20 @@ export default function ProductDetailScreen() {
     transform: [{ scale: qtyScale.value }],
   }));
 
+  const animatedMountHeaderStyle = useAnimatedStyle(() => ({
+    opacity: mountHeaderOpacity.value,
+    transform: [{ translateY: mountHeaderTranslateY.value }],
+  }));
+
+  const animatedMountContentStyle = useAnimatedStyle(() => ({
+    opacity: mountContentOpacity.value,
+    transform: [{ translateY: mountContentTranslateY.value }],
+  }));
+
+  const animatedMountFooterStyle = useAnimatedStyle(() => ({
+    opacity: mountFooterOpacity.value,
+  }));
+
   // 360 simulated container rotation style mapping
   const animatedStripeStyle1 = useAnimatedStyle(() => {
     const translateX = interpolate(rotValue.value, [0, 100], [-30, 30]);
@@ -168,13 +198,15 @@ export default function ProductDetailScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#131110', '#070707']}
+        colors={['#070707', '#0F0D0A', '#070707']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
+      {/* Ambient gold glow at top */}
+      <View style={{ position: 'absolute', top: -80, left: SCREEN_WIDTH / 2 - 120, width: 240, height: 240, borderRadius: 120, backgroundColor: 'rgba(212,175,55,0.05)' }} />
 
       {/* --- TOP HEADER APP BAR --- */}
-      <View style={styles.header}>
+      <Animated.View style={[styles.header, animatedMountHeaderStyle]}>
         <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} style={styles.iconButton}>
           <ChevronLeftIcon />
         </TouchableOpacity>
@@ -189,9 +221,9 @@ export default function ProductDetailScreen() {
             </Animated.View>
           </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
 
-      <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      <Animated.ScrollView style={[styles.scrollContainer, animatedMountContentStyle]} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         
         {/* --- VIEW SELECTOR (360 vs Images) --- */}
         <View style={styles.viewSelectorRow}>
@@ -276,15 +308,15 @@ export default function ProductDetailScreen() {
                 style={styles.carousel}
               >
                 <View style={styles.carouselSlide}>
-                  <LinearGradient colors={['#17181A', '#0A0A0A']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#17181A', '#070707']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.carouselImageText}>WHEY - FRONT</Text>
                 </View>
                 <View style={styles.carouselSlide}>
-                  <LinearGradient colors={['#17181A', '#0A0A0A']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#17181A', '#070707']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.carouselImageText}>WHEY - BACK (NUTRITION)</Text>
                 </View>
                 <View style={styles.carouselSlide}>
-                  <LinearGradient colors={['#17181A', '#0A0A0A']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#17181A', '#070707']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.carouselImageText}>WHEY - SCOOP DETAILS</Text>
                 </View>
               </ScrollView>
@@ -446,7 +478,7 @@ export default function ProductDetailScreen() {
             </View>
 
             <TouchableOpacity activeOpacity={0.85} style={styles.bundleAddButton}>
-              <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
               <Text style={styles.bundleAddButtonText}>ADD BUNDLE TO CART</Text>
             </TouchableOpacity>
           </View>
@@ -475,12 +507,12 @@ export default function ProductDetailScreen() {
 
         {/* Space beneath content to clear sticky bar */}
         <View style={styles.bottomSpacer} />
-      </ScrollView>
+      </Animated.ScrollView>
 
       {/* --- STICKY BOTTOM ACTIONS BAR --- */}
-      <View style={styles.stickyBottomBar}>
+      <Animated.View style={[styles.stickyBottomBar, animatedMountFooterStyle]}>
         <LinearGradient
-          colors={['#0F0E0D', '#070707']}
+          colors={['#0F0D0A', '#070707']}
           style={StyleSheet.absoluteFill}
         />
 
@@ -501,11 +533,11 @@ export default function ProductDetailScreen() {
             <Text style={styles.cartButtonText}>ADD TO CART</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.85} style={styles.buyButton}>
-            <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
             <Text style={styles.buyButtonText}>BUY NOW</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
     </View>
   );
 }
@@ -513,7 +545,7 @@ export default function ProductDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
   },
   header: {
     flexDirection: 'row',
@@ -530,9 +562,11 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+    backgroundColor: 'rgba(212, 175, 55, 0.06)',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(212, 175, 55, 0.15)',
   },
   headerTitle: {
     fontSize: 14,
@@ -568,8 +602,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.02)',
   },
   selectorTabActive: {
-    borderColor: '#E0B034',
-    backgroundColor: 'rgba(224, 176, 52, 0.05)',
+    borderColor: '#D4AF37',
+    backgroundColor: 'rgba(212, 175, 55, 0.06)',
   },
   selectorText: {
     fontSize: 10,
@@ -578,7 +612,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   selectorTextActive: {
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   mediaContainer: {
     height: 280,
@@ -697,7 +731,7 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: '#E0B034',
+    backgroundColor: '#D4AF37',
     borderWidth: 2,
     borderColor: '#FFFFFF',
   },
@@ -908,7 +942,7 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 4,
     borderWidth: 1.5,
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
     backgroundColor: 'rgba(224, 176, 52, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -969,7 +1003,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   bundleAddButtonText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,
@@ -1064,7 +1098,7 @@ const styles = StyleSheet.create({
     height: 42,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -1083,7 +1117,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   buyButtonText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,

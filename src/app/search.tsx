@@ -5,6 +5,8 @@ import Animated, {
   useAnimatedStyle,
   withRepeat,
   withTiming,
+  withSpring,
+  withDelay,
   interpolate,
   interpolateColor,
   Easing,
@@ -17,7 +19,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR SEARCH SCREEN ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
@@ -29,7 +31,7 @@ const SearchIcon = () => (
   </Svg>
 );
 
-const MicIcon = ({ color = '#FFE082' }: { color?: string }) => (
+const MicIcon = ({ color = '#D4AF37' }: { color?: string }) => (
   <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
     <Path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" />
@@ -43,7 +45,7 @@ const CloseIcon = ({ size = 12, color = 'rgba(255,255,255,0.5)' }: { size?: numb
 );
 
 const FilterIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
   </Svg>
 );
@@ -86,6 +88,20 @@ export default function SearchScreen() {
   const inputBorderGlow = useSharedValue(0);
   const micPulseScale = useSharedValue(1);
   const micPulseOpacity = useSharedValue(0.6);
+
+  // Mount animation values
+  const mountOpacity = useSharedValue(0);
+  const mountTranslateY = useSharedValue(20);
+
+  useEffect(() => {
+    mountOpacity.value = withTiming(1, { duration: 600 });
+    mountTranslateY.value = withSpring(0, { damping: 15 });
+  }, []);
+
+  const animatedMountStyle = useAnimatedStyle(() => ({
+    opacity: mountOpacity.value,
+    transform: [{ translateY: mountTranslateY.value }],
+  }));
 
   // Auto focus input animate
   useEffect(() => {
@@ -183,7 +199,7 @@ export default function SearchScreen() {
     const borderColor = interpolateColor(
       inputBorderGlow.value,
       [0, 1],
-      ['rgba(255, 255, 255, 0.08)', 'rgba(224, 176, 52, 0.7)']
+      ['rgba(255, 255, 255, 0.08)', 'rgba(212, 175, 55, 0.7)']
     );
     return { borderColor };
   });
@@ -219,9 +235,11 @@ export default function SearchScreen() {
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
+      {/* Ambient gold glow */}
+      <View style={{ position: 'absolute', top: -100, left: SCREEN_WIDTH / 2 - 100, width: 200, height: 200, borderRadius: 100, backgroundColor: 'rgba(212,175,55,0.03)' }} />
 
       {/* --- TOP HEADER APP BAR --- */}
-      <View style={styles.header}>
+      <Animated.View style={[styles.header, animatedMountStyle]}>
         <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} style={styles.backButton}>
           <ChevronLeftIcon />
         </TouchableOpacity>
@@ -251,7 +269,7 @@ export default function SearchScreen() {
         <TouchableOpacity onPress={startVoiceSearch} activeOpacity={0.7} style={styles.micButton}>
           <MicIcon />
         </TouchableOpacity>
-      </View>
+      </Animated.View>
 
       {/* --- CONDITIONAL VIEWS: AUTOCOMPLETE VS SEARCH SUGGESTIONS VS DEFAULT VIEWS --- */}
       {searchQuery.length > 0 ? (
@@ -280,8 +298,8 @@ export default function SearchScreen() {
           />
         </View>
       ) : (
-        // Default Views: Filters toggle, History, and Popular
-        <ScrollView style={styles.bodyScroll} contentContainerStyle={styles.bodyContent} showsVerticalScrollIndicator={false}>
+        // Default view: Search history, filters trigger, popular searches
+        <Animated.ScrollView style={[styles.bodyScroll, animatedMountStyle]} contentContainerStyle={styles.bodyContent} showsVerticalScrollIndicator={false}>
           {/* Quick Filters Toggle */}
           <TouchableOpacity onPress={() => setFiltersOpen(true)} activeOpacity={0.8} style={styles.filtersToggleBtn}>
             <LinearGradient
@@ -292,7 +310,7 @@ export default function SearchScreen() {
               <FilterIcon />
               <Text style={styles.filtersToggleText}>Advanced Supplement Filters</Text>
             </View>
-            <Svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2.5">
+            <Svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2.5">
               <Path d="m9 18 6-6-6-6" />
             </Svg>
           </TouchableOpacity>
@@ -333,7 +351,7 @@ export default function SearchScreen() {
                   style={styles.popularTag}
                 >
                   <LinearGradient
-                    colors={['rgba(224,176,52,0.08)', 'rgba(224,176,52,0.01)']}
+                    colors={['rgba(212,175,55,0.08)', 'rgba(212,175,55,0.01)']}
                     style={StyleSheet.absoluteFill}
                   />
                   <Text style={styles.popularTagText}>{item}</Text>
@@ -341,7 +359,7 @@ export default function SearchScreen() {
               ))}
             </View>
           </View>
-        </ScrollView>
+        </Animated.ScrollView>
       )}
 
       {/* --- VOICE SEARCH MODAL OVERLAY --- */}
@@ -453,7 +471,7 @@ export default function SearchScreen() {
 
             {/* Apply Button */}
             <TouchableOpacity onPress={applyFilters} activeOpacity={0.85} style={styles.applyBtn}>
-              <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
               <Text style={styles.applyBtnText}>APPLY FILTERS</Text>
             </TouchableOpacity>
           </View>
@@ -466,7 +484,7 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
   },
   header: {
     flexDirection: 'row',
@@ -547,7 +565,7 @@ const styles = StyleSheet.create({
   },
   filtersToggleText: {
     fontSize: 12,
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -567,7 +585,7 @@ const styles = StyleSheet.create({
   },
   clearAllText: {
     fontSize: 11,
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '500',
     letterSpacing: 0.5,
   },
@@ -611,7 +629,7 @@ const styles = StyleSheet.create({
   },
   popularTagText: {
     fontSize: 11,
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -635,7 +653,7 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
   suggestionMatch: {
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '500',
   },
   emptySuggestions: {
@@ -684,17 +702,17 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     borderWidth: 1.5,
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
     backgroundColor: 'rgba(224, 176, 52, 0.1)',
   },
   voiceMicActiveCircle: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#FFE082',
+    backgroundColor: '#D4AF37',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#E0B034',
+    shadowColor: '#D4AF37',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 10,
@@ -776,7 +794,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   filterBadgeActive: {
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
     backgroundColor: 'rgba(224, 176, 52, 0.08)',
   },
   filterBadgeText: {
@@ -785,7 +803,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   filterBadgeTextActive: {
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '600',
   },
   applyBtn: {
@@ -797,7 +815,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   applyBtnText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1.5,

@@ -39,72 +39,83 @@ export default function DashboardPage() {
   }, []);
 
   const statusColor = (s: string) => {
-    if (s === "Delivered") return "text-green-400";
-    if (s === "Shipped") return "text-blue-400";
-    if (s === "Pending") return "text-amber-400";
-    return "text-white/40";
+    if (s === "Delivered") return "bg-green-500/10 text-green-400 border-green-500/20";
+    if (s === "Shipped") return "bg-blue-500/10 text-blue-400 border-blue-500/20";
+    if (s === "Pending") return "bg-amber-500/10 text-amber-400 border-amber-500/20";
+    return "bg-rose-500/10 text-rose-400 border-rose-500/20";
   };
 
-  if (loading) return <div className="flex items-center justify-center h-60"><div className="animate-pulse text-[#E0B034] text-sm tracking-widest">Loading dashboard…</div></div>;
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
+        <div className="w-10 h-10 border-2 border-[#D4AF37]/20 border-t-[#D4AF37] rounded-full animate-spin" />
+        <div className="text-white/40 text-[10px] tracking-[0.2em] uppercase">Loading Dashboard Metrics…</div>
+      </div>
+    );
+  }
 
-  if (error) return <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-6 text-red-400 text-sm">{error}</div>;
+  if (error) return <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-6 text-red-400 text-xs tracking-wide">{error}</div>;
 
   const statCards = [
-    { label: "Total Revenue", value: `$${stats.revenue.toLocaleString()}`, icon: DollarSign },
+    { label: "Total Revenue", value: `₹${stats.revenue.toLocaleString()}`, icon: DollarSign },
     { label: "Active Orders", value: stats.orders.toString(), icon: ShoppingBag },
     { label: "Members", value: stats.members.toString(), icon: Users },
     { label: "Active Coupons", value: stats.coupons.toString(), icon: Tag },
   ];
 
   return (
-    <div className="space-y-6 pb-12">
-      <div className="border-b border-white/8 pb-4">
-        <h1 className="text-2xl font-light tracking-wide">Dashboard</h1>
-        <p className="text-xs text-white/40 font-light mt-1">Real-time store performance overview</p>
+    <div className="space-y-8 pb-12">
+      <div className="border-b border-white/6 pb-6">
+        <h1 className="text-3xl font-light tracking-wide text-white">DASHBOARD</h1>
+        <p className="text-xs text-white/40 font-light mt-1.5 uppercase tracking-wider">Real-time store performance overview</p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
         {statCards.map((card) => {
           const Icon = card.icon;
           return (
-            <div key={card.label} className="rounded-xl border border-white/8 bg-white/[0.01] p-5 space-y-3">
+            <div key={card.label} className="glass-panel luxury-card p-6 space-y-4 shadow-xl shadow-black/40">
               <div className="flex justify-between items-start">
-                <p className="text-[10px] tracking-widest text-white/40 uppercase font-semibold">{card.label}</p>
-                <div className="p-2 rounded-lg bg-[#E0B034]/10"><Icon size={14} className="text-[#E0B034]" /></div>
+                <p className="text-[9px] tracking-[0.2em] text-white/40 uppercase font-bold">{card.label}</p>
+                <div className="p-2 rounded-xl bg-[#D4AF37]/8"><Icon size={14} className="text-[#D4AF37]" /></div>
               </div>
-              <p className="text-2xl font-light text-[#FFE082]">{card.value}</p>
+              <p className="text-3xl font-light text-white tracking-wide">{card.value}</p>
             </div>
           );
         })}
       </div>
 
-      <div className="rounded-xl border border-white/8 bg-white/[0.01] overflow-hidden">
-        <div className="border-b border-white/8 p-4 flex justify-between items-center">
-          <h3 className="text-sm font-semibold text-[#FFE082]">Recent Orders</h3>
-          <span className="text-[10px] text-white/40 uppercase tracking-wider">Firebase Firestore</span>
+      <div className="glass-panel overflow-hidden shadow-2xl shadow-black/50">
+        <div className="border-b border-white/6 p-5 flex justify-between items-center bg-white/[0.01]">
+          <h3 className="text-xs font-semibold text-[#D4AF37] tracking-[0.15em] uppercase">Recent Orders</h3>
+          <span className="text-[9px] text-white/30 uppercase tracking-widest font-mono">Firebase Live</span>
         </div>
         {recentOrders.length === 0 ? (
-          <div className="py-12 text-center text-white/30 text-xs">No orders found. Add data to your Firestore <code>orders</code> collection.</div>
+          <div className="py-16 text-center text-white/30 text-xs tracking-wider">No orders found. Add data to your Firestore <code>orders</code> collection.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-light">
               <thead>
-                <tr className="border-b border-white/6 text-white/40 tracking-wider">
-                  <th className="py-3 px-5">ORDER ID</th>
-                  <th className="py-3 px-5">CUSTOMER</th>
-                  <th className="py-3 px-5">PRODUCT</th>
-                  <th className="py-3 px-5 text-right">TOTAL</th>
-                  <th className="py-3 px-5">STATUS</th>
+                <tr className="border-b border-white/6 text-white/40 tracking-[0.12em] bg-white/[0.005] uppercase">
+                  <th className="py-4 px-6 font-semibold">ORDER ID</th>
+                  <th className="py-4 px-6 font-semibold">CUSTOMER</th>
+                  <th className="py-4 px-6 font-semibold">PRODUCT</th>
+                  <th className="py-4 px-6 text-right font-semibold">TOTAL</th>
+                  <th className="py-4 px-6 font-semibold">STATUS</th>
                 </tr>
               </thead>
               <tbody>
                 {recentOrders.map((order) => (
-                  <tr key={order.id} className="border-b border-white/4 hover:bg-white/[0.01]">
-                    <td className="py-3 px-5 font-mono text-white/50">#{order.id.slice(0, 8)}</td>
-                    <td className="py-3 px-5 text-white">{order.customer || "—"}</td>
-                    <td className="py-3 px-5 text-white/60">{order.product || "—"}</td>
-                    <td className="py-3 px-5 text-right font-mono text-[#FFE082]">${(Number(order.total) || 0).toFixed(2)}</td>
-                    <td className={`py-3 px-5 font-semibold ${statusColor(order.status)}`}>{order.status || "—"}</td>
+                  <tr key={order.id} className="border-b border-white/4 hover:bg-white/[0.01] transition-colors duration-200">
+                    <td className="py-4 px-6 font-mono text-white/40">#{order.id.slice(-8).toUpperCase()}</td>
+                    <td className="py-4 px-6 text-white font-medium">{order.customer || "—"}</td>
+                    <td className="py-4 px-6 text-white/60">{order.product || "—"}</td>
+                    <td className="py-4 px-6 text-right font-mono text-[#D4AF37] font-medium">₹{(Number(order.total) || 0).toFixed(2)}</td>
+                    <td className="py-4 px-6">
+                      <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-semibold border ${statusColor(order.status)}`}>
+                        {order.status || "—"}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>

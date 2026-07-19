@@ -125,7 +125,7 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#131110', '#070707']}
+        colors={['#070707', '#0F0D0A', '#070707']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -146,7 +146,7 @@ export default function ProfileScreen() {
           {/* Glowing Monogram Avatar */}
           <View style={styles.avatarWrapper}>
             <View style={styles.avatarBorderGlow} />
-            <LinearGradient colors={['#E0B034', '#C08A18']} style={styles.avatar}>
+            <LinearGradient colors={['#D4AF37', '#B8962D']} style={styles.avatar}>
               <Text style={styles.avatarText}>BR</Text>
             </LinearGradient>
           </View>
@@ -155,7 +155,7 @@ export default function ProfileScreen() {
           <Text style={styles.userEmailText}>vip.member@aurumwellness.com</Text>
 
           <Animated.View style={[styles.vipBadge, animatedVipStyle]}>
-            <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
             <Text style={styles.vipBadgeText}>VIP GOLD CLUB</Text>
           </Animated.View>
         </View>
@@ -341,7 +341,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
   },
   header: {
     flexDirection: 'row',
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
     height: 88,
     borderRadius: 44,
     borderWidth: 1.5,
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
     opacity: 0.25,
   },
   avatar: {
@@ -404,13 +404,13 @@ const styles = StyleSheet.create({
     borderRadius: 38,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#E0B034',
+    shadowColor: '#D4AF37',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
   },
   avatarText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 22,
     fontWeight: '700',
     letterSpacing: 1,
@@ -437,7 +437,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   vipBadgeText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 9,
     fontWeight: '700',
     letterSpacing: 1.5,
@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
   rewardsPointsValue: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   progressBarWrapper: {
     height: 6,
@@ -481,7 +481,7 @@ const styles = StyleSheet.create({
   progressBarActive: {
     position: 'absolute',
     height: '100%',
-    backgroundColor: '#E0B034',
+    backgroundColor: '#D4AF37',
     borderRadius: 3,
   },
   rewardsBottomText: {
@@ -575,7 +575,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#FFE082',
+    color: '#D4AF37',
     letterSpacing: 0.5,
     textAlign: 'center',
   },
@@ -603,7 +603,7 @@ const styles = StyleSheet.create({
   addressListTitle: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#FFE082',
+    color: '#D4AF37',
     alignSelf: 'flex-start',
     marginTop: 6,
   },

@@ -18,9 +18,9 @@ export default function GoldLogo({ width = 120, height = 120, glow = false }: Go
       <Defs>
         {/* Primary Gold Gradient */}
         <LinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <Stop offset="0%" stopColor="#FFECA6" />
-          <Stop offset="20%" stopColor="#E0B034" />
-          <Stop offset="45%" stopColor="#C08A18" />
+          <Stop offset="0%" stopColor="#FFE082" />
+          <Stop offset="20%" stopColor="#D4AF37" />
+          <Stop offset="45%" stopColor="#B8962D" />
           <Stop offset="60%" stopColor="#F5D061" />
           <Stop offset="80%" stopColor="#9B6B0E" />
           <Stop offset="100%" stopColor="#FFE082" />
@@ -30,7 +30,7 @@ export default function GoldLogo({ width = 120, height = 120, glow = false }: Go
         <LinearGradient id="goldGradLight" x1="100%" y1="0%" x2="0%" y2="100%">
           <Stop offset="0%" stopColor="#FFFFFF" stopOpacity={0.8} />
           <Stop offset="30%" stopColor="#FFE082" />
-          <Stop offset="70%" stopColor="#C08A18" />
+          <Stop offset="70%" stopColor="#B8962D" />
           <Stop offset="100%" stopColor="#5E3E04" />
         </LinearGradient>
 
@@ -43,8 +43,8 @@ export default function GoldLogo({ width = 120, height = 120, glow = false }: Go
 
         {/* Glow Filter / Gradient */}
         <LinearGradient id="radialGlow" x1="50%" y1="50%" x2="100%" y2="50%">
-          <Stop offset="0%" stopColor="#E0B034" stopOpacity={0.4} />
-          <Stop offset="60%" stopColor="#C08A18" stopOpacity={0.1} />
+          <Stop offset="0%" stopColor="#D4AF37" stopOpacity={0.4} />
+          <Stop offset="60%" stopColor="#B8962D" stopOpacity={0.1} />
           <Stop offset="100%" stopColor="#000000" stopOpacity={0} />
         </LinearGradient>
       </Defs>

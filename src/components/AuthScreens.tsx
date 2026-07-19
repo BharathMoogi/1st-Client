@@ -259,7 +259,7 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
               style={styles.submitButton}
               disabled={authLoading}
             >
-              <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
               <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
                 <LinearGradient
                   colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0)']}
@@ -349,7 +349,7 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
               style={[styles.submitButton, { marginTop: 12 }]}
               disabled={authLoading}
             >
-              <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
               <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
                 <LinearGradient
                   colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0)']}
@@ -399,7 +399,7 @@ export default function AuthScreens({ onSuccess }: AuthScreensProps) {
               style={[styles.submitButton, { marginTop: 24 }]}
               disabled={authLoading || resetSent}
             >
-              <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
               <Animated.View style={[styles.buttonShine, animatedShineStyle]}>
                 <LinearGradient
                   colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0)']}
@@ -458,12 +458,12 @@ const styles = StyleSheet.create({
   blobGold: {
     top: '25%',
     left: '10%',
-    backgroundColor: '#E0B034',
+    backgroundColor: '#D4AF37',
   },
   blobDarkGold: {
     bottom: '25%',
     right: '10%',
-    backgroundColor: '#C08A18',
+    backgroundColor: '#B8962D',
   },
   glassCard: {
     width: '100%',
@@ -513,7 +513,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
     marginTop: 10,
-    shadowColor: '#C08A18',
+    shadowColor: '#B8962D',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.25,
     shadowRadius: 8,

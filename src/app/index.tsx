@@ -7,6 +7,7 @@ import Animated, {
   withSpring,
   Easing,
   withRepeat,
+  withDelay,
   runOnJS,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -14,6 +15,13 @@ import Svg, { Path, Circle, G, Rect } from 'react-native-svg';
 import { useRouter } from 'expo-router';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+// Luxury Design Tokens
+const GOLD = '#D4AF37';
+const GOLD_LIGHT = '#FFE082';
+const GOLD_DARK = '#B8962D';
+const BG = '#070707';
+const CARD_BG = '#171717';
 
 // --- VECTOR ICONS FOR HOME SCREEN ---
 const SearchIcon = () => (
@@ -185,6 +193,24 @@ export default function HomeScreen() {
   const proteinProgressWidth = useSharedValue(0);
   const bannerOpacity = useSharedValue(1);
 
+  // Mount stagger animations
+  const heroOpacity = useSharedValue(0);
+  const heroTranslateY = useSharedValue(20);
+  const contentOpacity = useSharedValue(0);
+  const contentTranslateY = useSharedValue(30);
+  const flashOpacity = useSharedValue(0);
+  const flashTranslateY = useSharedValue(40);
+
+  useEffect(() => {
+    // Stagger in sections
+    heroOpacity.value = withTiming(1, { duration: 600, easing: Easing.out(Easing.quad) });
+    heroTranslateY.value = withTiming(0, { duration: 600, easing: Easing.out(Easing.quad) });
+    contentOpacity.value = withDelay(200, withTiming(1, { duration: 600 }));
+    contentTranslateY.value = withDelay(200, withTiming(0, { duration: 600, easing: Easing.out(Easing.quad) }));
+    flashOpacity.value = withDelay(400, withTiming(1, { duration: 600 }));
+    flashTranslateY.value = withDelay(400, withTiming(0, { duration: 600, easing: Easing.out(Easing.quad) }));
+  }, []);
+
   // Auto-slide banners
   useEffect(() => {
     const timer = setInterval(() => {
@@ -209,7 +235,7 @@ export default function HomeScreen() {
         } else if (prev.hours > 0) {
           return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
         } else {
-          return { hours: 4, minutes: 0, seconds: 0 }; // reset
+          return { hours: 4, minutes: 0, seconds: 0 };
         }
       });
     }, 1000);
@@ -218,10 +244,10 @@ export default function HomeScreen() {
 
   // Animate Protein Goal Tracker on mount
   useEffect(() => {
-    proteinProgressWidth.value = withTiming(0.68, {
+    proteinProgressWidth.value = withDelay(800, withTiming(0.68, {
       duration: 1800,
       easing: Easing.out(Easing.quad),
-    });
+    }));
   }, []);
 
   const animatedBannerStyle = useAnimatedStyle(() => ({
@@ -232,19 +258,37 @@ export default function HomeScreen() {
     width: `${proteinProgressWidth.value * 100}%`,
   }));
 
+  const animatedHeroStyle = useAnimatedStyle(() => ({
+    opacity: heroOpacity.value,
+    transform: [{ translateY: heroTranslateY.value }],
+  }));
+
+  const animatedContentStyle = useAnimatedStyle(() => ({
+    opacity: contentOpacity.value,
+    transform: [{ translateY: contentTranslateY.value }],
+  }));
+
+  const animatedFlashStyle = useAnimatedStyle(() => ({
+    opacity: flashOpacity.value,
+    transform: [{ translateY: flashTranslateY.value }],
+  }));
+
   const formatTime = (num: number) => (num < 10 ? `0${num}` : num);
 
   return (
     <ScrollView style={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
       {/* Background Linear Gradients */}
       <LinearGradient
-        colors={['#070707', '#141311', '#070707']}
-        locations={[0, 0.4, 1]}
+        colors={['#070707', '#0F0D0A', '#070707']}
+        locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
 
+      {/* Ambient gold glow */}
+      <View style={styles.ambientGlow} />
+
       {/* --- TOP APP BAR --- */}
-      <View style={styles.topBar}>
+      <Animated.View style={[styles.topBar, animatedHeroStyle]}>
         <View style={styles.locationContainer}>
           <LocationIcon />
           <View style={styles.locationTextContainer}>
@@ -266,25 +310,27 @@ export default function HomeScreen() {
             <ProfileIcon />
           </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
 
       {/* --- SEARCH BAR --- */}
-      <View style={styles.searchSection}>
+      <Animated.View style={[styles.searchSection, animatedHeroStyle]}>
         <TouchableOpacity onPress={() => router.push('/search')} style={styles.searchContainer} activeOpacity={0.9}>
           <SearchIcon />
           <Text style={styles.searchPlaceholderText}>
             Search premium supplements, vitamins...
           </Text>
         </TouchableOpacity>
-      </View>
+      </Animated.View>
 
       {/* --- PREMIUM BANNER CAROUSEL --- */}
-      <View style={styles.carouselContainer}>
+      <Animated.View style={[styles.carouselContainer, animatedHeroStyle]}>
         <Animated.View style={[styles.bannerCard, animatedBannerStyle, { backgroundColor: BANNERS[activeBanner].color }]}>
           <LinearGradient
-            colors={['rgba(224, 176, 52, 0.08)', 'rgba(0, 0, 0, 0.6)']}
+            colors={['rgba(212, 175, 55, 0.10)', 'rgba(0, 0, 0, 0.7)']}
             style={StyleSheet.absoluteFill}
           />
+          {/* Gold border top line */}
+          <View style={styles.bannerGoldLine} />
           <View style={styles.bannerContent}>
             <Text style={styles.bannerTagline}>{BANNERS[activeBanner].tagline}</Text>
             <Text style={styles.bannerTitle}>{BANNERS[activeBanner].title}</Text>
@@ -294,6 +340,12 @@ export default function HomeScreen() {
                 <Text style={styles.bannerBadgeText}>{BANNERS[activeBanner].promo}</Text>
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.bannerButton}>
+                <LinearGradient
+                  colors={['#D4AF37', '#B8962D']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={StyleSheet.absoluteFill}
+                />
                 <Text style={styles.bannerButtonText}>BUY NOW</Text>
               </TouchableOpacity>
             </View>
@@ -312,13 +364,13 @@ export default function HomeScreen() {
             />
           ))}
         </View>
-      </View>
+      </Animated.View>
 
       {/* --- PROTEIN GOALS TRACKER --- */}
-      <View style={styles.sectionContainer}>
+      <Animated.View style={[styles.sectionContainer, animatedContentStyle]}>
         <View style={styles.proteinGoalBox}>
           <LinearGradient
-            colors={['rgba(255, 255, 255, 0.04)', 'rgba(255, 255, 255, 0.01)']}
+            colors={['rgba(212, 175, 55, 0.06)', 'rgba(255, 255, 255, 0.01)']}
             style={StyleSheet.absoluteFill}
           />
           <View style={styles.proteinHeader}>
@@ -335,7 +387,7 @@ export default function HomeScreen() {
           <View style={styles.progressTrack}>
             <Animated.View style={[styles.progressFill, animatedProteinStyle]}>
               <LinearGradient
-                colors={['#E0B034', '#FFECA6']}
+                colors={['#D4AF37', '#FFE082']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={StyleSheet.absoluteFill}
@@ -347,10 +399,10 @@ export default function HomeScreen() {
             <Text style={styles.proteinPercent}>68%</Text>
           </View>
         </View>
-      </View>
+      </Animated.View>
 
       {/* --- CATEGORIES --- */}
-      <View style={styles.sectionContainer}>
+      <Animated.View style={[styles.sectionContainer, animatedContentStyle]}>
         <Text style={styles.sectionTitle}>Shop by Category</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryScroll}>
           {CATEGORIES.map((cat) => (
@@ -366,10 +418,10 @@ export default function HomeScreen() {
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </View>
+      </Animated.View>
 
       {/* --- FLASH SALE SECTION --- */}
-      <View style={[styles.sectionContainer, styles.flashSaleBg]}>
+      <Animated.View style={[styles.sectionContainer, styles.flashSaleBg, animatedFlashStyle]}>
         <View style={styles.sectionHeaderRow}>
           <View style={styles.flashHeaderLeft}>
             <Text style={styles.flashSaleTitle}>Flash Sale</Text>
@@ -412,16 +464,16 @@ export default function HomeScreen() {
               </View>
 
               <TouchableOpacity activeOpacity={0.85} style={styles.quickAddButton}>
-                <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.quickAddButtonText}>QUICK ADD</Text>
               </TouchableOpacity>
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </View>
+      </Animated.View>
 
       {/* --- BEST SELLERS --- */}
-      <View style={styles.sectionContainer}>
+      <Animated.View style={[styles.sectionContainer, animatedFlashStyle]}>
         <View style={styles.sectionHeaderRow}>
           <Text style={styles.sectionTitle}>Best Sellers</Text>
           <TouchableOpacity activeOpacity={0.7}>
@@ -451,16 +503,16 @@ export default function HomeScreen() {
               </View>
 
               <TouchableOpacity activeOpacity={0.85} style={styles.quickAddButton}>
-                <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.quickAddButtonText}>ADD TO CART</Text>
               </TouchableOpacity>
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </View>
+      </Animated.View>
 
       {/* --- SHOP BY BRAND --- */}
-      <View style={styles.sectionContainer}>
+      <Animated.View style={[styles.sectionContainer, animatedFlashStyle]}>
         <Text style={styles.sectionTitle}>Shop by Brand</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.brandScroll}>
           {BRANDS.map((brand, i) => (
@@ -473,10 +525,10 @@ export default function HomeScreen() {
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </View>
+      </Animated.View>
 
       {/* --- RECOMMENDED FOR YOU --- */}
-      <View style={[styles.sectionContainer, { marginBottom: 100 }]}>
+      <Animated.View style={[styles.sectionContainer, { marginBottom: 100 }, animatedFlashStyle]}>
         <Text style={styles.sectionTitle}>Recommended For You</Text>
         <View style={styles.gridContainer}>
           {FLASH_SALE_PRODUCTS.map((prod) => (
@@ -500,13 +552,13 @@ export default function HomeScreen() {
               </View>
 
               <TouchableOpacity activeOpacity={0.85} style={styles.gridAddButton}>
-                <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
                 <Text style={styles.quickAddButtonText}>QUICK ADD</Text>
               </TouchableOpacity>
             </TouchableOpacity>
           ))}
         </View>
-      </View>
+      </Animated.View>
     </ScrollView>
   );
 }
@@ -514,7 +566,16 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
+  },
+  ambientGlow: {
+    position: 'absolute',
+    top: -100,
+    left: SCREEN_WIDTH / 2 - 150,
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    backgroundColor: 'rgba(212, 175, 55, 0.04)',
   },
   topBar: {
     flexDirection: 'row',
@@ -548,11 +609,11 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+    backgroundColor: 'rgba(212, 175, 55, 0.05)',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.06)',
+    borderColor: 'rgba(212, 175, 55, 0.15)',
     position: 'relative',
   },
   unreadDot: {
@@ -569,10 +630,10 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   searchContainer: {
-    height: 48,
-    borderRadius: 14,
+    height: 50,
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
+    borderColor: 'rgba(212, 175, 55, 0.15)',
     backgroundColor: 'rgba(255,255,255,0.03)',
     flexDirection: 'row',
     alignItems: 'center',
@@ -596,16 +657,24 @@ const styles = StyleSheet.create({
   },
   bannerCard: {
     width: SCREEN_WIDTH - 40,
-    height: 170,
-    borderRadius: 20,
+    height: 185,
+    borderRadius: 24,
     borderWidth: 1,
-    borderColor: 'rgba(224, 176, 52, 0.15)',
+    borderColor: 'rgba(212, 175, 55, 0.2)',
     overflow: 'hidden',
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    elevation: 5,
+    shadowColor: '#D4AF37',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  bannerGoldLine: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 1.5,
+    backgroundColor: 'rgba(212, 175, 55, 0.4)',
   },
   bannerContent: {
     flex: 1,
@@ -615,8 +684,8 @@ const styles = StyleSheet.create({
   bannerTagline: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#FFE082',
-    letterSpacing: 2,
+    color: '#D4AF37',
+    letterSpacing: 2.5,
   },
   bannerTitle: {
     fontSize: 20,
@@ -638,45 +707,47 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bannerBadge: {
-    backgroundColor: 'rgba(224, 176, 52, 0.12)',
+    backgroundColor: 'rgba(212, 175, 55, 0.12)',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 8,
     borderWidth: 0.5,
-    borderColor: 'rgba(224,176,52,0.3)',
+    borderColor: 'rgba(212,175,55,0.35)',
   },
   bannerBadgeText: {
     fontSize: 9,
-    fontWeight: '600',
-    color: '#FFE082',
-    letterSpacing: 1,
+    fontWeight: '700',
+    color: '#D4AF37',
+    letterSpacing: 1.2,
   },
   bannerButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 10,
-    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 18,
+    paddingVertical: 9,
+    borderRadius: 12,
+    overflow: 'hidden',
+    position: 'relative',
   },
   bannerButtonText: {
-    color: '#000000',
+    color: '#070707',
     fontSize: 10,
-    fontWeight: '700',
-    letterSpacing: 1,
+    fontWeight: '800',
+    letterSpacing: 1.2,
   },
   carouselIndicators: {
     flexDirection: 'row',
     gap: 6,
-    marginTop: 10,
+    marginTop: 12,
   },
   indicatorDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
+    backgroundColor: 'rgba(255,255,255,0.15)',
   },
   indicatorDotActive: {
-    backgroundColor: '#FFE082',
-    width: 16,
+    backgroundColor: '#D4AF37',
+    width: 20,
+    borderRadius: 3,
   },
   sectionContainer: {
     marginVertical: 18,
@@ -701,24 +772,25 @@ const styles = StyleSheet.create({
     width: 72,
   },
   categoryCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 68,
+    height: 68,
+    borderRadius: 34,
     borderWidth: 1,
-    borderColor: 'rgba(224, 176, 52, 0.25)',
+    borderColor: 'rgba(212, 175, 55, 0.3)',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    backgroundColor: 'rgba(212, 175, 55, 0.05)',
   },
   categoryCircleText: {
     fontSize: 11,
-    color: '#FFE082',
-    fontWeight: '600',
-    letterSpacing: 1,
+    color: '#D4AF37',
+    fontWeight: '700',
+    letterSpacing: 1.2,
   },
   categoryName: {
     fontSize: 11,
-    color: 'rgba(255,255,255,0.6)',
+    color: 'rgba(255,255,255,0.55)',
     fontWeight: '400',
     textAlign: 'center',
   },
@@ -794,7 +866,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
   },
   countdownBadge: {
-    backgroundColor: '#FFE082',
+    backgroundColor: '#D4AF37',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
@@ -806,27 +878,27 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   seeAllText: {
-    fontSize: 11,
-    color: '#FFE082',
-    fontWeight: '500',
-    letterSpacing: 1,
+    fontSize: 10,
+    color: '#D4AF37',
+    fontWeight: '700',
+    letterSpacing: 1.5,
   },
   productCardScroll: {
     gap: 16,
     paddingBottom: 8,
   },
   floatingProductCard: {
-    width: 160,
-    borderRadius: 16,
+    width: 165,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
-    backgroundColor: 'rgba(255,255,255,0.01)',
+    borderColor: 'rgba(212, 175, 55, 0.12)',
+    backgroundColor: 'rgba(23, 23, 23, 0.8)',
     overflow: 'hidden',
     shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 5,
   },
   productImagePlaceholder: {
     height: 120,
@@ -844,15 +916,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     left: 8,
-    backgroundColor: '#EA4335',
-    paddingHorizontal: 6,
+    backgroundColor: '#D4AF37',
+    paddingHorizontal: 7,
     paddingVertical: 3,
-    borderRadius: 4,
+    borderRadius: 6,
   },
   saveBadgeText: {
     fontSize: 8,
-    fontWeight: '700',
-    color: '#FFFFFF',
+    fontWeight: '800',
+    color: '#070707',
+    letterSpacing: 0.5,
   },
   productDetails: {
     padding: 12,
@@ -865,8 +938,8 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     fontSize: 9,
-    fontWeight: '600',
-    color: '#FFE082',
+    fontWeight: '700',
+    color: '#D4AF37',
   },
   productName: {
     fontSize: 12,
@@ -887,8 +960,8 @@ const styles = StyleSheet.create({
   },
   salePrice: {
     fontSize: 13,
-    fontWeight: '600',
-    color: '#FFE082',
+    fontWeight: '700',
+    color: '#D4AF37',
   },
   originalPriceText: {
     fontSize: 13,
@@ -896,36 +969,37 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   quickAddButton: {
-    height: 36,
+    height: 38,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',
   },
   quickAddButtonText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 10,
-    fontWeight: '700',
-    letterSpacing: 1,
+    fontWeight: '800',
+    letterSpacing: 1.2,
   },
   brandScroll: {
     gap: 12,
   },
   brandCard: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 22,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: 14,
     borderWidth: 1,
-    borderColor: 'rgba(224, 176, 52, 0.2)',
+    borderColor: 'rgba(212, 175, 55, 0.25)',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    backgroundColor: 'rgba(212, 175, 55, 0.03)',
   },
   brandCardText: {
     fontSize: 11,
-    color: '#FFE082',
-    fontWeight: '600',
-    letterSpacing: 1.5,
+    color: '#D4AF37',
+    fontWeight: '700',
+    letterSpacing: 2,
   },
   gridContainer: {
     flexDirection: 'row',
@@ -934,10 +1008,11 @@ const styles = StyleSheet.create({
   },
   gridProductCard: {
     width: (SCREEN_WIDTH - 56) / 2,
-    borderRadius: 16,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
+    borderColor: 'rgba(212, 175, 55, 0.12)',
     overflow: 'hidden',
+    backgroundColor: 'rgba(23, 23, 23, 0.8)',
   },
   gridImagePlaceholder: {
     height: 110,
@@ -947,7 +1022,7 @@ const styles = StyleSheet.create({
   gridImageText: {
     fontSize: 16,
     fontWeight: '200',
-    color: 'rgba(255,255,255,0.15)',
+    color: 'rgba(212, 175, 55, 0.2)',
     letterSpacing: 2,
   },
   gridProductName: {
@@ -958,11 +1033,11 @@ const styles = StyleSheet.create({
   },
   gridPriceText: {
     fontSize: 12,
-    fontWeight: '600',
-    color: '#FFE082',
+    fontWeight: '700',
+    color: '#D4AF37',
   },
   gridAddButton: {
-    height: 34,
+    height: 36,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',

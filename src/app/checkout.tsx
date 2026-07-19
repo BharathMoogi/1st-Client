@@ -5,6 +5,7 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withTiming,
+  withDelay,
   Easing,
   withRepeat,
   withSequence,
@@ -102,6 +103,20 @@ export default function CheckoutScreen() {
   const stepLineWidth = useSharedValue(0);
   const successBadgeScale = useSharedValue(0.5);
 
+  // Mount animation values
+  const mountOpacity = useSharedValue(0);
+  const mountTranslateY = useSharedValue(20);
+
+  useEffect(() => {
+    mountOpacity.value = withTiming(1, { duration: 600 });
+    mountTranslateY.value = withSpring(0, { damping: 15 });
+  }, []);
+
+  const animatedMountStyle = useAnimatedStyle(() => ({
+    opacity: mountOpacity.value,
+    transform: [{ translateY: mountTranslateY.value }],
+  }));
+
   useEffect(() => {
     // Map currentStep to width of stepper line
     let target = 0;
@@ -188,13 +203,15 @@ export default function CheckoutScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#131110', '#070707']}
+        colors={['#070707', '#0F0D0A', '#070707']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
+      {/* Ambient gold glow */}
+      <View style={{ position: 'absolute', top: -80, right: -80, width: 220, height: 220, borderRadius: 110, backgroundColor: 'rgba(212,175,55,0.04)' }} />
 
       {/* --- TOP HEADER APP BAR --- */}
-      <View style={styles.header}>
+      <Animated.View style={[styles.header, animatedMountStyle]}>
         {currentStep < 4 ? (
           <TouchableOpacity onPress={handleBack} activeOpacity={0.7} style={styles.backButton}>
             <ChevronLeftIcon />
@@ -202,10 +219,10 @@ export default function CheckoutScreen() {
         ) : <View style={{ width: 36 }} />}
         <Text style={styles.headerTitle}>{getStepTitle()}</Text>
         <Text style={styles.stepIndicatorText}>STEP {currentStep} OF 4</Text>
-      </View>
+      </Animated.View>
 
       {/* --- PROGRESS STEPPER TRACKER --- */}
-      <View style={styles.stepperContainer}>
+      <Animated.View style={[styles.stepperContainer, animatedMountStyle]}>
         {/* Connector Line Background */}
         <View style={styles.stepperLineBackground} />
         {/* Connector Line Active */}
@@ -235,10 +252,10 @@ export default function CheckoutScreen() {
             );
           })}
         </View>
-      </View>
+      </Animated.View>
 
       {/* --- STEP FLOW VIEWER --- */}
-      <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      <Animated.ScrollView style={[styles.scrollContainer, animatedMountStyle]} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         
         {/* STEP 1: ADDRESS DETAILS */}
         {currentStep === 1 && (
@@ -315,7 +332,7 @@ export default function CheckoutScreen() {
             )}
 
             <TouchableOpacity onPress={handleNext} activeOpacity={0.85} style={styles.stepButton}>
-              <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
               <Text style={styles.stepButtonText}>CONTINUE TO SHIPPING</Text>
             </TouchableOpacity>
           </View>
@@ -355,7 +372,7 @@ export default function CheckoutScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={handleNext} activeOpacity={0.85} style={styles.stepButton}>
-              <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
               <Text style={styles.stepButtonText}>CONTINUE TO PAYMENT</Text>
             </TouchableOpacity>
           </View>
@@ -463,7 +480,7 @@ export default function CheckoutScreen() {
             </View>
 
             <TouchableOpacity onPress={handlePlaceOrder} activeOpacity={0.85} style={[styles.stepButton, isPlacingOrder && { opacity: 0.7 }]} disabled={isPlacingOrder}>
-              <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
               {isPlacingOrder
                 ? <ActivityIndicator color="#0A0A0A" />
                 : <Text style={styles.stepButtonText}>PLACE ORDER & PAY</Text>}
@@ -507,13 +524,13 @@ export default function CheckoutScreen() {
             </View>
 
             <TouchableOpacity onPress={() => router.replace('/')} activeOpacity={0.85} style={styles.stepButton}>
-              <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
               <Text style={styles.stepButtonText}>RETURN TO HOME</Text>
             </TouchableOpacity>
           </View>
         )}
 
-      </ScrollView>
+      </Animated.ScrollView>
     </View>
   );
 }
@@ -521,7 +538,7 @@ export default function CheckoutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
   },
   header: {
     flexDirection: 'row',
@@ -550,7 +567,7 @@ const styles = StyleSheet.create({
   },
   stepIndicatorText: {
     fontSize: 9,
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
@@ -573,7 +590,7 @@ const styles = StyleSheet.create({
   stepperLineActive: {
     position: 'absolute',
     height: 2,
-    backgroundColor: '#E0B034',
+    backgroundColor: '#D4AF37',
   },
   stepperStepsRow: {
     flexDirection: 'row',
@@ -592,8 +609,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   stepCircleActive: {
-    borderColor: '#E0B034',
-    shadowColor: '#E0B034',
+    borderColor: '#D4AF37',
+    shadowColor: '#D4AF37',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.6,
     shadowRadius: 6,
@@ -641,7 +658,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   addressCardActive: {
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
     backgroundColor: 'rgba(224, 176, 52, 0.04)',
   },
   radioChecked: {
@@ -649,7 +666,7 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 9,
     borderWidth: 1.5,
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -717,7 +734,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   shippingCardActive: {
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
     backgroundColor: 'rgba(224, 176, 52, 0.04)',
   },
   shippingInfo: {
@@ -788,7 +805,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   stepButtonText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1.5,

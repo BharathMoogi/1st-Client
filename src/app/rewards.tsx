@@ -4,6 +4,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
+  withDelay,
   withSpring,
   withSequence,
   Easing,
@@ -60,12 +61,23 @@ export default function RewardsScreen() {
   const progressWidth = useSharedValue(0);
   const copyScale = useSharedValue(1);
 
+  // Mount animations
+  const headerOpacity = useSharedValue(0);
+  const headerTranslateY = useSharedValue(-14);
+  const scrollOpacity = useSharedValue(0);
+  const scrollTranslateY = useSharedValue(28);
+
   useEffect(() => {
     // Animate progress bar fill on page mount (75%)
     progressWidth.value = withTiming(0.75, {
       duration: 1200,
       easing: Easing.out(Easing.quad)
     });
+    // Mount entrance
+    headerOpacity.value = withTiming(1, { duration: 500 });
+    headerTranslateY.value = withSpring(0, { damping: 16, stiffness: 100 });
+    scrollOpacity.value = withDelay(160, withTiming(1, { duration: 520 }));
+    scrollTranslateY.value = withDelay(160, withSpring(0, { damping: 14, stiffness: 90 }));
   }, []);
 
   const handleCopyCode = () => {
@@ -92,25 +104,37 @@ export default function RewardsScreen() {
     transform: [{ scale: copyScale.value }],
   }));
 
+  const animatedHeaderStyle = useAnimatedStyle(() => ({
+    opacity: headerOpacity.value,
+    transform: [{ translateY: headerTranslateY.value }],
+  }));
+
+  const animatedScrollStyle = useAnimatedStyle(() => ({
+    opacity: scrollOpacity.value,
+    transform: [{ translateY: scrollTranslateY.value }],
+  }));
+
   return (
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#131110', '#070707']}
+        colors={['#070707', '#0F0D0A', '#070707']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
 
       {/* --- TOP HEADER APP BAR --- */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} style={styles.headerBtn}>
-          <ChevronLeftIcon />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>REWARDS & LEVEL</Text>
-        <View style={{ width: 36 }} />
-      </View>
+      <Animated.View style={animatedHeaderStyle}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} style={styles.headerBtn}>
+            <ChevronLeftIcon />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>REWARDS & LEVEL</Text>
+          <View style={{ width: 36 }} />
+        </View>
+      </Animated.View>
 
-      <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      <Animated.ScrollView style={[styles.scrollContainer, animatedScrollStyle]} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         
         {/* --- REWARDS POINTS CARD & PROGRESS BAR --- */}
         <View style={styles.pointsCard}>
@@ -226,7 +250,7 @@ export default function RewardsScreen() {
             </View>
             <TouchableOpacity onPress={handleCopyCode} activeOpacity={0.85}>
               <Animated.View style={[styles.copyBtn, animatedCopyBtnStyle]}>
-                <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+                <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
                 {copied ? <Text style={styles.copyBtnText}>COPIED!</Text> : (
                   <View style={styles.copyBtnInner}>
                     <CopyIcon />
@@ -239,7 +263,7 @@ export default function RewardsScreen() {
         </View>
 
         <View style={{ height: 60 }} />
-      </ScrollView>
+      </Animated.ScrollView>
     </View>
   );
 }
@@ -247,7 +271,7 @@ export default function RewardsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
   },
   header: {
     flexDirection: 'row',
@@ -296,13 +320,13 @@ const styles = StyleSheet.create({
   pointsLabel: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#FFE082',
+    color: '#D4AF37',
     letterSpacing: 2,
   },
   pointsValue: {
     fontSize: 48,
     fontWeight: '800',
-    color: '#FFE082',
+    color: '#D4AF37',
     letterSpacing: 1,
     marginTop: 6,
   },
@@ -331,7 +355,7 @@ const styles = StyleSheet.create({
   progressBarActive: {
     position: 'absolute',
     height: '100%',
-    backgroundColor: '#E0B034',
+    backgroundColor: '#D4AF37',
     borderRadius: 4,
   },
   progressLabelsRow: {
@@ -346,7 +370,7 @@ const styles = StyleSheet.create({
   },
   progressLabelRight: {
     fontSize: 10,
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '600',
   },
 
@@ -387,7 +411,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#FFE082',
+    backgroundColor: '#D4AF37',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -403,7 +427,7 @@ const styles = StyleSheet.create({
   },
   levelTitleActive: {
     fontSize: 13,
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '600',
   },
   levelTitlePending: {
@@ -422,7 +446,7 @@ const styles = StyleSheet.create({
   levelStatusTextActive: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#FFE082',
+    color: '#D4AF37',
     letterSpacing: 0.5,
   },
   levelStatusTextPending: {
@@ -463,7 +487,7 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
     borderRadius: 9,
-    backgroundColor: '#FFE082',
+    backgroundColor: '#D4AF37',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -480,7 +504,7 @@ const styles = StyleSheet.create({
   achievementStatusText: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   achievementStatusTextLocked: {
     color: 'rgba(255,255,255,0.35)',
@@ -536,7 +560,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   codeText: {
-    color: '#FFE082',
+    color: '#D4AF37',
     fontSize: 13,
     fontWeight: '600',
     letterSpacing: 1,
@@ -555,7 +579,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   copyBtnText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 0.5,

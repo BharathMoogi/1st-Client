@@ -5,6 +5,7 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withTiming,
+  withDelay,
   Easing,
   withRepeat,
   withSequence,
@@ -17,20 +18,20 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- VECTOR ICONS FOR ORDERS ---
 const ChevronLeftIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="m15 18-6-6 6-6" />
   </Svg>
 );
 
 const PackageIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFE082" strokeWidth="2">
+  <Svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2">
     <Path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
     <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
     <Line x1="12" y1="22.08" x2="12" y2="12" />
   </Svg>
 );
 
-const CheckIcon = ({ color = '#FFE082' }: { color?: string }) => (
+const CheckIcon = ({ color = '#D4AF37' }: { color?: string }) => (
   <Svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M20 6 9 17l-5-5" />
   </Svg>
@@ -93,6 +94,20 @@ export default function OrdersScreen() {
   const pulseScale = useSharedValue(1);
   const pulseOpacity = useSharedValue(0.8);
 
+  // Mount animation values
+  const mountOpacity = useSharedValue(0);
+  const mountTranslateY = useSharedValue(20);
+
+  useEffect(() => {
+    mountOpacity.value = withTiming(1, { duration: 600 });
+    mountTranslateY.value = withSpring(0, { damping: 15 });
+  }, []);
+
+  const animatedMountStyle = useAnimatedStyle(() => ({
+    opacity: mountOpacity.value,
+    transform: [{ translateY: mountTranslateY.value }],
+  }));
+
   useEffect(() => {
     if (trackingOpen) {
       // Animate timeline vertical height fill (60% up to Shipped)
@@ -150,22 +165,24 @@ export default function OrdersScreen() {
     <View style={styles.container}>
       {/* Background Gradients */}
       <LinearGradient
-        colors={['#070707', '#131110', '#070707']}
+        colors={['#070707', '#0F0D0A', '#070707']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
+      {/* Ambient gold glow */}
+      <View style={{ position: 'absolute', top: -100, right: -100, width: 250, height: 250, borderRadius: 125, backgroundColor: 'rgba(212,175,55,0.03)' }} />
 
       {/* --- TOP HEADER APP BAR --- */}
-      <View style={styles.header}>
+      <Animated.View style={[styles.header, animatedMountStyle]}>
         <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} style={styles.backButton}>
           <ChevronLeftIcon />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>MY ORDERS</Text>
         <View style={{ width: 36 }} />
-      </View>
+      </Animated.View>
 
       {/* --- TAB SELECTOR --- */}
-      <View style={styles.tabSelectorRow}>
+      <Animated.View style={[styles.tabSelectorRow, animatedMountStyle]}>
         {(['upcoming', 'delivered', 'cancelled'] as const).map((tab) => {
           const active = activeTab === tab;
           return (
@@ -179,10 +196,10 @@ export default function OrdersScreen() {
             </TouchableOpacity>
           );
         })}
-      </View>
+      </Animated.View>
 
       {/* --- LIST FEED VIEW --- */}
-      <ScrollView style={styles.feedScroll} contentContainerStyle={styles.feedContent} showsVerticalScrollIndicator={false}>
+      <Animated.ScrollView style={[styles.feedScroll, animatedMountStyle]} contentContainerStyle={styles.feedContent} showsVerticalScrollIndicator={false}>
         
         {/* UPCOMING ORDERS TAB */}
         {activeTab === 'upcoming' && (
@@ -365,7 +382,7 @@ export default function OrdersScreen() {
             ))}
           </View>
         )}
-      </ScrollView>
+      </Animated.ScrollView>
 
       {/* --- RETURN PRODUCT OVERLAY MODAL --- */}
       {returnModalOpen && (
@@ -417,7 +434,7 @@ export default function OrdersScreen() {
 
                 {/* Submit button */}
                 <TouchableOpacity onPress={handleReturnSubmit} activeOpacity={0.85} style={styles.returnSubmitBtn}>
-                  <LinearGradient colors={['#E0B034', '#C08A18']} style={StyleSheet.absoluteFill} />
+                  <LinearGradient colors={['#D4AF37', '#B8962D']} style={StyleSheet.absoluteFill} />
                   <Text style={styles.returnSubmitBtnText}>CONFIRM RETURN REQUEST</Text>
                 </TouchableOpacity>
               </View>
@@ -432,7 +449,7 @@ export default function OrdersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#070707',
   },
   header: {
     flexDirection: 'row',
@@ -474,7 +491,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   tabItemActive: {
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
   },
   tabText: {
     fontSize: 10,
@@ -483,7 +500,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   tabTextActive: {
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   feedScroll: {
     flex: 1,
@@ -538,7 +555,7 @@ const styles = StyleSheet.create({
   statusBadgeText: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#FFE082',
+    color: '#D4AF37',
     letterSpacing: 0.5,
   },
   cardBody: {
@@ -552,18 +569,18 @@ const styles = StyleSheet.create({
   cardPriceText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   actionBtn: {
     height: 38,
     borderRadius: 10,
     borderWidth: 1.2,
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
     justifyContent: 'center',
     alignItems: 'center',
   },
   actionBtnText: {
-    color: '#FFE082',
+    color: '#D4AF37',
     fontSize: 10,
     fontWeight: '700',
     letterSpacing: 1,
@@ -619,7 +636,7 @@ const styles = StyleSheet.create({
     left: 7,
     top: 15,
     width: 2,
-    backgroundColor: '#E0B034',
+    backgroundColor: '#D4AF37',
   },
   timelineStagesColumn: {
     gap: 24,
@@ -637,7 +654,7 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     borderRadius: 8,
-    backgroundColor: '#FFE082',
+    backgroundColor: '#D4AF37',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -656,14 +673,14 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 14,
     borderWidth: 1.5,
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
     backgroundColor: 'rgba(224, 176, 52, 0.15)',
   },
   activeDotInner: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#FFE082',
+    backgroundColor: '#D4AF37',
     zIndex: 2,
   },
   stagePointPending: {
@@ -687,7 +704,7 @@ const styles = StyleSheet.create({
   },
   stageTitleActive: {
     fontSize: 12,
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '600',
   },
   stageTitlePending: {
@@ -750,7 +767,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.08)',
   },
   reasonBadgeActive: {
-    borderColor: '#E0B034',
+    borderColor: '#D4AF37',
     backgroundColor: 'rgba(224, 176, 52, 0.08)',
   },
   reasonBadgeText: {
@@ -759,7 +776,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   reasonBadgeTextActive: {
-    color: '#FFE082',
+    color: '#D4AF37',
     fontWeight: '600',
   },
   returnCommentsInput: {
@@ -781,7 +798,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   returnSubmitBtnText: {
-    color: '#0A0A0A',
+    color: '#070707',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1,
@@ -794,7 +811,7 @@ const styles = StyleSheet.create({
   },
   successEmoji: {
     fontSize: 32,
-    color: '#FFE082',
+    color: '#D4AF37',
   },
   returnSuccessTitle: {
     fontSize: 16,
