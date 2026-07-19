@@ -868,7 +868,20 @@ export default function HomeScreen() {
 
         {/* --- PREMIUM AUTHENTICATION GLASSMORPHIC MODAL --- */}
         {showAuthModal && (
-          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/30 modal-animate-fade p-4">
+          <div 
+            className="fixed inset-0 flex items-center justify-center bg-black/30 modal-animate-fade p-4"
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 99999
+            }}
+          >
             <div 
               className="glass-panel w-full max-w-[460px] p-8 rounded-[2.2rem] border border-white/60 shadow-2xl relative transition-all duration-500 overflow-hidden flex flex-col"
               style={{ minHeight: authStep === 'signup' ? '600px' : '450px' }}
