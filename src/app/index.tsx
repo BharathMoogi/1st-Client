@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, TextInput, TouchableOpacity, Dimensions, Platform, useWindowDimensions } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Dimensions, Platform, useWindowDimensions, Modal, Alert } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -191,6 +191,15 @@ export default function HomeScreen() {
 
   const [activeBanner, setActiveBanner] = useState(0);
   const [countdown, setCountdown] = useState({ hours: 4, minutes: 12, seconds: 59 });
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [selectedAddressId, setSelectedAddressId] = useState(1);
+  const [savedAddresses, setSavedAddresses] = useState([
+    { id: 1, tag: 'Home', icon: '🏠', name: 'Arjun Mehta', address: 'Flat 302, Golden Heights, Bandra West', city: 'Mumbai 400050', phone: '+91 98765 43210' },
+    { id: 2, tag: 'Office', icon: '🏢', name: 'Arjun Mehta', address: 'Aurum Corporate Hub, BKC', city: 'Bandra East, Mumbai 400051', phone: '+91 98765 43210' },
+    { id: 3, tag: 'Gym', icon: '🏋️', name: 'Arjun Mehta', address: '24 Fitness Center, Linking Road', city: 'Khar West, Mumbai 400052', phone: '+91 98765 43210' },
+  ]);
+
+  const currentAddress = savedAddresses.find(a => a.id === selectedAddressId) || savedAddresses[0];
 
   // Reanimated shared values
   const proteinProgressWidth = useSharedValue(0);
@@ -292,11 +301,11 @@ export default function HomeScreen() {
 
       {/* --- TOP APP BAR --- */}
       <Animated.View style={[styles.topBar, animatedHeroStyle]}>
-        <TouchableOpacity style={styles.locationContainer} activeOpacity={0.75}>
+        <TouchableOpacity style={styles.locationContainer} activeOpacity={0.75} onPress={() => setShowAddressModal(true)}>
           <LocationIcon />
           <View style={styles.locationTextContainer}>
-            <Text style={styles.locationHeader}>Deliver to</Text>
-            <Text style={styles.locationValue}>Bandra West, Mumbai 400050</Text>
+            <Text style={styles.locationHeader}>Deliver to · {currentAddress.tag}</Text>
+            <Text style={styles.locationValue} numberOfLines={1}>{currentAddress.city}</Text>
           </View>
           <Text style={styles.locationChevron}>›</Text>
         </TouchableOpacity>
@@ -545,6 +554,108 @@ export default function HomeScreen() {
         </View>
       </Animated.View>
     </ScrollView>
+
+    {/* ── ADDRESS PICKER MODAL ── */}
+    <Modal visible={showAddressModal} animationType="slide" transparent onRequestClose={() => setShowAddressModal(false)}>
+      <View style={styles.modalOverlay}>
+        <View style={styles.modalSheet}>
+          {/* Handle bar */}
+          <View style={styles.modalHandle} />
+
+          {/* Header */}
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>Deliver To</Text>
+            <TouchableOpacity onPress={() => setShowAddressModal(false)} style={styles.modalCloseBtn}>
+              <Text style={styles.modalCloseBtnText}>✕</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Use Current Location */}
+          <TouchableOpacity
+            style={styles.useLocationBtn}
+            activeOpacity={0.8}
+            onPress={() => Alert.alert('Location', 'Fetching your current location...')}
+          >
+            <View style={styles.useLocationIcon}>
+              <Text style={{ fontSize: 16 }}>📍</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.useLocationTitle}>Use Current Location</Text>
+              <Text style={styles.useLocationSub}>Enable GPS for precise delivery</Text>
+            </View>
+            <Text style={styles.useLocationArrow}>›</Text>
+          </TouchableOpacity>
+
+          {/* Divider */}
+          <View style={styles.modalDivider} />
+          <Text style={styles.savedLabel}>SAVED ADDRESSES</Text>
+
+          {/* Saved Address List */}
+          <ScrollView showsVerticalScrollIndicator={false} style={{ maxHeight: 320 }}>
+            {savedAddresses.map((addr) => {
+              const isSelected = addr.id === selectedAddressId;
+              return (
+                <TouchableOpacity
+                  key={addr.id}
+                  style={[styles.addressCard, isSelected && styles.addressCardSelected]}
+                  activeOpacity={0.85}
+                  onPress={() => { setSelectedAddressId(addr.id); setShowAddressModal(false); }}
+                >
+                  {/* Radio + Tag */}
+                  <View style={styles.addressCardLeft}>
+                    <View style={[styles.radioOuter, isSelected && styles.radioOuterSelected]}>
+                      {isSelected && <View style={styles.radioInner} />}
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <View style={styles.addressTagRow}>
+                        <Text style={styles.addressTagIcon}>{addr.icon}</Text>
+                        <View style={[styles.addressTagBadge, isSelected && styles.addressTagBadgeSelected]}>
+                          <Text style={[styles.addressTagText, isSelected && styles.addressTagTextSelected]}>{addr.tag}</Text>
+                        </View>
+                      </View>
+                      <Text style={styles.addressName}>{addr.name}</Text>
+                      <Text style={styles.addressLine}>{addr.address}</Text>
+                      <Text style={styles.addressCity}>{addr.city}</Text>
+                      <Text style={styles.addressPhone}>{addr.phone}</Text>
+                    </View>
+                  </View>
+
+                  {/* Edit / Delete actions */}
+                  <View style={styles.addressActions}>
+                    <TouchableOpacity
+                      style={styles.addressEditBtn}
+                      onPress={() => Alert.alert('Edit', `Edit ${addr.tag} address`)}
+                    >
+                      <Text style={styles.addressEditText}>Edit</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.addressDeleteBtn}
+                      onPress={() => {
+                        if (savedAddresses.length <= 1) { Alert.alert('Error', 'At least one address required'); return; }
+                        setSavedAddresses(prev => prev.filter(a => a.id !== addr.id));
+                        if (selectedAddressId === addr.id) setSelectedAddressId(savedAddresses[0].id);
+                      }}
+                    >
+                      <Text style={styles.addressDeleteText}>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+
+          {/* Add New Address */}
+          <TouchableOpacity
+            style={styles.addAddressBtn}
+            activeOpacity={0.8}
+            onPress={() => Alert.alert('Add Address', 'Navigate to add new address form')}
+          >
+            <Text style={styles.addAddressIcon}>＋</Text>
+            <Text style={styles.addAddressText}>Add New Address</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
   );
 }
 
@@ -1044,5 +1155,244 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
     backgroundColor: '#C87A5A',
+  },
+
+  // ── ADDRESS MODAL ──
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    justifyContent: 'flex-end',
+  },
+  modalSheet: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    paddingHorizontal: 20,
+    paddingBottom: 36,
+    paddingTop: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 20,
+  },
+  modalHandle: {
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#F0E5E5',
+    alignSelf: 'center',
+    marginBottom: 16,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#2B2B2B',
+    letterSpacing: 0.3,
+  },
+  modalCloseBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#FCEEEF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalCloseBtnText: {
+    fontSize: 13,
+    color: '#A85D63',
+    fontWeight: '600',
+  },
+  useLocationBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#FCEEEF',
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#F0E5E5',
+    marginBottom: 16,
+  },
+  useLocationIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#F0E5E5',
+  },
+  useLocationTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#A85D63',
+  },
+  useLocationSub: {
+    fontSize: 11,
+    color: '#6E6E6E',
+    marginTop: 2,
+  },
+  useLocationArrow: {
+    fontSize: 22,
+    color: '#A85D63',
+    fontWeight: '300',
+  },
+  modalDivider: {
+    height: 1,
+    backgroundColor: '#F0E5E5',
+    marginBottom: 12,
+  },
+  savedLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#6E6E6E',
+    letterSpacing: 1.5,
+    marginBottom: 12,
+  },
+  addressCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 14,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#F0E5E5',
+    marginBottom: 10,
+    backgroundColor: '#FFFFFF',
+  },
+  addressCardSelected: {
+    borderColor: '#A85D63',
+    backgroundColor: '#FCEEEF',
+  },
+  addressCardLeft: {
+    flexDirection: 'row',
+    gap: 12,
+    flex: 1,
+  },
+  radioOuter: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#F0E5E5',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 2,
+  },
+  radioOuterSelected: {
+    borderColor: '#A85D63',
+  },
+  radioInner: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#A85D63',
+  },
+  addressTagRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 4,
+  },
+  addressTagIcon: {
+    fontSize: 14,
+  },
+  addressTagBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 50,
+    backgroundColor: '#F0E5E5',
+  },
+  addressTagBadgeSelected: {
+    backgroundColor: '#A85D63',
+  },
+  addressTagText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#6E6E6E',
+    letterSpacing: 0.8,
+  },
+  addressTagTextSelected: {
+    color: '#FFFFFF',
+  },
+  addressName: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#2B2B2B',
+    marginBottom: 2,
+  },
+  addressLine: {
+    fontSize: 12,
+    color: '#6E6E6E',
+    lineHeight: 17,
+  },
+  addressCity: {
+    fontSize: 12,
+    color: '#6E6E6E',
+  },
+  addressPhone: {
+    fontSize: 11,
+    color: '#A85D63',
+    marginTop: 4,
+  },
+  addressActions: {
+    gap: 8,
+    justifyContent: 'flex-start',
+    paddingTop: 2,
+  },
+  addressEditBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: '#A85D63',
+    backgroundColor: '#FFFFFF',
+  },
+  addressEditText: {
+    fontSize: 11,
+    color: '#A85D63',
+    fontWeight: '600',
+  },
+  addressDeleteBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: '#F0E5E5',
+    backgroundColor: '#FFFFFF',
+  },
+  addressDeleteText: {
+    fontSize: 11,
+    color: '#6E6E6E',
+    fontWeight: '500',
+  },
+  addAddressBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    marginTop: 12,
+    paddingVertical: 14,
+    borderRadius: 50,
+    borderWidth: 1.5,
+    borderColor: '#C87A5A',
+    borderStyle: 'dashed',
+  },
+  addAddressIcon: {
+    fontSize: 18,
+    color: '#C87A5A',
+    fontWeight: '300',
+  },
+  addAddressText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#C87A5A',
   },
 });
