@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
+import { DarkTheme, DefaultTheme, ThemeProvider, Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useColorScheme, View, StyleSheet, Platform } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, runOnJS } from 'react-native-reanimated';
@@ -12,23 +12,20 @@ import AppTabs from '@/components/app-tabs';
 
 SplashScreen.preventAutoHideAsync();
 
+// Evaluated once at module load — safe outside the component
+const isWeb = Platform.OS === 'web';
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const isWeb = Platform.OS === 'web';
 
-  // On web: skip splash/onboarding/auth (avoids server/client hydration mismatch).
-  // On mobile: full flow starting from splash.
-  const [flowState, setFlowState] = useState<'splash' | 'onboarding' | 'auth' | 'app'>(
-    isWeb ? 'app' : 'splash'
-  );
-  
-  // Animation values for transitions
+  // Mobile only: full onboarding flow
+  const [flowState, setFlowState] = useState<'splash' | 'onboarding' | 'auth' | 'app'>('splash');
+
   const onboardingOpacity = useSharedValue(0);
   const authOpacity = useSharedValue(0);
   const appOpacity = useSharedValue(0);
 
   useEffect(() => {
-    // Hide the native splash screen since PremiumSplashScreen handles custom entry
     SplashScreen.hideAsync().catch(() => {});
   }, []);
 
@@ -38,7 +35,6 @@ export default function TabLayout() {
   };
 
   const handleOnboardingComplete = () => {
-    // Fade out onboarding and fade in auth
     onboardingOpacity.value = withTiming(0, { duration: 500 }, (finished) => {
       if (finished) {
         runOnJS(setFlowState)('auth');
@@ -48,7 +44,6 @@ export default function TabLayout() {
   };
 
   const handleAuthSuccess = () => {
-    // Fade out auth and fade in main app tabs
     authOpacity.value = withTiming(0, { duration: 500 }, (finished) => {
       if (finished) {
         runOnJS(setFlowState)('app');
@@ -72,57 +67,52 @@ export default function TabLayout() {
     opacity: appOpacity.value,
   }));
 
-  const content = (
-    <View style={styles.appContainer}>
-      {flowState === 'splash' && (
-        <PremiumSplashScreen onFinish={handleSplashFinish} />
-      )}
-      
-      {flowState === 'onboarding' && (
-        <Animated.View style={animatedOnboardingStyle}>
-          <OnboardingScreen onComplete={handleOnboardingComplete} />
-        </Animated.View>
-      )}
-
-      {flowState === 'auth' && (
-        <Animated.View style={animatedAuthStyle}>
-          <AuthScreens onSuccess={handleAuthSuccess} />
-        </Animated.View>
-      )}
-      
-      {flowState === 'app' && (
-        <Animated.View style={animatedAppStyle}>
-          <AppTabs />
-        </Animated.View>
-      )}
-    </View>
-  );
-
+  // ── WEB: render current route via <Slot /> inside centered phone frame ──
   if (isWeb) {
     return (
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <View style={styles.webOuterContainer}>
-          {/* Ambient desktop background decoration */}
           <LinearGradient
             colors={['#070707', '#111111', '#070707']}
             style={StyleSheet.absoluteFill}
           />
           <View style={styles.glowBlob} />
-          
           <View style={styles.phoneFrame}>
-            {/* Phone Notch/Status Bar Area */}
+            {/* Notch pill */}
             <View style={styles.phoneSpeaker} />
-            {content}
+            {/* Slot renders the matched route: index.tsx, explore.tsx, etc. */}
+            <Slot />
           </View>
         </View>
       </ThemeProvider>
     );
   }
 
+  // ── NATIVE: full splash → onboarding → auth → app flow ──
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <View style={styles.container}>
-        {content}
+        {flowState === 'splash' && (
+          <PremiumSplashScreen onFinish={handleSplashFinish} />
+        )}
+
+        {flowState === 'onboarding' && (
+          <Animated.View style={animatedOnboardingStyle}>
+            <OnboardingScreen onComplete={handleOnboardingComplete} />
+          </Animated.View>
+        )}
+
+        {flowState === 'auth' && (
+          <Animated.View style={animatedAuthStyle}>
+            <AuthScreens onSuccess={handleAuthSuccess} />
+          </Animated.View>
+        )}
+
+        {flowState === 'app' && (
+          <Animated.View style={animatedAppStyle}>
+            <AppTabs />
+          </Animated.View>
+        )}
       </View>
     </ThemeProvider>
   );
@@ -131,12 +121,6 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
-  },
-  appContainer: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
     backgroundColor: '#000000',
   },
   webOuterContainer: {
@@ -155,8 +139,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(212, 175, 55, 0.02)',
   },
   phoneFrame: {
-    width: 390, // Standard modern mobile viewport width
-    height: 844, // Standard modern mobile viewport height
+    width: 390,
+    height: 844,
     maxHeight: '94%',
     borderRadius: 40,
     borderWidth: 10,
@@ -164,8 +148,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     overflow: 'hidden',
     position: 'relative',
-    
-    // Premium drop shadow
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 20 },
     shadowOpacity: 0.6,
@@ -185,5 +167,3 @@ const styles = StyleSheet.create({
     zIndex: 999999,
   },
 });
-
-
