@@ -14,7 +14,13 @@ SplashScreen.preventAutoHideAsync();
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const [flowState, setFlowState] = useState<'splash' | 'onboarding' | 'auth' | 'app'>('splash');
+  const isWeb = Platform.OS === 'web';
+
+  // On web: skip splash/onboarding/auth (avoids server/client hydration mismatch).
+  // On mobile: full flow starting from splash.
+  const [flowState, setFlowState] = useState<'splash' | 'onboarding' | 'auth' | 'app'>(
+    isWeb ? 'app' : 'splash'
+  );
   
   // Animation values for transitions
   const onboardingOpacity = useSharedValue(0);
@@ -65,8 +71,6 @@ export default function TabLayout() {
     flex: 1,
     opacity: appOpacity.value,
   }));
-
-  const isWeb = Platform.OS === 'web';
 
   const content = (
     <View style={styles.appContainer}>
