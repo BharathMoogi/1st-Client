@@ -200,8 +200,15 @@ export default function ShopScreen() {
     const checkAuth = async () => {
       const unsub = onAuthStateChanged(auth, async (user) => {
         unsub();
+        
+        const forceRedirect = () => {
+          setTimeout(() => {
+            router.replace('/?triggerAuth=true');
+          }, 100);
+        };
+
         if (!user) {
-          router.replace('/?triggerAuth=true');
+          forceRedirect();
           return;
         }
 
@@ -218,10 +225,10 @@ export default function ShopScreen() {
               localStorage.setItem(`phone_verified_${user.uid}`, 'true');
             }
           } else {
-            router.replace('/?triggerAuth=true');
+            forceRedirect();
           }
         } catch (e) {
-          router.replace('/?triggerAuth=true');
+          forceRedirect();
         }
       });
     };

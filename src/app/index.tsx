@@ -11,7 +11,7 @@ import Animated, {
   withSequence,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Svg, { Path, Circle, Rect, G, Line } from 'react-native-svg';
 
 import { auth, db } from '../api/firebase';
@@ -230,7 +230,6 @@ const WebGLShader = ({ activeProductIndex }: { activeProductIndex: number }) => 
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { triggerAuth } = useLocalSearchParams();
   const [activeIdx, setActiveIdx] = useState(0);
   const activeProduct = ELIXIR_PRODUCTS[activeIdx];
 
@@ -331,10 +330,15 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
-    if (triggerAuth === 'true') {
-      handleGetStarted();
+    if (Platform.OS === 'web') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('triggerAuth') === 'true') {
+        setTimeout(() => {
+          handleGetStarted();
+        }, 150);
+      }
     }
-  }, [triggerAuth]);
+  }, []);
 
   // Switch transitions
   const triggerSuccessState = () => {
