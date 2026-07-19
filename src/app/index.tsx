@@ -292,13 +292,14 @@ export default function HomeScreen() {
 
       {/* --- TOP APP BAR --- */}
       <Animated.View style={[styles.topBar, animatedHeroStyle]}>
-        <View style={styles.locationContainer}>
+        <TouchableOpacity style={styles.locationContainer} activeOpacity={0.75}>
           <LocationIcon />
           <View style={styles.locationTextContainer}>
             <Text style={styles.locationHeader}>Deliver to</Text>
             <Text style={styles.locationValue}>Bandra West, Mumbai 400050</Text>
           </View>
-        </View>
+          <Text style={styles.locationChevron}>›</Text>
+        </TouchableOpacity>
         <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
           <TouchableOpacity onPress={() => router.push('/orders')} style={styles.notificationButton} activeOpacity={0.7}>
             <PackageIcon />
@@ -573,21 +574,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    backgroundColor: '#FCEEEF',
+    borderWidth: 1,
+    borderColor: '#F0E5E5',
+    borderRadius: 50,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
   },
   locationTextContainer: {
-    gap: 2,
+    gap: 1,
   },
   locationHeader: {
-    fontSize: 9,
-    fontWeight: '400',
-    color: '#6E6E6E',
+    fontSize: 8,
+    fontWeight: '600',
+    color: '#A85D63',
     textTransform: 'uppercase',
-    letterSpacing: 1.2,
+    letterSpacing: 1.5,
   },
   locationValue: {
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: '600',
     color: '#2B2B2B',
+  },
+  locationChevron: {
+    fontSize: 18,
+    color: '#A85D63',
+    fontWeight: '300',
+    marginLeft: 2,
   },
   notificationButton: {
     width: 40,
