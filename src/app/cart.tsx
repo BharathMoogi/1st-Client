@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput, Dimensions, Image } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput, Dimensions, Image, Modal, Alert } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -99,6 +99,10 @@ export default function CartScreen() {
   const [couponApplied, setCouponApplied] = useState(false);
   const [appliedError, setAppliedError] = useState(false);
 
+  // Payment state
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [upiId, setUpiId] = useState('bhara@upi');
+
   // Reanimated shared values
   const emptyOpacity = useSharedValue(0);
   const checkoutShineX = useSharedValue(-200);
@@ -160,12 +164,15 @@ export default function CartScreen() {
     setCouponInput('');
   };
 
-  // Math calculations
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
   const gst = subtotal * 0.18; // 18% GST
   const shippingFee = subtotal > 50 ? 0 : 10.00; // Free shipping over $50
   const couponDiscount = couponApplied ? subtotal * 0.20 : 0; // 20% discount
   const grandTotal = subtotal + gst + shippingFee - couponDiscount;
+
+  const inrAmount = Math.round(grandTotal * 83);
+  const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=Aurum%20Wellness&am=${inrAmount}&cu=INR`;
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiUrl)}`;
 
   // Reanimated style bindings
   const animatedCheckoutStyle = useAnimatedStyle(() => ({
@@ -363,7 +370,7 @@ export default function CartScreen() {
             <Text style={styles.footerPriceValue}>${grandTotal.toFixed(2)}</Text>
           </View>
 
-          <TouchableOpacity onPress={() => router.push('/checkout')} activeOpacity={0.85} style={styles.checkoutBtn}>
+          <TouchableOpacity onPress={() => setShowPaymentModal(true)} activeOpacity={0.85} style={styles.checkoutBtn}>
             <LinearGradient colors={['#A85D63', '#8B4A50']} style={StyleSheet.absoluteFill} />
             {/* Animated Shine sweep */}
             <Animated.View style={[styles.checkoutShine, animatedCheckoutStyle]}>
@@ -374,10 +381,85 @@ export default function CartScreen() {
                 style={StyleSheet.absoluteFill}
               />
             </Animated.View>
-            <Text style={styles.checkoutBtnText}>PROCEED TO CHECKOUT</Text>
+            <Text style={styles.checkoutBtnText}>PROCEED TO PAY</Text>
           </TouchableOpacity>
         </View>
       )}
+
+      {/* ── UPI QR CODE PAYMENT MODAL ── */}
+      <Modal visible={showPaymentModal} animationType="fade" transparent onRequestClose={() => setShowPaymentModal(false)}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.paymentSheet}>
+            {/* Handle bar */}
+            <View style={styles.modalHandle} />
+
+            {/* Header */}
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>UPI Payment</Text>
+              <TouchableOpacity onPress={() => setShowPaymentModal(false)} style={styles.modalCloseBtn}>
+                <Text style={styles.modalCloseBtnText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Description */}
+            <Text style={styles.paymentDesc}>Scan the QR code to pay using any UPI application (GPay, PhonePe, Paytm, BHIM, etc.)</Text>
+
+            {/* Price Details */}
+            <View style={styles.paymentPriceBox}>
+              <Text style={styles.paymentPriceLabel}>Total Payable amount:</Text>
+              <Text style={styles.paymentPriceValue}>${grandTotal.toFixed(2)} <Text style={{ fontSize: 13, color: '#6E6E6E', fontWeight: '400' }}>(₹{inrAmount.toLocaleString('en-IN')})</Text></Text>
+            </View>
+
+            {/* UPI ID Configurator */}
+            <View style={styles.upiConfigBox}>
+              <Text style={styles.upiConfigLabel}>UPI ID Address:</Text>
+              <TextInput
+                style={styles.upiInput}
+                value={upiId}
+                onChangeText={setUpiId}
+                placeholder="Enter UPI ID"
+                placeholderTextColor="#6E6E6E"
+              />
+            </View>
+
+            {/* QR Code Frame */}
+            <View style={styles.qrContainer}>
+              <View style={styles.qrFrame}>
+                <Image
+                  source={{ uri: qrCodeUrl }}
+                  style={styles.qrImage}
+                  resizeMode="contain"
+                />
+              </View>
+              <Text style={styles.qrInstruction}>Scan QR Code to complete transaction</Text>
+            </View>
+
+            {/* Actions */}
+            <TouchableOpacity
+              style={styles.confirmPaymentBtn}
+              activeOpacity={0.8}
+              onPress={() => {
+                Alert.alert('Payment Status', 'Simulating payment confirmation...', [
+                  {
+                    text: 'Confirm Success',
+                    onPress: () => {
+                      setCartItems([]);
+                      setShowPaymentModal(false);
+                      router.push('/orders');
+                    }
+                  },
+                  {
+                    text: 'Cancel',
+                    style: 'cancel'
+                  }
+                ]);
+              }}
+            >
+              <Text style={styles.confirmPaymentText}>I HAVE PAID</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -752,8 +834,8 @@ const styles = StyleSheet.create({
   },
   footerPriceLabel: {
     fontSize: 10,
-    color: 'rgba(255,255,255,0.45)',
-    fontWeight: '300',
+    color: '#6E6E6E',
+    fontWeight: '400',
   },
   footerPriceValue: {
     fontSize: 20,
@@ -764,7 +846,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 46,
     marginLeft: 20,
-    borderRadius: 14,
+    borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
@@ -774,9 +856,151 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   checkoutBtnText: {
-    color: '#2B2B2B',
+    color: '#FFFFFF',
     fontSize: 11,
     fontWeight: '700',
+    letterSpacing: 1.5,
+  },
+
+  // ── PAYMENT MODAL STYLES ──
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  paymentSheet: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    paddingHorizontal: 22,
+    paddingBottom: 36,
+    paddingTop: 12,
+    alignItems: 'stretch',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 16,
+    elevation: 10,
+  },
+  modalHandle: {
+    width: 42,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#F0E5E5',
+    alignSelf: 'center',
+    marginBottom: 16,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#2B2B2B',
+  },
+  modalCloseBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#FCEEEF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalCloseBtnText: {
+    fontSize: 13,
+    color: '#A85D63',
+    fontWeight: '600',
+  },
+  paymentDesc: {
+    fontSize: 12,
+    color: '#6E6E6E',
+    lineHeight: 18,
+    marginBottom: 20,
+  },
+  paymentPriceBox: {
+    backgroundColor: '#FFF8F7',
+    borderWidth: 1,
+    borderColor: '#F0E5E5',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+  },
+  paymentPriceLabel: {
+    fontSize: 11,
+    color: '#6E6E6E',
+    textTransform: 'uppercase',
     letterSpacing: 1,
+    marginBottom: 4,
+  },
+  paymentPriceValue: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#A85D63',
+  },
+  upiConfigBox: {
+    marginBottom: 18,
+  },
+  upiConfigLabel: {
+    fontSize: 11,
+    color: '#2B2B2B',
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+  upiInput: {
+    height: 46,
+    borderWidth: 1,
+    borderColor: '#F0E5E5',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    fontSize: 14,
+    color: '#2B2B2B',
+    backgroundColor: '#FFFFFF',
+  },
+  qrContainer: {
+    alignItems: 'center',
+    marginBottom: 24,
+    gap: 10,
+  },
+  qrFrame: {
+    width: 180,
+    height: 180,
+    padding: 8,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#F0E5E5',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  qrImage: {
+    width: '100%',
+    height: '100%',
+  },
+  qrInstruction: {
+    fontSize: 11,
+    color: '#A85D63',
+    fontWeight: '600',
+    letterSpacing: 0.5,
+  },
+  confirmPaymentBtn: {
+    height: 48,
+    borderRadius: 50,
+    backgroundColor: '#C87A5A',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#C87A5A',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+  confirmPaymentText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '700',
+    letterSpacing: 1.5,
   },
 });
