@@ -20,7 +20,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const TEAL = '#009688';
 const TEAL_LIGHT = '#80CBC4';
 const TEAL_DARK = '#00796B';
-const BG = '#1A1A1A';
+const BG = '#FFFFFF';
 const CARD_BG = '#FFFFFF';
 
 // --- VECTOR ICONS FOR HOME SCREEN ---
@@ -566,7 +566,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1A1A',
+    backgroundcolor: '#1A1A1A',
   },
   ambientGlow: {
     position: 'absolute',

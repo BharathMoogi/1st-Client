@@ -254,7 +254,7 @@ export default function CouponsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1A1A',
+    backgroundcolor: '#1A1A1A',
   },
   header: {
     flexDirection: 'row',
@@ -434,7 +434,7 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: '#1A1A1A',
+    backgroundcolor: '#1A1A1A',
     borderWidth: 1.2,
     borderColor: 'rgba(0,150,136,0.10)',
   },
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: '#1A1A1A',
+    backgroundcolor: '#1A1A1A',
     borderWidth: 1.2,
     borderColor: 'rgba(0,150,136,0.10)',
   },

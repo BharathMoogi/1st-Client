@@ -346,7 +346,7 @@ export default function CategoriesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1A1A',
+    backgroundcolor: '#1A1A1A',
   },
   ambientGlow: {
     position: 'absolute',

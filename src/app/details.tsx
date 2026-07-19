@@ -545,7 +545,7 @@ export default function ProductDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1A1A',
+    backgroundcolor: '#1A1A1A',
   },
   header: {
     flexDirection: 'row',
@@ -733,7 +733,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     backgroundColor: '#009688',
     borderWidth: 2,
-    borderColor: '#1A1A1A',
+    bordercolor: '#1A1A1A',
   },
   hiddenSliderInput: {
     position: 'absolute',

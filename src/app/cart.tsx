@@ -20,7 +20,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 // Luxury Design Tokens
 const TEAL = '#009688';
 const TEAL_DARK = '#00796B';
-const BG = '#1A1A1A';
+const BG = '#FFFFFF';
 
 // --- VECTOR ICONS FOR CART ---
 const ChevronLeftIcon = () => (
@@ -394,7 +394,7 @@ export default function CartScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1A1A',
+    backgroundcolor: '#1A1A1A',
   },
   header: {
     flexDirection: 'row',

@@ -345,7 +345,7 @@ export default function ReviewsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1A1A',
+    backgroundcolor: '#1A1A1A',
   },
   header: {
     flexDirection: 'row',
@@ -563,7 +563,7 @@ const styles = StyleSheet.create({
     height: 90,
     borderTopWidth: 0.5,
     borderColor: 'rgba(0,150,136,0.08)',
-    backgroundColor: '#1A1A1A',
+    backgroundcolor: '#1A1A1A',
     justifyContent: 'center',
     paddingHorizontal: 20,
   },

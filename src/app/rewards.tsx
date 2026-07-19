@@ -30,13 +30,13 @@ const LockIcon = () => (
 );
 
 const CheckIcon = () => (
-  <Svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#009688" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
     <Path d="M20 6 9 17l-5-5" />
   </Svg>
 );
 
 const CopyIcon = () => (
-  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#009688" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <Rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
     <Path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
   </Svg>
@@ -271,7 +271,7 @@ export default function RewardsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1A1A',
+    backgroundcolor: '#1A1A1A',
   },
   header: {
     flexDirection: 'row',
