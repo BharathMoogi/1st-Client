@@ -657,7 +657,15 @@ export default function HomeScreen() {
     return (
       <div 
         className="text-slate-800 min-h-screen flex flex-col font-sans select-none overflow-x-hidden transition-colors duration-1000"
-        style={{ backgroundColor: activeProduct.bgColor }}
+        style={{ 
+          backgroundColor: activeProduct.bgColor,
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+          overflowX: 'hidden',
+          position: 'relative',
+        }}
       >
         {/* Mock SMS Banner Gateway */}
         {smsBanner && (
@@ -804,7 +812,7 @@ export default function HomeScreen() {
         {/* Dynamic Detail Ingredients section */}
         <section className="py-32 bg-white relative z-20">
           <div className="max-w-[1280px] mx-auto px-6 md:px-16 grid lg:grid-cols-2 gap-16 items-center">
-            <div className="reveal">
+            <div className="reveal" style={{ willChange: 'opacity, transform' }}>
               <span className="text-[11px] font-bold text-[#A85D63] tracking-[0.25em] uppercase mb-4 block">Formulation Specs</span>
               <h2 className="text-3xl md:text-5xl font-serif-luxury font-semibold text-[#2B2B2B] leading-tight mb-8">
                 Pure Bioavailability.{"\n"}Zero Compromise.
@@ -823,7 +831,7 @@ export default function HomeScreen() {
               </div>
             </div>
 
-            <div className="reveal flex justify-center">
+            <div className="reveal" style={{ display: 'flex', justifyContent: 'center', willChange: 'opacity, transform' }}>
               <div className="relative p-6 bg-[#FFF8F7] rounded-[2.5rem] border border-[#F0E5E5] w-full max-w-lg shadow-xl">
                 <img
                   className="rounded-3xl w-full h-[400px] object-cover shadow-inner"
