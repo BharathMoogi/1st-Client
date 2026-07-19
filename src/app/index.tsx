@@ -193,6 +193,8 @@ export default function HomeScreen() {
   const [countdown, setCountdown] = useState({ hours: 4, minutes: 12, seconds: 59 });
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [selectedAddressId, setSelectedAddressId] = useState(1);
+  const [fetchingLocation, setFetchingLocation] = useState(false);
+  const [locationError, setLocationError] = useState('');
   const [savedAddresses, setSavedAddresses] = useState([
     { id: 1, tag: 'Home', icon: '🏠', name: 'Arjun Mehta', address: 'Flat 302, Golden Heights, Bandra West', city: 'Mumbai 400050', phone: '+91 98765 43210' },
     { id: 2, tag: 'Office', icon: '🏢', name: 'Arjun Mehta', address: 'Aurum Corporate Hub, BKC', city: 'Bandra East, Mumbai 400051', phone: '+91 98765 43210' },
@@ -200,6 +202,54 @@ export default function HomeScreen() {
   ]);
 
   const currentAddress = savedAddresses.find(a => a.id === selectedAddressId) || savedAddresses[0];
+
+  const handleUseCurrentLocation = async () => {
+    if (!navigator?.geolocation) {
+      setLocationError('Geolocation is not supported by your browser.');
+      return;
+    }
+    setFetchingLocation(true);
+    setLocationError('');
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+            { headers: { 'Accept-Language': 'en' } }
+          );
+          const data = await res.json();
+          const a = data.address || {};
+          const street = a.road || a.neighbourhood || a.suburb || 'Detected Street';
+          const area = a.suburb || a.neighbourhood || a.county || '';
+          const city = `${a.city || a.town || a.village || 'Your City'} ${a.postcode || ''}`.trim();
+          const newId = Date.now();
+          const newAddr = {
+            id: newId,
+            tag: 'Current',
+            icon: '📍',
+            name: 'Me',
+            address: area ? `${street}, ${area}` : street,
+            city,
+            phone: '',
+          };
+          setSavedAddresses(prev => [newAddr, ...prev.filter(x => x.tag !== 'Current')]);
+          setSelectedAddressId(newId);
+          setShowAddressModal(false);
+        } catch {
+          setLocationError('Could not fetch address. Please try again.');
+        } finally {
+          setFetchingLocation(false);
+        }
+      },
+      (err) => {
+        setFetchingLocation(false);
+        if (err.code === 1) setLocationError('Location permission denied. Please allow access.');
+        else setLocationError('Unable to detect location. Try again.');
+      },
+      { timeout: 10000, enableHighAccuracy: true }
+    );
+  };
 
   // Reanimated shared values
   const proteinProgressWidth = useSharedValue(0);
@@ -573,18 +623,23 @@ export default function HomeScreen() {
 
           {/* Use Current Location */}
           <TouchableOpacity
-            style={styles.useLocationBtn}
+            style={[styles.useLocationBtn, fetchingLocation && { opacity: 0.7 }]}
             activeOpacity={0.8}
-            onPress={() => Alert.alert('Location', 'Fetching your current location...')}
+            onPress={handleUseCurrentLocation}
+            disabled={fetchingLocation}
           >
             <View style={styles.useLocationIcon}>
-              <Text style={{ fontSize: 16 }}>📍</Text>
+              <Text style={{ fontSize: 16 }}>{fetchingLocation ? '⏳' : '📍'}</Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={styles.useLocationTitle}>Use Current Location</Text>
-              <Text style={styles.useLocationSub}>Enable GPS for precise delivery</Text>
+              <Text style={styles.useLocationTitle}>
+                {fetchingLocation ? 'Detecting your location...' : 'Use Current Location'}
+              </Text>
+              <Text style={styles.useLocationSub}>
+                {locationError || (fetchingLocation ? 'Please wait' : 'Enable GPS for precise delivery')}
+              </Text>
             </View>
-            <Text style={styles.useLocationArrow}>›</Text>
+            {!fetchingLocation && <Text style={styles.useLocationArrow}>›</Text>}
           </TouchableOpacity>
 
           {/* Divider */}
